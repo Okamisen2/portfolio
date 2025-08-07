@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Arthur Fedorov - Technical Artist</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #030712; /* gray-950 */
+            color: #d1d5db; /* gray-300 */
+        }
+        .section-title {
+            font-size: 2.25rem; /* text-4xl */
+            font-weight: 800; /* font-extrabold */
+            color: #ffffff;
+            margin-bottom: 2rem;
+            text-align: center;
+            letter-spacing: -0.025em;
+        }
+        .project-title {
+            font-size: 2.5rem; /* text-4xl */
+            font-weight: 800; /* font-extrabold */
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+        .feature-card {
+            background-color: rgba(31, 41, 55, 0.5); /* gray-800 with 50% opacity */
+            border: 1px solid #374151; /* gray-700 */
+            backdrop-filter: blur(8px);
+            transition: background-color 0.3s, border-color 0.3s, transform 0.3s;
+            height: 100%;
+        }
+        .feature-card:hover {
+            background-color: rgba(55, 65, 81, 0.7); /* gray-700 with 70% opacity */
+            border-color: #93c5fd; /* blue-300 */
+            transform: translateY(-5px);
+        }
+        .tag {
+            background-color: #3b82f6; /* blue-500 */
+            color: #ffffff;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 4px;
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            background-color: #000;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            border: 2px solid #374151;
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.2), 0 8px 10px -6px rgb(0 0 0 / 0.2);
+        }
+        .video-container iframe,
+        .video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .image-container {
+             position: relative;
+            width: 100%;
+            padding-top: 75%; /* 4:3 Aspect Ratio for Gallery */
+            background-color: #111827;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            border: 1px solid #374151;
+            transition: transform 0.3s;
+        }
+        .gallery-item {
+            cursor: pointer;
+            position: relative; /* Needed for positioning the texture maps */
+        }
+        .gallery-item:hover .image-container {
+            transform: scale(1.05);
+        }
+        .image-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .divider {
+            border-color: #374151; /* gray-700 */
+            margin-top: 4rem;
+            margin-bottom: 4rem;
+        }
+        .cv-card {
+            background-color: rgba(17, 24, 39, 0.8);
+            border: 1px solid #374151;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            height: 100%;
+        }
+        .cv-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+        .lang-switcher button {
+            padding: 8px 12px;
+            border-radius: 8px;
+            background-color: #374151;
+            color: #d1d5db;
+            transition: background-color 0.2s;
+        }
+        .lang-switcher button.active {
+            background-color: #3b82f6;
+            color: white;
+            font-weight: bold;
+        }
+        [data-lang-en] { display: none; }
+
+        /* Game Styles */
+        #game-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            border: 2px solid #374151;
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+        #game-canvas {
+            display: block;
+            width: 100%;
+            background-color: #111827;
+        }
+        #game-score {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px black;
+        }
+        #game-message {
+            position: absolute;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #3b82f6;
+            font-size: 2rem;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px black;
+            opacity: 0;
+            transition: opacity 0.5s;
+            text-align: center;
+        }
+        
+        /* Lightbox Styles */
+        #lightbox {
+            transition: opacity 0.3s ease;
+        }
+        #lightbox-image {
+            transition: transform 0.3s ease;
+        }
+
+        /* Video Lazy Loading Styles */
+        .video-placeholder .video-thumbnail {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .video-placeholder:hover .video-thumbnail {
+            transform: scale(1.05);
+        }
+        .video-placeholder .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+            transition: background-color 0.3s ease;
+        }
+        .video-placeholder .play-button::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 12px 0 12px 20px;
+            border-color: transparent transparent transparent white;
+            margin-left: 4px;
+        }
+        .video-placeholder:hover .play-button {
+            background-color: rgba(255, 0, 0, 0.8);
+        }
+
+        /* --- NEW STYLES FOR TEXTURE MAPS --- */
+        .texture-maps-container {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+        .texture-map {
+            width: 15%; /* Adjust size as needed */
+            aspect-ratio: 1 / 1;
+            border-radius: 0.25rem;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            opacity: 0.5;
+            transform: scale(1);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            cursor: pointer;
+        }
+        .texture-map img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .texture-map:hover {
+            opacity: 1;
+            transform: scale(1.1);
+            z-index: 10;
+        }
+
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+    <div class="max-w-7xl mx-auto">
+
+        <!-- HEADER / CV -->
+        <header class="mb-16">
+            <!-- Header content remains the same -->
+             <div class="relative text-center mb-10">
+                <div class="absolute top-0 right-0 lang-switcher">
+                    <button id="lang-ru">RU</button>
+                    <button id="lang-en" class="active">EN</button>
+                </div>
+                <div class="flex justify-center items-center gap-8 flex-wrap">
+                    <div class="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-gray-700" style="filter: grayscale(100%);">
+                        <img data-lang-ru src="https://sun9-33.userapi.com/s/v1/if1/JrKxVqi072KzVwZwzBGZn1MBg1NqHLJnVFSbdl7N39NcCjwijpn-wIxWgfQJrW2mTLvde_5R.jpg?quality=96&as=32x21,48x32,72x48,108x72,160x107,240x160,360x240,480x320,540x360,640x427,720x480,1080x721,1280x854&from=bu&cs=1280x0" alt="Фото Артура Фёдорова" class="w-full h-full object-cover">
+                        <img data-lang-en src="https://sun9-33.userapi.com/s/v1/if1/JrKxVqi072KzVwZwzBGZn1MBg1NqHLJnVFSbdl7N39NcCjwijpn-wIxWgfQJrW2mTLvde_5R.jpg?quality=96&as=32x21,48x32,72x48,108x72,160x107,240x160,360x240,480x320,540x360,640x427,720x480,1080x721,1280x854&from=bu&cs=1280x0" alt="Photo of Artur Fedorov" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h1 class="text-5xl md:text-7xl font-extrabold text-white">
+                            <span data-lang-ru>Фёдоров Артур</span>
+                            <span data-lang-en>Arthur Fedorov</span>
+                        </h1>
+                        <h2 class="text-2xl md:text-3xl text-blue-400 font-medium mt-2">Technical Artist</h2>
+                    </div>
+                </div>
+                 <p class="mt-6 text-2xl text-gray-300 font-light italic">
+                    <span data-lang-ru>"Играл в игры, писал про игры, продавал игры, продвигал игры — теперь их создаю!"</span>
+                    <span data-lang-en>"Played games, wrote about games, sold games, promoted games - now I create them!"</span>
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <div class="cv-card lg:col-span-2">
+                    <h3>
+                        <span data-lang-ru>Опыт работы</span>
+                        <span data-lang-en>Work Experience</span>
+                    </h3>
+                    <ol class="relative border-l border-gray-700">                  
+                        <li class="mb-10 ml-4">
+                            <div class="absolute w-3 h-3 bg-gray-700 rounded-full mt-1.5 -left-1.5 border border-gray-900"></div>
+                            <time class="mb-1 text-sm font-normal leading-none text-gray-500">2020 - 2025</time>
+                            <h4 class="text-lg font-semibold text-white">
+                                <span data-lang-ru>Freelance 3D/2D Generalist & Tech Artist</span>
+                                <span data-lang-en>Freelance 3D/2D Generalist & Tech Artist</span>
+                            </h4>
+                            <p class="text-base font-normal text-gray-400">
+                                <span data-lang-ru>VFX, шейдеры, материалы, SFX, подготовка к релизам на Steam/PS Store, организация тестирований.</span>
+                                <span data-lang-en>VFX, shaders, materials, SFX, preparing for Steam/PS Store releases, organizing testing sessions.</span>
+                            </p>
+                        </li>
+                        <li class="mb-10 ml-4">
+                            <div class="absolute w-3 h-3 bg-gray-700 rounded-full mt-1.5 -left-1.5 border border-gray-900"></div>
+                            <time class="mb-1 text-sm font-normal leading-none text-gray-500">2011 - 2020</time>
+                            <h4 class="text-lg font-semibold text-white">
+                                <span data-lang-ru>Руководитель видеоигрового отдела, OZ.by</span>
+                                <span data-lang-en>Head of Video Game Department, OZ.by</span>
+                            </h4>
+                            <p class="text-base font-normal text-gray-400">
+                                <span data-lang-ru>Управлял полным циклом игрового направления: от переговоров с Nintendo и Blizzard до организации национальных киберспортивных турниров. Получил глубокое понимание рынка и жизненного цикла продукта.</span>
+                                <span data-lang-en>Managed the full cycle of the gaming division: from negotiations with Nintendo and Blizzard to organizing national esports tournaments. Gained a deep understanding of the market and product lifecycle.</span>
+                            </p>
+                        </li>
+                        <li class="ml-4">
+                            <div class="absolute w-3 h-3 bg-gray-700 rounded-full mt-1.5 -left-1.5 border border-gray-900"></div>
+                            <time class="mb-1 text-sm font-normal leading-none text-gray-500">2008 - 2011</time>
+                            <h4 class="text-lg font-semibold text-white">
+                                <span data-lang-ru>Копирайтер, Etxt</span>
+                                <span data-lang-en>Copywriter, Etxt</span>
+                            </h4>
+                            <p class="text-base font-normal text-gray-400">
+                                <span data-lang-ru>Начинал путь в индустрии с написания обзоров и гайдов, глубоко изучая игровые механики и то, что цепляет игроков.</span>
+                                <span data-lang-en>Started my journey in the industry by writing reviews and guides, deeply studying game mechanics and what engages players.</span>
+                            </p>
+                        </li>
+                    </ol>
+                </div>
+                <div class="cv-card">
+                    <h3>
+                        <span data-lang-ru>Обо мне</span>
+                        <span data-lang-en>About Me</span>
+                    </h3>
+                    <div>
+                        <p class="text-lg text-gray-300 mb-4">
+                            <span data-lang-ru>Увлеченный специалист, который верит, что элегантные технические решения и креативный подход — ключ к созданию незабываемого игрового опыта. А ещё:</span>
+                            <span data-lang-en>An enthusiastic specialist who believes that elegant technical solutions and a creative approach are the key to creating an unforgettable gaming experience. Also:</span>
+                        </p>
+                        <div>
+                            <img data-lang-ru src="https://i.imgur.com/UuxFb56.gif" class="w-full rounded-lg" alt="I like nodes gif">
+                            <img data-lang-en src="https://i.imgur.com/OKZw81L.gif" class="w-full rounded-lg" alt="I like nodes gif">
+                        </div>
+                    </div>
+                </div>
+                <div class="cv-card">
+                    <h3>
+                        <span data-lang-ru>Ключевые навыки</span>
+                        <span data-lang-en>Key Skills</span>
+                    </h3>
+                    <div class="space-y-3">
+                        <div>
+                            <h4 class="font-semibold text-blue-300">
+                                <span data-lang-ru>Основное</span>
+                                <span data-lang-en>Core</span>
+                            </h4>
+                            <p><span class="tag">Unity</span> <span class="tag">C#</span> <span class="tag">C++ (basic)</span> <span class="tag">ShaderGraph</span> <span class="tag">VFXGraph</span> <span class="tag">SFX</span></p>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-blue-300">
+                                <span data-lang-ru>Арт-инструменты</span>
+                                <span data-lang-en>Art Tools</span>
+                            </h4>
+                            <p><span class="tag">Substance Designer</span> <span class="tag">Blender</span> <span class="tag">Photoshop</span> <span class="tag">Krita</span> <span class="tag">PixelCreator</span> <span class="tag">Aseprite</span></p>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-blue-300">
+                                <span data-lang-ru>Аудио</span>
+                                <span data-lang-en>Audio</span>
+                            </h4>
+                            <p><span class="tag">FMOD</span> <span class="tag">Adobe Audition</span> <span class="tag">FLStudio</span></p>
+                        </div>
+                         <div>
+                            <h4 class="font-semibold text-blue-300">
+                                <span data-lang-ru>Языки</span>
+                                <span data-lang-en>Languages</span>
+                            </h4>
+                            <p><span class="tag">Русский (Родной)</span> <span class="tag">English B2</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="cv-card">
+                      <h3>
+                        <span data-lang-ru>Образование и Обучение</span>
+                        <span data-lang-en>Education & Training</span>
+                      </h3>
+                      <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-white">
+                                <span data-lang-ru>БГЭУ, Экономист-информатик</span>
+                                <span data-lang-en>BSEU, Economist-Informatics</span>
+                            </h4>
+                            <p class="text-gray-400">
+                                <span data-lang-ru>Сильная база в математике, статистике и аналитике, помогающая в программировании и оптимизации.</span>
+                                <span data-lang-en>Strong foundation in mathematics, statistics, and analytics, which aids in programming and optimization.</span>
+                            </p>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-white">
+                                <span data-lang-ru>Специализированные курсы</span>
+                                <span data-lang-en>Specialized Courses</span>
+                            </h4>
+                            <p class="text-gray-400">
+                                <span data-lang-ru>Множество углубленных курсов по Blender, Unity, C#, написанию шейдеров, VFX, работе со светом и FMOD.</span>
+                                <span data-lang-en>Numerous in-depth courses on Blender, Unity, C#, shader writing, VFX, lighting, and FMOD.</span>
+                            </p>
+                        </div>
+                       </div>
+                </div>
+                 <div class="cv-card">
+                    <h3>
+                        <span data-lang-ru>Версия для печати</span>
+                        <span data-lang-en>Printable Version</span>
+                    </h3>
+                    <div class="h-full flex flex-col justify-between">
+                        <p class="text-lg text-gray-300 mb-4">
+                            <span data-lang-ru>Для вашего удобства я подготовил краткую версию этого портфолио в формате PDF.</span>
+                            <span data-lang-en>For your convenience, I have prepared a brief version of this portfolio in PDF format.</span>
+                        </p>
+                        <a id="pdf-download-link" href="PATH_TO_YOUR_EN_PDF.pdf" target="_blank" class="mt-auto block text-center w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-colors">
+                            <span data-lang-ru>Скачать PDF</span>
+                            <span data-lang-en>Download PDF</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+             <div class="mt-8 flex justify-center gap-x-6 gap-y-3 flex-wrap text-lg">
+                <a href="mailto:okamisen@yandex.ru" class="text-white hover:text-blue-400">okamisen@yandex.ru</a>
+                <span class="text-gray-500">|</span>
+                <a href="https://www.linkedin.com/in/v-v-15362034a/" target="_blank" class="text-white hover:text-blue-400">LinkedIn</a>
+                 <span class="text-gray-500">|</span>
+
+                <span class="text-white">
+                    <span data-lang-ru>Беларусь, Минск</span>
+                    <span data-lang-en>Minsk, Belarus</span>
+                </span>
+            </div>
+        </header>
+
+        <!-- PROJECTS -->
+        <main>
+            <h2 class="section-title">
+                <span data-lang-ru>Личные проекты</span>
+                <span data-lang-en>Personal Projects</span>
+            </h2>
+
+            <!-- PROJECT: Too Late for Valhalla -->
+            <section class="mb-16">
+                <div class="text-center mb-8">
+                    <h3 class="project-title">Too Late for Valhalla</h3>
+                    <p class="text-xl text-gray-400 max-w-4xl mx-auto">
+                        <strong class="text-blue-300" data-lang-ru>Ключевая задача:</strong>
+                        <strong class="text-blue-300" data-lang-en>Core Task:</strong>
+                        <span data-lang-ru>Создать аудио-центричную архитектуру, где музыкальный трек в FMOD является "дирижером", управляющим геймплеем, генерацией уровней, шейдерами и UI.</span>
+                        <span data-lang-en>To create an audio-centric architecture where the FMOD music track acts as a "conductor," controlling gameplay, level generation, shaders, and UI.</span>
+                    </p>
+                </div>
+                <div class="video-container mb-8 video-placeholder" data-video-ids="94KlTkUudzQ">
+                    <img src="https://img.youtube.com/vi/94KlTkUudzQ/hqdefault.jpg" alt="Too Late for Valhalla Preview" class="video-thumbnail">
+                    <div class="play-button"></div>
+                </div>
+                <!-- Feature cards remain the same -->
+                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="feature-card p-6 rounded-xl">
+                        <h4 class="font-bold text-lg text-blue-300 mb-2">
+                           <span data-lang-ru>1. Аудио-реактивность на DSP</span>
+                           <span data-lang-en>1. DSP-Based Audio Reactivity</span>
+                        </h4>
+                        <p>
+                           <span data-lang-ru>Система анализа звука в реальном времени через DSP с FFT. "Энергия" музыки управляет Post-FX, тряской камеры и параметрами шейдеров.</span>
+                           <span data-lang-en>A real-time audio analysis system using DSP with FFT. The music's "energy" controls Post-FX, camera shake, and shader parameters.</span>
+                        </p>
+                    </div>
+                    <div class="feature-card p-6 rounded-xl">
+                        <h4 class="font-bold text-lg text-blue-300 mb-2">
+                           <span data-lang-ru>2. Процедурная анимация караоке</span>
+                           <span data-lang-en>2. Procedural Karaoke Animation</span>
+                        </h4>
+                        <p>
+                           <span data-lang-ru>Полноценный аниматор текста, управляемый из FMOD через timeline-маркеры. Анимирует десятки параметров материала (`AnimationCurve`).</span>
+                           <span data-lang-en>A full-fledged text animator controlled by FMOD via timeline markers, animating dozens of material parameters with `AnimationCurve`.</span>
+                        </p>
+                    </div>
+                    <div class="feature-card p-6 rounded-xl">
+                        <h4 class="font-bold text-lg text-blue-300 mb-2">
+                           <span data-lang-ru>3. Динамическая генерация уровней</span>
+                           <span data-lang-en>3. Dynamic Level Generation</span>
+                        </h4>
+                        <p>
+                           <span data-lang-ru>Бесконечный раннер, где структура и сложность уровня полностью синхронизированы с FMOD-маркерами в музыкальной композиции.</span>
+                           <span data-lang-en>An endless runner where the level structure and difficulty are fully synchronized with FMOD markers in the music track.</span>
+                        </p>
+                    </div>
+                    <div class="feature-card p-6 rounded-xl">
+                        <h4 class="font-bold text-lg text-blue-300 mb-2">
+                           <span data-lang-ru>4. Комплексный процедурный шейдер воды</span>
+                           <span data-lang-en>4. Complex Procedural Water Shader</span>
+                        </h4>
+                        <p>
+                           <span data-lang-ru>Шейдер воды, управляемый через систему состояний. Плавно переключается между состояниями ("меню", "геймплей"), меняя десятки параметров.</span>
+                           <span data-lang-en>A state-driven water shader that smoothly transitions between states ("menu," "gameplay"), changing dozens of parameters.</span>
+                        </p>
+                    </div>
+                    <div class="feature-card p-6 rounded-xl">
+                        <h4 class="font-bold text-lg text-blue-300 mb-2">
+                           <span data-lang-ru>5. Кастомный Post-Processing в URP</span>
+                           <span data-lang-en>5. Custom Post-Processing in URP</span>
+                        </h4>
+                        <p>
+                           <span data-lang-ru>Собственный `ScriptableRendererFeature`, который инъецирует полноэкранный шейдер в URP. Параметры контролируются состоянием игрока, событиями и музыкой.</span>
+                           <span data-lang-en>A custom `ScriptableRendererFeature` that injects a fullscreen shader into URP. Parameters are controlled by player state, events, and music.</span>
+                        </p>
+                    </div>
+                    <div class="feature-card p-6 rounded-xl">
+                        <h4 class="font-bold text-lg text-blue-300 mb-2">
+                           <span data-lang-ru>6. Глубокая интеграция камеры и UI</span>
+                           <span data-lang-en>6. Deep Camera & UI Integration</span>
+                        </h4>
+                        <p>
+                           <span data-lang-ru>Живая, отзывчивая система обратной связи. Камера использует стейт-машину Cinemachine и `Impulse`, а UI — объект с кастомным шейдером.</span>
+                           <span data-lang-en>A living, responsive feedback system. The camera uses a Cinemachine state machine and `Impulse`, while the UI is an object with a custom shader.</span>
+                        </p>
+                    </div>
+                     <div class="feature-card p-6 rounded-xl md:col-span-2 lg:col-span-3">
+                        <h4 class="font-bold text-lg text-blue-300 mb-2">
+                           <span data-lang-ru>7. Динамический саундтрек и процедурная генерация SFX</span>
+                           <span data-lang-en>7. Dynamic Soundtrack & Procedural SFX</span>
+                        </h4>
+                        <p>
+                           <span data-lang-ru>Продвинутая звуковая система. В реальном времени управляет количеством музыкальных слоев. SFX урона и подбора еды генерируются процедурно через фильтры и наложение слоев, что гарантирует уникальность каждого звука.</span>
+                           <span data-lang-en>An advanced sound system. It controls the number of music layers in real-time. Damage and item pickup SFX are generated procedurally via filters and layer blending, ensuring each sound is unique.</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="mt-8 space-y-6">
+                    <h4 class="text-xl font-bold text-center text-white">
+                        <span data-lang-ru>Шейдеры</span>
+                        <span data-lang-en>Shaders</span>
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="video-container video-placeholder" data-video-ids="x3PraWAXz_0">
+                           <img src="https://img.youtube.com/vi/x3PraWAXz_0/hqdefault.jpg" alt="Shader Preview 1" class="video-thumbnail">
+                           <div class="play-button"></div>
+                        </div>
+                        <div class="gallery-item">
+                            <div class="image-container" style="padding-top: 56.25%;"><img src="https://i.imgur.com/lVdIWfR.png" alt="Изображение проекта Valhalla 1"></div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                         <div class="video-container video-placeholder" data-video-ids="lp7c6l9emQ0">
+                           <img src="https://img.youtube.com/vi/lp7c6l9emQ0/hqdefault.jpg" alt="Shader Preview 2" class="video-thumbnail">
+                           <div class="play-button"></div>
+                        </div>
+                        <div class="gallery-item">
+                            <div class="image-container" style="padding-top: 56.25%;"><img src="https://i.imgur.com/UXicjrs.png" alt="Изображение проекта Valhalla 2"></div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                         <div class="video-container video-placeholder" data-video-ids="oBYO5QTS890">
+                           <img src="https://img.youtube.com/vi/oBYO5QTS890/hqdefault.jpg" alt="Shader Preview 3" class="video-thumbnail">
+                           <div class="play-button"></div>
+                        </div>
+                        <div class="gallery-item">
+                            <div class="image-container" style="padding-top: 56.25%;"><img src="https://i.imgur.com/f0Ucdbl.png" alt="Изображение проекта Valhalla 2"></div>
+                        </div>
+                    </div>                      
+                </div>
+            </section>
+            
+            <hr class="divider">
+
+            <!-- PROJECT: HOLODOG -->
+            <section class="mb-16">
+                <div class="text-center mb-8">
+                    <h3 class="project-title">HOLODOG</h3>
+                    <p class="text-xl text-gray-400 max-w-4xl mx-auto">
+                        <strong class="text-blue-300" data-lang-ru>Ключевая задача:</strong>
+                        <strong class="text-blue-300" data-lang-en>Core Task:</strong>
+                        <span data-lang-ru>Создать полностью модульную, управляемую физикой систему процедурной анимации для 2D-меха, позволяющую "собирать" персонажа из независимых частей по рецепту.</span>
+                        <span data-lang-en>To create a fully modular, physics-driven procedural animation system for a 2D mech, allowing character assembly from independent parts based on a recipe.</span>
+                    </p>
+                </div>
+                <div class="video-container mb-8 video-placeholder" data-video-ids="hSL2H4MMssM">
+                    <img src="https://img.youtube.com/vi/hSL2H4MMssM/hqdefault.jpg" alt="HOLODOG Preview" class="video-thumbnail">
+                    <div class="play-button"></div>
+                </div>
+                <!-- Feature cards remain the same -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                       <div class="feature-card p-6 rounded-xl">
+                           <h4 class="font-bold text-lg text-blue-300 mb-2">
+                               <span data-lang-ru>1. Модульная процедурная анимация</span>
+                               <span data-lang-en>1. Modular Procedural Animation</span>
+                           </h4>
+                           <p>
+                               <span data-lang-ru>Создана система, позволяющая собирать мех "по рецепту". Ядро `ChassisController` через события управляет модулями: процедурной локомоцией, кастомным IK для рук, физикой отдачи и `JiggleBone`.</span>
+                               <span data-lang-en>A system for assembling a mech "by recipe". The `ChassisController` core manages modules via events: procedural locomotion, custom arm IK, physics-based kickback, and `JiggleBone`.</span>
+                           </p>
+                       </div>
+                       <div class="feature-card p-6 rounded-xl">
+                           <h4 class="font-bold text-lg text-blue-300 mb-2">
+                               <span data-lang-ru>2. Продвинутый 2D-шейдер освещения</span>
+                               <span data-lang-en>2. Advanced 2D Lighting Shader</span>
+                           </h4>
+                           <p>
+                               <span data-lang-ru>Разработан шейдер, формирующий собственную систему освещения, смешивая до двух источников света через режимы Overlay, Hard Light и Burn для создания сложного стилизованного 2D-освещения.</span>
+                               <span data-lang-en>A custom shader that forms its own lighting system, blending up to two light sources using Overlay, Hard Light, and Burn modes to create complex, stylized 2D lighting.</span>
+                           </p>
+                       </div>
+                       <div class="feature-card p-6 rounded-xl">
+                           <h4 class="font-bold text-lg text-blue-300 mb-2">
+                               <span data-lang-ru>3. Эффективная кастомизация</span>
+                               <span data-lang-en>3. Efficient Customization</span>
+                           </h4>
+                           <p>
+                               <span data-lang-ru>Реализована система `MaterialOverrideController`, позволяющая на лету через `MaterialPropertyBlock` изменять параметры шейдера для отдельных частей, не создавая новых экземпляров материала.</span>
+                               <span data-lang-en>Implemented `MaterialOverrideController` to change shader parameters on-the-fly for individual parts via `MaterialPropertyBlock`, avoiding new material instances.</span>
+                           </p>
+                       </div>
+                       <div class="feature-card p-6 rounded-xl">
+                           <h4 class="font-bold text-lg text-blue-300 mb-2">
+                               <span data-lang-ru>4. Динамический шейдерный щит</span>
+                               <span data-lang-en>4. Dynamic Shader Shield</span>
+                           </h4>
+                           <p>
+                               <span data-lang-ru>Эффект энергетического щита с имитацией объема на 2D-спрайте. Шейдер анализирует карту глубины и процедурно рассчитывает нормали, позволяя щиту корректно реагировать на свет.</span>
+                               <span data-lang-en>An energy shield effect that fakes volume on a 2D sprite. The shader analyzes the depth map and procedurally calculates normals, allowing it to react correctly to light.</span>
+                           </p>
+                       </div>
+                       <div class="feature-card p-6 rounded-xl">
+                           <h4 class="font-bold text-lg text-blue-300 mb-2">
+                               <span data-lang-ru>5. Архитектура, управляемая событиями</span>
+                               <span data-lang-en>5. Event-Driven Architecture</span>
+                           </h4>
+                           <p>
+                               <span data-lang-ru>В основе проекта лежит гибкая архитектура, где компоненты общаются через систему событий (`Action`). Это обеспечивает низкую связанность кода и упрощает добавление новых механик.</span>
+                               <span data-lang-en>The project is based on a flexible architecture where components communicate via an event system (`Action`), ensuring low code coupling and easy addition of new mechanics.</span>
+                           </p>
+                       </div>
+                       <div class="feature-card p-6 rounded-xl">
+                           <h4 class="font-bold text-lg text-blue-300 mb-2">
+                               <span data-lang-ru>6. Физически-корректное взаимодействие</span>
+                               <span data-lang-en>6. Physics-Based Interaction</span>
+                           </h4>
+                           <p>
+                               <span data-lang-ru>Особое внимание уделено ощущению "веса". Движение управляется через `Rigidbody2D` с инерцией, а оружие генерирует физический импульс (`blowbackForce`), который толкает персонажа назад.</span>
+                               <span data-lang-en>Special attention is paid to the feeling of "weight". Movement is controlled via `Rigidbody2D` with inertia, and weapons generate a physical impulse (`blowbackForce`) that pushes the character back.</span>
+                           </p>
+                       </div>
+                   </div>
+                <div class="mt-8">
+                    <h4 class="text-xl font-bold text-center text-white mb-4">
+                        <span data-lang-ru>Шейдеры</span>
+                        <span data-lang-en>Shaders</span>
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="gallery-item">
+                            <div class="image-container" style="padding-top: 56.25%;"><img src="https://i.imgur.com/dtACOWr.png" alt="Изображение проекта Holodog"></div>
+                        </div>
+                        <div class="video-container video-placeholder" data-video-ids="iMwMMa9qOFY">
+                           <img src="https://img.youtube.com/vi/iMwMMa9qOFY/hqdefault.jpg" alt="Holodog Shader Preview" class="video-thumbnail">
+                           <div class="play-button"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <hr class="divider">
+
+            <!-- GALLERY SECTION -->
+            <section class="mb-16">
+                <h2 class="section-title">
+                    <span data-lang-ru>Галерея</span>
+                    <span data-lang-en>Gallery</span>
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Item 1 -->
+                    <div class="gallery-item">
+                        <div class="image-container"><img src="https://i.imgur.com/3JetMnF.png" alt="Описание рендера 1"></div>
+                    </div>
+                    <!-- Item 2 with Texture Maps -->
+                    <div class="gallery-item">
+                        <div class="image-container"><img src="https://i.imgur.com/GUQXp76.jpeg" alt="Описание скриншота 1"></div>
+                        <div class="texture-maps-container">
+                            <div class="texture-map" data-src="https://i.imgur.com/rZLBXq9.jpeg"><img src="https://i.imgur.com/rZLBXq9.jpeg" alt="Normal Map"></div>
+                            <div class="texture-map" data-src="https://i.imgur.com/CNYGFAB.jpeg"><img src="https://i.imgur.com/CNYGFAB.jpeg" alt="AO Map"></div>
+                            <div class="texture-map" data-src="https://i.imgur.com/Z8RV9dT.jpeg"><img src="https://i.imgur.com/Z8RV9dT.jpeg" alt="Roughness Map"></div>
+                            <div class="texture-map" data-src="https://i.imgur.com/elZHIuC.jpeg"><img src="https://i.imgur.com/elZHIuC.jpeg" alt="Color Map"></div>
+                            <div class="texture-map" data-src="https://i.imgur.com/H5fg5U9.png"><img src="https://i.imgur.com/H5fg5U9.png" alt="Height Map"></div>
+                            <div class="texture-map" data-src="https://i.imgur.com/rIRi28b.png"><img src="https://i.imgur.com/rIRi28b.png" alt="Height Map"></div>
+                            <div class="texture-map" data-src="https://i.imgur.com/zjo8ADx.png"><img src="https://i.imgur.com/zjo8ADx.png" alt="Height Map"></div>
+                        </div>
+                    </div>
+                    <!-- Item 3 with Texture Maps -->
+                    <div class="gallery-item">
+                        <div class="image-container"><img src="https://i.imgur.com/EJPhxOK.jpeg" alt="Описание материала 1"></div>
+                        <div class="texture-maps-container">
+                            <div class="texture-map" data-src="https://i.imgur.com/IkjccBa.jpeg"><img src="https://i.imgur.com/IkjccBa.jpeg" alt="Normal Map"></div>
+                            <div class="texture-map" data-src="https://i.imgur.com/Vds94Eg.jpeg"><img src="https://i.imgur.com/Vds94Eg.jpeg" alt="AO Map"></div>
+                            <div class="texture-map" data-src="https://i.imgur.com/kXZWb0V.png"><img src="https://i.imgur.com/kXZWb0V.png" alt="Roughness Map"></div>
+                            <div class="texture-map" data-src="https://i.imgur.com/WTk1MAS.jpeg"><img src="https://i.imgur.com/WTk1MAS.jpeg" alt="Color Map"></div>
+                            <div class="texture-map" data-src="https://i.imgur.com/EbOvMzu.jpeg"><img src="https://i.imgur.com/EbOvMzu.jpeg" alt="Height Map"></div>
+                        </div>
+                    </div>
+                    <!-- Item 4 with Texture Maps -->
+                    <div class="gallery-item">
+                        <div class="image-container"><img src="https://i.imgur.com/I2IQa0W.jpeg" alt="Описание нодов VFX"></div>
+                        <div class="texture-maps-container">
+                            <div class="texture-map" data-src="https://i.imgur.com/8OZaL3m.jpeg"><img src="https://i.imgur.com/8OZaL3m.jpeg" alt="Normal Map"></div>
+                            <div class="texture-map" data-src="https://i.imgur.com/6hajogn.jpeg"><img src="https://i.imgur.com/6hajogn.jpeg" alt="AO Map"></div>
+                            <div class="texture-map" data-src="https://i.imgur.com/2jWIfEW.jpeg"><img src="https://i.imgur.com/2jWIfEW.jpeg" alt="Roughness Map"></div>
+                            <div class="texture-map" data-src="https://i.imgur.com/k8OVeGR.jpeg"><img src="https://i.imgur.com/k8OVeGR.jpeg" alt="Color Map"></div>
+                            <div class="texture-map" data-src="https://i.imgur.com/iWjOcQf.jpeg"><img src="https://i.imgur.com/iWjOcQf.jpeg" alt="Height Map"></div>
+                        </div>
+                    </div>
+                    <!-- Item 5 -->
+                    <div class="gallery-item"><div class="image-container"><img src="https://i.imgur.com/R6cQpXx.png" alt="Описание рендера 2"></div></div>
+                    <!-- Item 6 -->
+                    <div class="gallery-item"><div class="image-container"><img src="https://i.imgur.com/vBkQVP2.png" alt="Описание графа шейдера"></div></div>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
+                    <div class="gallery-item">
+                        <div class="image-container" style="padding-top: 56.25%;">
+                            <img src="https://i.imgur.com/ZpB6oAo.png" alt="Дополнительное изображение 1">
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="image-container" style="padding-top: 56.25%;">
+                            <img src="https://i.imgur.com/LBZ8Rwi.png" alt="Дополнительное изображение 2">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <hr class="divider">
+
+            <!-- CONTRACT WORK SECTION -->
+            <section class="mb-16">
+                 <h2 class="section-title">
+                    <span data-lang-ru>Контрактная работа</span>
+                    <span data-lang-en>Contract Work</span>
+                 </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-4 lg:grid-cols-2 gap-6">
+                    <!-- Bit Blast Zero -->
+                    <div class="cv-card">
+                        <div class="video-container mb-4 video-placeholder" data-video-ids="pEYhLY0KeFg,CibIFGiDiwM">
+                           <img src="https://img.youtube.com/vi/CibIFGiDiwM/hqdefault.jpg" alt="Bit Blast Zero Preview" class="video-thumbnail">
+                           <div class="play-button"></div>
+                        </div>
+                        <h4 class="text-lg font-bold text-white"><span data-lang-ru>Blast Bit Zero</span><span data-lang-en>Blast Bit Zero</span></h4>
+                        <p class="text-gray-400 text-sm"><span data-lang-ru>Разработал бесконечный shoot 'em up. Ключевой особенностью проекта является кастомная система на базе Scriptable Objects, которая значительно упрощает и ускоряет создание новых волн противников и боссов.</span><span data-lang-en>Developed an endless shoot 'em up. The project's core feature is a custom system based on Scriptable Objects, designed to significantly simplify and accelerate the creation of new enemy waves and bosses.</span></p>
+                    </div>
+                    <!-- Temple of Patience -->
+                    <div class="cv-card">
+                        <div class="video-container mb-4 video-placeholder" data-video-ids="19y2TDY3Myw">
+                           <img src="https://img.youtube.com/vi/19y2TDY3Myw/hqdefault.jpg" alt="Temple of Patience Preview" class="video-thumbnail">
+                           <div class="play-button"></div>
+                        </div>
+                        <h4 class="text-lg font-bold text-white"><span data-lang-ru>Temple of Patience</span><span data-lang-en>Temple of Patience</span></h4>
+                        <p class="text-gray-400 text-sm"><span data-lang-ru>Создал сингл-скрин платформер. Основной задачей была разработка архитектуры на основе тайловых карт и префабов, позволяющей собирать новые уровни прямо в редакторе Unity за считанные минуты.</span><span data-lang-en>Created a single-screen platformer. The main goal was to develop an architecture using tilemaps and nested prefabs, enabling the assembly of new levels directly in the Unity editor in minutes.</span></p>
+                    </div>
+                    <!-- Argon Flight -->
+                    <div class="cv-card">
+                        <div class="video-container mb-4 video-placeholder" data-video-ids="PdigEk_1eV8">
+                           <img src="https://img.youtube.com/vi/PdigEk_1eV8/hqdefault.jpg" alt="Argon Flight Preview" class="video-thumbnail">
+                           <div class="play-button"></div>
+                        </div>
+                        <h4 class="text-lg font-bold text-white"><span data-lang-ru>Argon Flight</span><span data-lang-en>Argon Flight</span></h4>
+                        <p class="text-gray-400 text-sm"><span data-lang-ru>Разработал короткий рельсовый шутер, стилистически вдохновлённый техно-демо 90-х. В основе проекта лежит система событий, привязанных к таймлайну, которая управляет всеми игровыми моментами.</span><span data-lang-en>Developed a short on-rails shooter, stylistically inspired by 90s tech demos. The project is built upon a timeline-based event system that drives all in-game moments.</span></p>
+                    </div>
+                    <!-- Don't press X -->
+                    <div class="cv-card">
+                        <div class="video-container mb-4 video-placeholder" data-video-ids="AjCEn4VBokU">
+                           <img src="https://img.youtube.com/vi/AjCEn4VBokU/hqdefault.jpg" alt="Don't press X Preview" class="video-thumbnail">
+                           <div class="play-button"></div>
+                        </div>
+                        <h4 class="text-lg font-bold text-white"><span data-lang-ru>Don't press X to free the pirate</span><span data-lang-en>Don't press X to free the pirate</span></h4>
+                        <p class="text-gray-400 text-sm"><span data-lang-ru>Создал сатирическую мета-игру, построенную вокруг простой концепции: не нажимать кнопку Х. Основной технической задачей стала разработка гибкой системы ветвящихся диалогов на Scriptable Objects, включающей озвучку каждого печатаемого символа.</span><span data-lang-en>Created a satirical meta-game built around a simple concept: don't press X. The main technical challenge was developing a flexible, branching dialogue system using Scriptable Objects, which included per-character audio feedback as text is typed.</span></p>
+                    </div>
+                    <!-- Dissolve Feature -->
+                    <div class="cv-card">
+                        <div class="video-container mb-4 video-placeholder" data-video-ids="Yq5r_JC4H2Q,ildYX8BSKlQ,sm_MsfI60jE">
+                           <img src="https://img.youtube.com/vi/Yq5r_JC4H2Q/hqdefault.jpg" alt="Dissolve Feature Preview" class="video-thumbnail">
+                           <div class="play-button"></div>
+                        </div>
+                        <h4 class="text-lg font-bold text-white"><span data-lang-ru>Рендер-фича: Dissolve Effect</span><span data-lang-en>Render Feature: Dissolve Effect</span></h4>
+                        <p class="text-gray-400 text-sm"><span data-lang-ru>Разработал кастомную рендер-фичу (URP Render Feature) для создания эффекта, имитирующего датамошинг, который "распыляет" пиксели предыдущего кадра на текущий. Дополнительно реализовал ряд других шейдерных эффектов.</span><span data-lang-en>Developed a custom URP Render Feature to create a datamoshing-inspired effect that "atomizes" pixels from the previous frame onto the current one. Additionally implemented several other shader effects.</span></p>
+                    </div>
+                    <!-- Mobile Game Effects -->
+                    <div class="cv-card">
+                        <div class="video-container mb-4 video-placeholder" data-video-ids="vInap1vfovQ,HjkhupE7mMw,EWbRH-CbFwI,JtkUp9m-JUg">
+                           <img src="https://img.youtube.com/vi/vInap1vfovQ/hqdefault.jpg" alt="Mobile Game Effects Preview" class="video-thumbnail">
+                           <div class="play-button"></div>
+                        </div>
+                        <h4 class="text-lg font-bold text-white"><span data-lang-ru>Эффекты для мобильной игры</span><span data-lang-en>Effects for a Mobile Game</span></h4>
+                        <p class="text-gray-400 text-sm"><span data-lang-ru>Разработал серию эффектов частиц, оптимизированных для работы без VFX Graph. Управление параметрами Shuriken реализовано через передачу данных в кастомных UV-каналах для высокой производительности.</span><span data-lang-en>Developed a series of particle effects optimized to run without VFX Graph. Instead, Shuriken parameters are controlled by passing data through custom UV channels, ensuring high performance.</span></p>
+                    </div>
+                    <!-- VR Features -->
+                    <div class="cv-card">
+                        <div class="video-container mb-4 video-placeholder" data-video-ids="HsWOmk55LDw">
+                           <img src="https://img.youtube.com/vi/HsWOmk55LDw/hqdefault.jpg" alt="VR Features Preview" class="video-thumbnail">
+                           <div class="play-button"></div>
+                        </div>
+                        <h4 class="text-lg font-bold text-white"><span data-lang-ru>Разработка фичей для VR</span><span data-lang-en>VR Feature Development</span></h4>
+                        <p class="text-gray-400 text-sm"><span data-lang-ru>Реализовал комплекс фичей для VR-проекта: высокооптимизированные шейдеры, кастомную физическую систему для интерактивных объектов (двери, ящики) и ивентовую систему SFX на Scriptable Objects.</span><span data-lang-en>Implemented a suite of features for a VR project: highly-optimized shaders, a custom physics-based interaction system for objects like doors and drawers, and an event-driven SFX management system using Scriptable Objects.</span></p>
+                    </div>
+                    <!-- VFX Graph Explosion -->
+                    <div class="cv-card">
+                        <div class="video-container mb-4 video-placeholder" data-video-ids="c_3WGAYfRww,ECA9xlg1N1o">
+                           <img src="https://img.youtube.com/vi/c_3WGAYfRww/hqdefault.jpg" alt="VFX Graph Explosion Preview" class="video-thumbnail">
+                           <div class="play-button"></div>
+                        </div>
+                        <h4 class="text-lg font-bold text-white"><span data-lang-ru>Настраиваемый взрыв (VFX Graph)</span><span data-lang-en>Configurable Explosion (VFX Graph)</span></h4>
+                        <p class="text-gray-400 text-sm"><span data-lang-ru>Создал конфигурируемый эффект взрыва при помощи VFX Graph как гибкий ассет с множеством вынесенных параметров (цвет, размер, интенсивность) для легкой кастомизации.</span><span data-lang-en>Created a configurable explosion effect using VFX Graph, designed as a flexible asset with numerous exposed parameters (e.g., color, size, intensity) for easy customization.</span></p>
+                    </div>
+                </div>
+            </section>
+            
+            <hr class="divider">
+
+            <!-- GAME SECTION -->
+            <section>
+                <h2 class="section-title">
+                    <span data-lang-ru>Пока вы думаете...</span>
+                    <span data-lang-en>While you're thinking...</span>
+                </h2>
+                <div id="game-container">
+                    <canvas id="game-canvas" width="800" height="200"></canvas>
+                    <div id="game-score">
+                        <span data-lang-ru>Счет: </span>
+                        <span data-lang-en>Score: </span>
+                        <span id="score-value">0</span>
+                    </div>
+                     <div id="game-message"></div>
+                </div>
+                <p class="text-center mt-4 text-gray-500">
+                    <span data-lang-ru>Нажмите Пробел или тапните, чтобы прыгнуть</span>
+                    <span data-lang-en>Press Space or tap to jump</span>
+                </p>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Lightbox HTML -->
+    <div id="lightbox" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-4 z-50 opacity-0 pointer-events-none">
+        <img id="lightbox-image" src="" alt="Full size view" class="max-w-full max-h-full object-contain transform scale-95">
+        <button id="lightbox-close" class="absolute top-4 right-4 text-white text-4xl">&times;</button>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- LANGUAGE SWITCHER ---
+            const langRuBtn = document.getElementById('lang-ru');
+            const langEnBtn = document.getElementById('lang-en');
+            const ruElements = document.querySelectorAll('[data-lang-ru]');
+            const enElements = document.querySelectorAll('[data-lang-en]');
+            const pdfLink = document.getElementById('pdf-download-link');
+            let game; // Declare game variable here
+
+            function setLanguage(lang) {
+                if (lang === 'ru') {
+                    document.documentElement.lang = 'ru';
+                    langRuBtn.classList.add('active');
+                    langEnBtn.classList.remove('active');
+                    ruElements.forEach(el => el.style.display = 'inline');
+                    enElements.forEach(el => el.style.display = 'none');
+                    pdfLink.href = "https://drive.google.com/file/d/1ujl4cVXbIkmneiG2MkETweDqvVGsTAzF/view?usp=sharing"; // Set Russian PDF path
+                } else {
+                    document.documentElement.lang = 'en';
+                    langEnBtn.classList.add('active');
+                    langRuBtn.classList.remove('active');
+                    enElements.forEach(el => el.style.display = 'inline');
+                    ruElements.forEach(el => el.style.display = 'none');
+                    pdfLink.href = "https://drive.google.com/file/d/1zvjyhmnlUGAVbTp30eHBmQENS-uUoqLV/view?usp=sharing"; // Set English PDF path
+                }
+                // Update game text on lang change
+                if(game) game.setLanguage(lang);
+            }
+
+            langRuBtn.addEventListener('click', () => setLanguage('ru'));
+            langEnBtn.addEventListener('click', () => setLanguage('en'));
+            
+            // --- LIGHTBOX LOGIC ---
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.getElementById('lightbox-image');
+            const lightboxClose = document.getElementById('lightbox-close');
+            
+            function openLightbox(src) {
+                lightboxImage.src = src;
+                lightbox.classList.remove('opacity-0', 'pointer-events-none');
+                setTimeout(() => {
+                    lightboxImage.classList.remove('scale-95');
+                }, 10);
+            }
+
+            function closeLightbox() {
+                lightboxImage.classList.add('scale-95');
+                lightbox.classList.add('opacity-0', 'pointer-events-none');
+            }
+
+            // Open lightbox for main gallery images
+            document.querySelectorAll('.gallery-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const imgSrc = item.querySelector('img').src;
+                    openLightbox(imgSrc);
+                });
+            });
+
+            // Open lightbox for texture maps, and stop the click from bubbling up
+            document.querySelectorAll('.texture-map').forEach(map => {
+                map.addEventListener('click', (e) => {
+                    e.stopPropagation(); // This is crucial! Prevents the parent gallery-item click.
+                    const imgSrc = map.dataset.src;
+                    openLightbox(imgSrc);
+                });
+            });
+
+
+            lightboxClose.addEventListener('click', closeLightbox);
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox) {
+                    closeLightbox();
+                }
+            });
+
+            // --- VIDEO LAZY LOADING LOGIC ---
+            function loadVideo(placeholder) {
+                if (placeholder.classList.contains('video-loaded')) return;
+
+                const videoIds = placeholder.dataset.videoIds;
+                if (!videoIds) return;
+
+                const firstVideoId = videoIds.split(',')[0];
+                const playlist = videoIds;
+
+                const iframe = document.createElement('iframe');
+                iframe.src = `https://www.youtube.com/embed/${firstVideoId}?autoplay=1&loop=1&playlist=${playlist}&mute=1&controls=1&enablejsapi=1`;
+                iframe.title = "YouTube video player";
+                iframe.frameBorder = "0";
+                iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+                iframe.allowFullscreen = true;
+
+                placeholder.innerHTML = '';
+                placeholder.appendChild(iframe);
+                placeholder.classList.add('video-loaded');
+            }
+
+            function resetVideo(placeholder) {
+                if (!placeholder.classList.contains('video-loaded')) return;
+
+                const videoIds = placeholder.dataset.videoIds;
+                if (!videoIds) return;
+
+                const firstVideoId = videoIds.split(',')[0];
+                const altText = placeholder.querySelector('img')?.alt || "Video Preview";
+
+                placeholder.innerHTML = '';
+
+                const thumbnail = document.createElement('img');
+                thumbnail.src = `https://img.youtube.com/vi/${firstVideoId}/hqdefault.jpg`;
+                thumbnail.alt = altText;
+                thumbnail.className = 'video-thumbnail';
+
+                const playButton = document.createElement('div');
+                playButton.className = 'play-button';
+
+                placeholder.appendChild(thumbnail);
+                placeholder.appendChild(playButton);
+
+                placeholder.classList.remove('video-loaded');
+            }
+
+            const videoObserverOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5
+            };
+
+            const videoObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        loadVideo(entry.target);
+                    } else {
+                        resetVideo(entry.target);
+                    }
+                });
+            }, videoObserverOptions);
+
+            document.querySelectorAll('.video-placeholder').forEach(placeholder => {
+                videoObserver.observe(placeholder);
+            });
+
+
+            // --- GAME LOGIC ---
+            const canvas = document.getElementById('game-canvas');
+            const ctx = canvas.getContext('2d');
+            const scoreEl = document.getElementById('score-value');
+            const messageEl = document.getElementById('game-message');
+
+            class DinoGame {
+                constructor() {
+                    this.canvas = canvas;
+                    this.ctx = ctx;
+                    this.scoreEl = scoreEl;
+                    this.messageEl = messageEl;
+                    this.initialGameSpeed = 4;
+                    this.gameSpeedIncrease = 0.001;
+                    this.animationFrameId = null;
+                    this.lang = 'ru';
+                    this.phrases = {
+                        ru: ["Молодец!", "Так держать!", "Отлично!", "Невероятно!", "Супер!", "Продолжай!"],
+                        en: ["Great!", "Keep it up!", "Excellent!", "Incredible!", "Super!", "Go on!"]
+                    };
+                    this.specialPhrase = {
+                        ru: "Окей, напиши мне с фразой 100, обсудим кое-чего.",
+                        en: "Okay, message me with the phrase 100, let's discuss something."
+                    };
+                }
+
+                setLanguage(lang) {
+                    this.lang = lang;
+                }
+
+                getRandomInterval() {
+                    return Math.floor(Math.random() * (this.maxObstacleInterval - this.minObstacleInterval + 1)) + this.minObstacleInterval;
+                }
+
+                jump() {
+                    if (this.dino.onGround) {
+                        this.dino.dy = this.dino.jumpPower;
+                        this.dino.onGround = false;
+                    }
+                }
+
+                showMessage(text) {
+                    this.messageEl.textContent = text;
+                    this.messageEl.style.opacity = 1;
+                    setTimeout(() => {
+                        this.messageEl.style.opacity = 0;
+                    }, 2000);
+                }
+
+                update() {
+                    if (this.gameOver) return;
+                    this.gameSpeed += this.gameSpeedIncrease;
+                    this.dino.dy += this.dino.gravity;
+                    this.dino.y += this.dino.dy;
+                    this.dino.onGround = false;
+                    if (this.dino.y >= this.canvas.height - 40) {
+                        this.dino.y = this.canvas.height - 40;
+                        this.dino.dy = 0;
+                        this.dino.onGround = true;
+                    }
+                    this.obstacleTimer++;
+                    if (this.obstacleTimer > this.currentObstacleInterval) {
+                        this.obstacles.push({ x: this.canvas.width, width: 20, height: 40 });
+                        this.obstacleTimer = 0;
+                        this.currentObstacleInterval = this.getRandomInterval();
+                    }
+                    for (let i = this.obstacles.length - 1; i >= 0; i--) {
+                        const obs = this.obstacles[i];
+                        obs.x -= this.gameSpeed;
+                        if (this.dino.x < obs.x + obs.width &&
+                            this.dino.x + this.dino.width > obs.x &&
+                            this.dino.y < this.canvas.height - 40 + obs.height &&
+                            this.dino.y + this.dino.height > this.canvas.height - 40) {
+                            this.endGame();
+                        }
+                        if (obs.x + obs.width < this.dino.x && !obs.scored) {
+                            obs.scored = true;
+                            this.score++;
+                            this.jumps++;
+                            this.scoreEl.textContent = this.score;
+                            if (this.jumps === 100) {
+                                this.showMessage(this.specialPhrase[this.lang]);
+                            } else if (this.jumps > 0 && this.jumps % 10 === 0) {
+                                const randomPhrase = this.phrases[this.lang][Math.floor(Math.random() * this.phrases[this.lang].length)];
+                                this.showMessage(randomPhrase);
+                            }
+                        }
+                        if (obs.x + obs.width < 0) {
+                            this.obstacles.splice(i, 1);
+                        }
+                    }
+                }
+
+                draw() {
+                    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                    this.ctx.fillStyle = '#374151';
+                    this.ctx.fillRect(0, this.canvas.height - 10, this.canvas.width, 10);
+                    this.ctx.fillStyle = '#d1d5db';
+                    this.ctx.fillRect(this.dino.x, this.dino.y, this.dino.width, this.dino.height);
+                    this.ctx.fillStyle = '#f87171';
+                    this.obstacles.forEach(obs => {
+                        this.ctx.fillRect(obs.x, this.canvas.height - obs.height - 10, obs.width, obs.height);
+                    });
+                    if(this.gameOver) {
+                        this.ctx.fillStyle = 'rgba(0,0,0,0.5)';
+                        this.ctx.fillRect(0,0, this.canvas.width, this.canvas.height);
+                        this.ctx.fillStyle = 'white';
+                        this.ctx.font = '30px Inter';
+                        this.ctx.textAlign = 'center';
+                        const restartText = this.lang === 'ru' ? 'Нажмите, чтобы начать заново' : 'Click to restart';
+                        this.ctx.fillText(restartText, this.canvas.width / 2, this.canvas.height / 2);
+                    }
+                }
+
+                loop() {
+                    this.update();
+                    this.draw();
+                    this.animationFrameId = requestAnimationFrame(() => this.loop());
+                }
+                
+                start() {
+                    if (this.animationFrameId) {
+                        cancelAnimationFrame(this.animationFrameId);
+                        this.animationFrameId = null;
+                    }
+                    this.dino = { x: 50, y: this.canvas.height - 40, width: 30, height: 30, dy: 0, gravity: 0.6, jumpPower: -12, onGround: true };
+                    this.obstacles = [];
+                    this.score = 0;
+                    this.jumps = 0;
+                    this.scoreEl.textContent = '0';
+                    this.gameOver = false;
+                    this.gameSpeed = this.initialGameSpeed;
+                    this.obstacleTimer = 0;
+                    this.minObstacleInterval = 50;
+                    this.maxObstacleInterval = 120;
+                    this.currentObstacleInterval = this.getRandomInterval();
+                    this.loop();
+                }
+
+                endGame() {
+                    this.gameOver = true;
+                    if (this.animationFrameId) {
+                        cancelAnimationFrame(this.animationFrameId);
+                        this.animationFrameId = null;
+                    }
+                    this.draw();
+                }
+            }
+
+            game = new DinoGame();
+            game.start();
+            setLanguage('en');
+
+            document.addEventListener('keydown', (e) => {
+                if (e.code === 'Space') {
+                    if (game.gameOver) game.start();
+                    else game.jump();
+                }
+            });
+            canvas.addEventListener('click', () => {
+                if (game.gameOver) game.start();
+                else game.jump();
+            });
+             canvas.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                if (game.gameOver) game.start();
+                else game.jump();
+            }, { passive: false });
+
+        });
+    </script>
+</body>
+</html>
