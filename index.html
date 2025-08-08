@@ -74,7 +74,7 @@
              position: relative;
             width: 100%;
             padding-top: 75%; /* 4:3 Aspect Ratio for Gallery */
-            background-color: #111827;
+            background-color: #111827; /* Added a background for better blur effect */
             border-radius: 0.5rem;
             overflow: hidden;
             border: 1px solid #374151;
@@ -215,7 +215,7 @@
             background-color: rgba(255, 0, 0, 0.8);
         }
 
-        /* --- NEW STYLES FOR TEXTURE MAPS --- */
+        /* --- TEXTURE MAPS STYLES --- */
         .texture-maps-container {
             position: absolute;
             bottom: 1rem;
@@ -247,6 +247,20 @@
             z-index: 10;
         }
 
+        /* --- NEW STYLES FOR LAZY LOADING --- */
+        .lazy-image {
+            /* Start with a blur effect and a smooth transition */
+            filter: blur(20px);
+            transform: scale(1.1); /* Slightly zoom in to hide blurred edges */
+            transition: filter 0.5s ease-out, transform 0.5s ease-out;
+        }
+
+        .lazy-image.loaded {
+            /* Remove the blur and scale when the 'loaded' class is added */
+            filter: blur(0);
+            transform: scale(1);
+        }
+
     </style>
 </head>
 <body class="p-4 sm:p-8">
@@ -256,182 +270,184 @@
         <header class="mb-16">
             <!-- Header content remains the same -->
              <div class="relative text-center mb-10">
-                <div class="absolute top-0 right-0 lang-switcher">
-                    <button id="lang-ru">RU</button>
-                    <button id="lang-en" class="active">EN</button>
-                </div>
-                <div class="flex justify-center items-center gap-8 flex-wrap">
-                    <div class="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-gray-700" style="filter: grayscale(100%);">
-                        <img data-lang-ru src="https://i.imgur.com/ITDQEcO.png" alt="Фото Артура Фёдорова" class="w-full h-full object-cover">
-                        <img data-lang-en src="https://i.imgur.com/ITDQEcO.png" alt="Photo of Artur Fiodarav" class="w-full h-full object-cover">
-                    </div>
-                    <div>
-                        <h1 class="text-5xl md:text-7xl font-extrabold text-white">
-                            <span data-lang-ru>Фёдоров Артур</span>
-                            <span data-lang-en>Arthur Fiodarav</span>
-                        </h1>
-                        <h2 class="text-2xl md:text-3xl text-blue-400 font-medium mt-2">Technical Artist</h2>
-                    </div>
-                </div>
-                 <p class="mt-6 text-2xl text-gray-300 font-light italic">
-                    <span data-lang-ru>"Играл в игры, писал про игры, продавал игры, продвигал игры — теперь их создаю!"</span>
-                    <span data-lang-en>"Played games, wrote about games, sold games, promoted games - now I create them!"</span>
-                </p>
-            </div>
+                 <div class="absolute top-0 right-0 lang-switcher">
+                     <button id="lang-ru">RU</button>
+                     <button id="lang-en" class="active">EN</button>
+                 </div>
+                 <div class="flex justify-center items-center gap-8 flex-wrap">
+                     <div class="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-gray-700" style="filter: grayscale(100%);">
+                         <img data-lang-ru src="https://i.imgur.com/ITDQEcO.png" alt="Фото Артура Фёдорова" class="w-full h-full object-cover">
+                         <img data-lang-en src="https://i.imgur.com/ITDQEcO.png" alt="Photo of Artur Fiodarav" class="w-full h-full object-cover">
+                     </div>
+                     <div>
+                         <h1 class="text-5xl md:text-7xl font-extrabold text-white">
+                             <span data-lang-ru>Фёдоров Артур</span>
+                             <span data-lang-en>Arthur Fiodarav</span>
+                         </h1>
+                         <h2 class="text-2xl md:text-3xl text-blue-400 font-medium mt-2">Technical Artist</h2>
+                     </div>
+                 </div>
+                  <p class="mt-6 text-2xl text-gray-300 font-light italic">
+                      <span data-lang-ru>"Играл в игры, писал про игры, продавал игры, продвигал игры — теперь их создаю!"</span>
+                      <span data-lang-en>"Played games, wrote about games, sold games, promoted games - now I create them!"</span>
+                  </p>
+             </div>
             
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-                <div class="cv-card lg:col-span-2">
-                    <h3>
-                        <span data-lang-ru>Опыт работы</span>
-                        <span data-lang-en>Work Experience</span>
-                    </h3>
-                    <ol class="relative border-l border-gray-700">                  
-                        <li class="mb-10 ml-4">
-                            <div class="absolute w-3 h-3 bg-gray-700 rounded-full mt-1.5 -left-1.5 border border-gray-900"></div>
-                            <time class="mb-1 text-sm font-normal leading-none text-gray-500">2020 - 2025</time>
-                            <h4 class="text-lg font-semibold text-white">
-                                <span data-lang-ru>Freelance 3D/2D Generalist & Tech Artist</span>
-                                <span data-lang-en>Freelance 3D/2D Generalist & Tech Artist</span>
-                            </h4>
-                            <p class="text-base font-normal text-gray-400">
-                                <span data-lang-ru>VFX, шейдеры, материалы, SFX, подготовка к релизам на Steam/PS Store, организация тестирований.</span>
-                                <span data-lang-en>VFX, shaders, materials, SFX, preparing for Steam/PS Store releases, organizing testing sessions.</span>
-                            </p>
-                        </li>
-                        <li class="mb-10 ml-4">
-                            <div class="absolute w-3 h-3 bg-gray-700 rounded-full mt-1.5 -left-1.5 border border-gray-900"></div>
-                            <time class="mb-1 text-sm font-normal leading-none text-gray-500">2011 - 2020</time>
-                            <h4 class="text-lg font-semibold text-white">
-                                <span data-lang-ru>Руководитель видеоигрового отдела, OZ.by</span>
-                                <span data-lang-en>Head of Video Game Department, OZ.by</span>
-                            </h4>
-                            <p class="text-base font-normal text-gray-400">
-                                <span data-lang-ru>Управлял полным циклом игрового направления: от переговоров с Nintendo и Blizzard до организации национальных киберспортивных турниров. Получил глубокое понимание рынка и жизненного цикла продукта.</span>
-                                <span data-lang-en>Managed the full cycle of the gaming division: from negotiations with Nintendo and Blizzard to organizing national esports tournaments. Gained a deep understanding of the market and product lifecycle.</span>
-                            </p>
-                        </li>
-                        <li class="ml-4">
-                            <div class="absolute w-3 h-3 bg-gray-700 rounded-full mt-1.5 -left-1.5 border border-gray-900"></div>
-                            <time class="mb-1 text-sm font-normal leading-none text-gray-500">2008 - 2011</time>
-                            <h4 class="text-lg font-semibold text-white">
-                                <span data-lang-ru>Копирайтер, Etxt</span>
-                                <span data-lang-en>Copywriter, Etxt</span>
-                            </h4>
-                            <p class="text-base font-normal text-gray-400">
-                                <span data-lang-ru>Начинал путь в индустрии с написания обзоров и гайдов, глубоко изучая игровые механики и то, что цепляет игроков.</span>
-                                <span data-lang-en>Started my journey in the industry by writing reviews and guides, deeply studying game mechanics and what engages players.</span>
-                            </p>
-                        </li>
-                    </ol>
-                </div>
-                <div class="cv-card">
-                    <h3>
-                        <span data-lang-ru>Обо мне</span>
-                        <span data-lang-en>About Me</span>
-                    </h3>
-                    <div>
-                        <p class="text-lg text-gray-300 mb-4">
-                            <span data-lang-ru>Увлеченный специалист, который верит, что элегантные технические решения и креативный подход — ключ к созданию незабываемого игрового опыта. А ещё:</span>
-                            <span data-lang-en>An enthusiastic specialist who believes that elegant technical solutions and a creative approach are the key to creating an unforgettable gaming experience. Also:</span>
-                        </p>
-                        <div>
-                            <img data-lang-ru src="https://i.imgur.com/UuxFb56.gif" class="w-full rounded-lg" alt="I like nodes gif">
-                            <img data-lang-en src="https://i.imgur.com/OKZw81L.gif" class="w-full rounded-lg" alt="I like nodes gif">
-                        </div>
-                    </div>
-                </div>
-                <div class="cv-card">
-                    <h3>
-                        <span data-lang-ru>Ключевые навыки</span>
-                        <span data-lang-en>Key Skills</span>
-                    </h3>
-                    <div class="space-y-3">
-                        <div>
-                            <h4 class="font-semibold text-blue-300">
-                                <span data-lang-ru>Основное</span>
-                                <span data-lang-en>Core</span>
-                            </h4>
-                            <p><span class="tag">Unity</span> <span class="tag">C#</span> <span class="tag">C++ (basic)</span> <span class="tag">ShaderGraph</span> <span class="tag">VFXGraph</span> <span class="tag">SFX</span></p>
-                        </div>
-                        <div>
-                            <h4 class="font-semibold text-blue-300">
-                                <span data-lang-ru>Арт-инструменты</span>
-                                <span data-lang-en>Art Tools</span>
-                            </h4>
-                            <p><span class="tag">Substance Designer</span> <span class="tag">Blender</span> <span class="tag">Photoshop</span> <span class="tag">Krita</span> <span class="tag">PixelCreator</span> <span class="tag">Aseprite</span></p>
-                        </div>
-                        <div>
-                            <h4 class="font-semibold text-blue-300">
-                                <span data-lang-ru>Аудио</span>
-                                <span data-lang-en>Audio</span>
-                            </h4>
-                            <p><span class="tag">FMOD</span> <span class="tag">Adobe Audition</span> <span class="tag">FLStudio</span></p>
-                        </div>
-                         <div>
-                            <h4 class="font-semibold text-blue-300">
-                                <span data-lang-ru>Языки</span>
-                                <span data-lang-en>Languages</span>
-                            </h4>
-                            <p><span class="tag">Русский (Родной)</span> <span class="tag">English B2</span></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="cv-card">
-                      <h3>
-                        <span data-lang-ru>Образование и Обучение</span>
-                        <span data-lang-en>Education & Training</span>
-                      </h3>
-                      <div class="space-y-4">
-                        <div>
-                            <h4 class="font-semibold text-white">
-                                <span data-lang-ru>БГЭУ, Экономист-информатик</span>
-                                <span data-lang-en>BSEU, Economist-Informatics</span>
-                            </h4>
-                            <p class="text-gray-400">
-                                <span data-lang-ru>Сильная база в математике, статистике и аналитике, помогающая в программировании и оптимизации.</span>
-                                <span data-lang-en>Strong foundation in mathematics, statistics, and analytics, which aids in programming and optimization.</span>
-                            </p>
-                        </div>
-                        <div>
-                            <h4 class="font-semibold text-white">
-                                <span data-lang-ru>Специализированные курсы</span>
-                                <span data-lang-en>Specialized Courses</span>
-                            </h4>
-                            <p class="text-gray-400">
-                                <span data-lang-ru>Множество углубленных курсов по Blender, Unity, C#, написанию шейдеров, VFX, работе со светом и FMOD.</span>
-                                <span data-lang-en>Numerous in-depth courses on Blender, Unity, C#, shader writing, VFX, lighting, and FMOD.</span>
-                            </p>
-                        </div>
-                       </div>
-                </div>
+             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                 <div class="cv-card lg:col-span-2">
+                     <h3>
+                         <span data-lang-ru>Опыт работы</span>
+                         <span data-lang-en>Work Experience</span>
+                     </h3>
+                     <ol class="relative border-l border-gray-700">                      
+                         <li class="mb-10 ml-4">
+                             <div class="absolute w-3 h-3 bg-gray-700 rounded-full mt-1.5 -left-1.5 border border-gray-900"></div>
+                             <time class="mb-1 text-sm font-normal leading-none text-gray-500">2020 - 2025</time>
+                             <h4 class="text-lg font-semibold text-white">
+                                 <span data-lang-ru>Freelance 3D/2D Generalist & Tech Artist</span>
+                                 <span data-lang-en>Freelance 3D/2D Generalist & Tech Artist</span>
+                             </h4>
+                             <p class="text-base font-normal text-gray-400">
+                                 <span data-lang-ru>VFX, шейдеры, материалы, SFX, подготовка к релизам на Steam/PS Store, организация тестирований.</span>
+                                 <span data-lang-en>VFX, shaders, materials, SFX, preparing for Steam/PS Store releases, organizing testing sessions.</span>
+                             </p>
+                         </li>
+                         <li class="mb-10 ml-4">
+                             <div class="absolute w-3 h-3 bg-gray-700 rounded-full mt-1.5 -left-1.5 border border-gray-900"></div>
+                             <time class="mb-1 text-sm font-normal leading-none text-gray-500">2011 - 2020</time>
+                             <h4 class="text-lg font-semibold text-white">
+                                 <span data-lang-ru>Руководитель видеоигрового отдела, OZ.by</span>
+                                 <span data-lang-en>Head of Video Game Department, OZ.by</span>
+                             </h4>
+                             <p class="text-base font-normal text-gray-400">
+                                 <span data-lang-ru>Управлял полным циклом игрового направления: от переговоров с Nintendo и Blizzard до организации национальных киберспортивных турниров. Получил глубокое понимание рынка и жизненного цикла продукта.</span>
+                                 <span data-lang-en>Managed the full cycle of the gaming division: from negotiations with Nintendo and Blizzard to organizing national esports tournaments. Gained a deep understanding of the market and product lifecycle.</span>
+                             </p>
+                         </li>
+                         <li class="ml-4">
+                             <div class="absolute w-3 h-3 bg-gray-700 rounded-full mt-1.5 -left-1.5 border border-gray-900"></div>
+                             <time class="mb-1 text-sm font-normal leading-none text-gray-500">2008 - 2011</time>
+                             <h4 class="text-lg font-semibold text-white">
+                                 <span data-lang-ru>Копирайтер, Etxt</span>
+                                 <span data-lang-en>Copywriter, Etxt</span>
+                             </h4>
+                             <p class="text-base font-normal text-gray-400">
+                                 <span data-lang-ru>Начинал путь в индустрии с написания обзоров и гайдов, глубоко изучая игровые механики и то, что цепляет игроков.</span>
+                                 <span data-lang-en>Started my journey in the industry by writing reviews and guides, deeply studying game mechanics and what engages players.</span>
+                             </p>
+                         </li>
+                     </ol>
+                 </div>
                  <div class="cv-card">
-                    <h3>
-                        <span data-lang-ru>Версия для печати</span>
-                        <span data-lang-en>Printable Version</span>
-                    </h3>
-                    <div class="h-full flex flex-col justify-between">
-                        <p class="text-lg text-gray-300 mb-4">
-                            <span data-lang-ru>Для вашего удобства я подготовил краткую версию этого портфолио в формате PDF.</span>
-                            <span data-lang-en>For your convenience, I have prepared a brief version of this portfolio in PDF format.</span>
-                        </p>
-                        <a id="pdf-download-link" href="PATH_TO_YOUR_EN_PDF.pdf" target="_blank" class="mt-auto block text-center w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-colors">
-                            <span data-lang-ru>Скачать PDF</span>
-                            <span data-lang-en>Download PDF</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-             <div class="mt-8 flex justify-center gap-x-6 gap-y-3 flex-wrap text-lg">
-                <a href="mailto:okamisen@yandex.ru" class="text-white hover:text-blue-400">okamisen@yandex.ru</a>
-                <span class="text-gray-500">|</span>
-                <a href="https://www.linkedin.com/in/v-v-15362034a/" target="_blank" class="text-white hover:text-blue-400">LinkedIn</a>
-                 <span class="text-gray-500">|</span>
+                     <h3>
+                         <span data-lang-ru>Обо мне</span>
+                         <span data-lang-en>About Me</span>
+                     </h3>
+                     <div>
+                         <p class="text-lg text-gray-300 mb-4">
+                             <span data-lang-ru>Увлеченный специалист, который верит, что элегантные технические решения и креативный подход — ключ к созданию незабываемого игрового опыта. А ещё:</span>
+                             <span data-lang-en>An enthusiastic specialist who believes that elegant technical solutions and a creative approach are the key to creating an unforgettable gaming experience. Also:</span>
+                         </p>
+                         <div>
+                             <img data-lang-ru src="https://i.imgur.com/UuxFb56.gif" class="w-full rounded-lg" alt="I like nodes gif">
+                             <img data-lang-en src="https://i.imgur.com/OKZw81L.gif" class="w-full rounded-lg" alt="I like nodes gif">
+                         </div>
+                     </div>
+                 </div>
+                 <div class="cv-card">
+                     <h3>
+                         <span data-lang-ru>Ключевые навыки</span>
+                         <span data-lang-en>Key Skills</span>
+                     </h3>
+                     <div class="space-y-3">
+                         <div>
+                             <h4 class="font-semibold text-blue-300">
+                                 <span data-lang-ru>Основное</span>
+                                 <span data-lang-en>Core</span>
+                             </h4>
+                             <p><span class="tag">Unity</span> <span class="tag">C#</span> <span class="tag">C++ (basic)</span> <span class="tag">ShaderGraph</span> <span class="tag">VFXGraph</span> <span class="tag">SFX</span></p>
+                         </div>
+                         <div>
+                             <h4 class="font-semibold text-blue-300">
+                                 <span data-lang-ru>Арт-инструменты</span>
+                                 <span data-lang-en>Art Tools</span>
+                             </h4>
+                             <p><span class="tag">Substance Designer</span> <span class="tag">Blender</span> <span class="tag">Photoshop</span> <span class="tag">Krita</span> <span class="tag">PixelCreator</span> <span class="tag">Aseprite</span><span class="tag">Premiere</span></p>
+                         </div>
+                         <div>
+                             <h4 class="font-semibold text-blue-300">
+                                 <span data-lang-ru>Аудио</span>
+                                 <span data-lang-en>Audio</span>
+                             </h4>
+                             <p><span class="tag">FMOD</span> <span class="tag">Adobe Audition</span> <span class="tag">FLStudio</span></p>
+                         </div>
+                          <div>
+                             <h4 class="font-semibold text-blue-300">
+                                 <span data-lang-ru>Языки</span>
+                                 <span data-lang-en>Languages</span>
+                             </h4>
+                             <p><span class="tag">Русский (Родной)</span> <span class="tag">English B2</span></p>
+                         </div>
+                     </div>
+                 </div>
+                 <div class="cv-card">
+                       <h3>
+                         <span data-lang-ru>Образование и Обучение</span>
+                         <span data-lang-en>Education & Training</span>
+                       </h3>
+                       <div class="space-y-4">
+                         <div>
+                             <h4 class="font-semibold text-white">
+                                 <span data-lang-ru>БГЭУ, Экономист-информатик</span>
+                                 <span data-lang-en>BSEU, Economist-Informatics</span>
+                             </h4>
+                             <p class="text-gray-400">
+                                 <span data-lang-ru>Сильная база в математике, статистике и аналитике, помогающая в программировании и оптимизации.</span>
+                                 <span data-lang-en>Strong foundation in mathematics, statistics, and analytics, which aids in programming and optimization.</span>
+                             </p>
+                         </div>
+                         <div>
+                             <h4 class="font-semibold text-white">
+                                 <span data-lang-ru>Специализированные курсы</span>
+                                 <span data-lang-en>Specialized Courses</span>
+                             </h4>
+                             <p class="text-gray-400">
+                                 <span data-lang-ru>Множество углубленных курсов по Blender, Unity, C#, написанию шейдеров, VFX, работе со светом и FMOD.</span>
+                                 <span data-lang-en>Numerous in-depth courses on Blender, Unity, C#, shader writing, VFX, lighting, and FMOD.</span>
+                             </p>
+                         </div>
+                        </div>
+                 </div>
+                  <div class="cv-card">
+                      <h3>
+                          <span data-lang-ru>Версия для печати</span>
+                          <span data-lang-en>Printable Version</span>
+                      </h3>
+                      <div class="h-full flex flex-col justify-between">
+                          <p class="text-lg text-gray-300 mb-4">
+                              <span data-lang-ru>Для вашего удобства я подготовил краткую версию этого портфолио в формате PDF.</span>
+                              <span data-lang-en>For your convenience, I have prepared a brief version of this portfolio in PDF format.</span>
+                          </p>
+                          <a id="pdf-download-link" href="PATH_TO_YOUR_EN_PDF.pdf" target="_blank" class="mt-auto block text-center w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-colors">
+                              <span data-lang-ru>Скачать PDF</span>
+                              <span data-lang-en>Download PDF</span>
+                          </a>
+                      </div>
+                  </div>
+             </div>
+              <div class="mt-8 flex justify-center gap-x-6 gap-y-3 flex-wrap text-lg">
+                  <a href="mailto:okamisen@yandex.ru" class="text-white hover:text-blue-400">okamisen@yandex.ru</a>
+                  <span class="text-gray-500">|</span>
+                  <a href="https://www.linkedin.com/in/v-v-15362034a/" target="_blank" class="text-white hover:text-blue-400">LinkedIn</a>
+                   <span class="text-gray-500">|</span>
+                                    <a href="https://t.me/Okamisen" target="_blank" class="text-white hover:text-blue-400">Telegram</a>
+                   <span class="text-gray-500">|</span>
 
-                <span class="text-white">
-                    <span data-lang-ru>Беларусь, Минск</span>
-                    <span data-lang-en>Minsk, Belarus</span>
-                </span>
-            </div>
+                  <span class="text-white">
+                      <span data-lang-ru>Беларусь, Минск</span>
+                      <span data-lang-en>Minsk, Belarus</span>
+                  </span>
+              </div>
         </header>
 
         <!-- PROJECTS -->
@@ -457,7 +473,7 @@
                     <div class="play-button"></div>
                 </div>
                 <!-- Feature cards remain the same -->
-                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <div class="feature-card p-6 rounded-xl">
                         <h4 class="font-bold text-lg text-blue-300 mb-2">
                            <span data-lang-ru>1. Аудио-реактивность на DSP</span>
@@ -540,7 +556,8 @@
                            <div class="play-button"></div>
                         </div>
                         <div class="gallery-item">
-                            <div class="image-container" style="padding-top: 56.25%;"><img src="https://i.imgur.com/lVdIWfR.png" alt="Изображение проекта Valhalla 1"></div>
+                            <!-- MODIFIED FOR LAZY LOAD -->
+                            <div class="image-container" style="padding-top: 56.25%;"><img class="lazy-image" src="https://i.imgur.com/lVdIWfR.png" data-src="https://i.imgur.com/lVdIWfR.png" alt="Изображение проекта Valhalla 1"></div>
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -549,7 +566,8 @@
                            <div class="play-button"></div>
                         </div>
                         <div class="gallery-item">
-                            <div class="image-container" style="padding-top: 56.25%;"><img src="https://i.imgur.com/UXicjrs.png" alt="Изображение проекта Valhalla 2"></div>
+                            <!-- MODIFIED FOR LAZY LOAD -->
+                            <div class="image-container" style="padding-top: 56.25%;"><img class="lazy-image" src="https://i.imgur.com/UXicjrs.png" data-src="https://i.imgur.com/UXicjrs.png" alt="Изображение проекта Valhalla 2"></div>
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -558,7 +576,8 @@
                            <div class="play-button"></div>
                         </div>
                         <div class="gallery-item">
-                            <div class="image-container" style="padding-top: 56.25%;"><img src="https://i.imgur.com/f0Ucdbl.png" alt="Изображение проекта Valhalla 2"></div>
+                            <!-- MODIFIED FOR LAZY LOAD -->
+                            <div class="image-container" style="padding-top: 56.25%;"><img class="lazy-image" src="https://i.imgur.com/f0Ucdbl.png" data-src="https://i.imgur.com/f0Ucdbl.png" alt="Изображение проекта Valhalla 2"></div>
                         </div>
                     </div>                      
                 </div>
@@ -583,66 +602,66 @@
                 </div>
                 <!-- Feature cards remain the same -->
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                       <div class="feature-card p-6 rounded-xl">
-                           <h4 class="font-bold text-lg text-blue-300 mb-2">
-                               <span data-lang-ru>1. Модульная процедурная анимация</span>
-                               <span data-lang-en>1. Modular Procedural Animation</span>
-                           </h4>
-                           <p>
-                               <span data-lang-ru>Создана система, позволяющая собирать мех "по рецепту". Ядро `ChassisController` через события управляет модулями: процедурной локомоцией, кастомным IK для рук, физикой отдачи и `JiggleBone`.</span>
-                               <span data-lang-en>A system for assembling a mech "by recipe". The `ChassisController` core manages modules via events: procedural locomotion, custom arm IK, physics-based kickback, and `JiggleBone`.</span>
-                           </p>
-                       </div>
-                       <div class="feature-card p-6 rounded-xl">
-                           <h4 class="font-bold text-lg text-blue-300 mb-2">
-                               <span data-lang-ru>2. Продвинутый 2D-шейдер освещения</span>
-                               <span data-lang-en>2. Advanced 2D Lighting Shader</span>
-                           </h4>
-                           <p>
-                               <span data-lang-ru>Разработан шейдер, формирующий собственную систему освещения, смешивая до двух источников света через режимы Overlay, Hard Light и Burn для создания сложного стилизованного 2D-освещения.</span>
-                               <span data-lang-en>A custom shader that forms its own lighting system, blending up to two light sources using Overlay, Hard Light, and Burn modes to create complex, stylized 2D lighting.</span>
-                           </p>
-                       </div>
-                       <div class="feature-card p-6 rounded-xl">
-                           <h4 class="font-bold text-lg text-blue-300 mb-2">
-                               <span data-lang-ru>3. Эффективная кастомизация</span>
-                               <span data-lang-en>3. Efficient Customization</span>
-                           </h4>
-                           <p>
-                               <span data-lang-ru>Реализована система `MaterialOverrideController`, позволяющая на лету через `MaterialPropertyBlock` изменять параметры шейдера для отдельных частей, не создавая новых экземпляров материала.</span>
-                               <span data-lang-en>Implemented `MaterialOverrideController` to change shader parameters on-the-fly for individual parts via `MaterialPropertyBlock`, avoiding new material instances.</span>
-                           </p>
-                       </div>
-                       <div class="feature-card p-6 rounded-xl">
-                           <h4 class="font-bold text-lg text-blue-300 mb-2">
-                               <span data-lang-ru>4. Динамический шейдерный щит</span>
-                               <span data-lang-en>4. Dynamic Shader Shield</span>
-                           </h4>
-                           <p>
-                               <span data-lang-ru>Эффект энергетического щита с имитацией объема на 2D-спрайте. Шейдер анализирует карту глубины и процедурно рассчитывает нормали, позволяя щиту корректно реагировать на свет.</span>
-                               <span data-lang-en>An energy shield effect that fakes volume on a 2D sprite. The shader analyzes the depth map and procedurally calculates normals, allowing it to react correctly to light.</span>
-                           </p>
-                       </div>
-                       <div class="feature-card p-6 rounded-xl">
-                           <h4 class="font-bold text-lg text-blue-300 mb-2">
-                               <span data-lang-ru>5. Архитектура, управляемая событиями</span>
-                               <span data-lang-en>5. Event-Driven Architecture</span>
-                           </h4>
-                           <p>
-                               <span data-lang-ru>В основе проекта лежит гибкая архитектура, где компоненты общаются через систему событий (`Action`). Это обеспечивает низкую связанность кода и упрощает добавление новых механик.</span>
-                               <span data-lang-en>The project is based on a flexible architecture where components communicate via an event system (`Action`), ensuring low code coupling and easy addition of new mechanics.</span>
-                           </p>
-                       </div>
-                       <div class="feature-card p-6 rounded-xl">
-                           <h4 class="font-bold text-lg text-blue-300 mb-2">
-                               <span data-lang-ru>6. Физически-корректное взаимодействие</span>
-                               <span data-lang-en>6. Physics-Based Interaction</span>
-                           </h4>
-                           <p>
-                               <span data-lang-ru>Особое внимание уделено ощущению "веса". Движение управляется через `Rigidbody2D` с инерцией, а оружие генерирует физический импульс (`blowbackForce`), который толкает персонажа назад.</span>
-                               <span data-lang-en>Special attention is paid to the feeling of "weight". Movement is controlled via `Rigidbody2D` with inertia, and weapons generate a physical impulse (`blowbackForce`) that pushes the character back.</span>
-                           </p>
-                       </div>
+                        <div class="feature-card p-6 rounded-xl">
+                            <h4 class="font-bold text-lg text-blue-300 mb-2">
+                                <span data-lang-ru>1. Модульная процедурная анимация</span>
+                                <span data-lang-en>1. Modular Procedural Animation</span>
+                            </h4>
+                            <p>
+                                <span data-lang-ru>Создана система, позволяющая собирать мех "по рецепту". Ядро `ChassisController` через события управляет модулями: процедурной локомоцией, кастомным IK для рук, физикой отдачи и `JiggleBone`.</span>
+                                <span data-lang-en>A system for assembling a mech "by recipe". The `ChassisController` core manages modules via events: procedural locomotion, custom arm IK, physics-based kickback, and `JiggleBone`.</span>
+                            </p>
+                        </div>
+                        <div class="feature-card p-6 rounded-xl">
+                            <h4 class="font-bold text-lg text-blue-300 mb-2">
+                                <span data-lang-ru>2. Продвинутый 2D-шейдер освещения</span>
+                                <span data-lang-en>2. Advanced 2D Lighting Shader</span>
+                            </h4>
+                            <p>
+                                <span data-lang-ru>Разработан шейдер, формирующий собственную систему освещения, смешивая до двух источников света через режимы Overlay, Hard Light и Burn для создания сложного стилизованного 2D-освещения.</span>
+                                <span data-lang-en>A custom shader that forms its own lighting system, blending up to two light sources using Overlay, Hard Light, and Burn modes to create complex, stylized 2D lighting.</span>
+                            </p>
+                        </div>
+                        <div class="feature-card p-6 rounded-xl">
+                            <h4 class="font-bold text-lg text-blue-300 mb-2">
+                                <span data-lang-ru>3. Эффективная кастомизация</span>
+                                <span data-lang-en>3. Efficient Customization</span>
+                            </h4>
+                            <p>
+                                <span data-lang-ru>Реализована система `MaterialOverrideController`, позволяющая на лету через `MaterialPropertyBlock` изменять параметры шейдера для отдельных частей, не создавая новых экземпляров материала.</span>
+                                <span data-lang-en>Implemented `MaterialOverrideController` to change shader parameters on-the-fly for individual parts via `MaterialPropertyBlock`, avoiding new material instances.</span>
+                            </p>
+                        </div>
+                        <div class="feature-card p-6 rounded-xl">
+                            <h4 class="font-bold text-lg text-blue-300 mb-2">
+                                <span data-lang-ru>4. Динамический шейдерный щит</span>
+                                <span data-lang-en>4. Dynamic Shader Shield</span>
+                            </h4>
+                            <p>
+                                <span data-lang-ru>Эффект энергетического щита с имитацией объема на 2D-спрайте. Шейдер анализирует карту глубины и процедурно рассчитывает нормали, позволяя щиту корректно реагировать на свет.</span>
+                                <span data-lang-en>An energy shield effect that fakes volume on a 2D sprite. The shader analyzes the depth map and procedurally calculates normals, allowing it to react correctly to light.</span>
+                            </p>
+                        </div>
+                        <div class="feature-card p-6 rounded-xl">
+                            <h4 class="font-bold text-lg text-blue-300 mb-2">
+                                <span data-lang-ru>5. Архитектура, управляемая событиями</span>
+                                <span data-lang-en>5. Event-Driven Architecture</span>
+                            </h4>
+                            <p>
+                                <span data-lang-ru>В основе проекта лежит гибкая архитектура, где компоненты общаются через систему событий (`Action`). Это обеспечивает низкую связанность кода и упрощает добавление новых механик.</span>
+                                <span data-lang-en>The project is based on a flexible architecture where components communicate via an event system (`Action`), ensuring low code coupling and easy addition of new mechanics.</span>
+                            </p>
+                        </div>
+                        <div class="feature-card p-6 rounded-xl">
+                            <h4 class="font-bold text-lg text-blue-300 mb-2">
+                                <span data-lang-ru>6. Физически-корректное взаимодействие</span>
+                                <span data-lang-en>6. Physics-Based Interaction</span>
+                            </h4>
+                            <p>
+                                <span data-lang-ru>Особое внимание уделено ощущению "веса". Движение управляется через `Rigidbody2D` с инерцией, а оружие генерирует физический импульс (`blowbackForce`), который толкает персонажа назад.</span>
+                                <span data-lang-en>Special attention is paid to the feeling of "weight". Movement is controlled via `Rigidbody2D` with inertia, and weapons generate a physical impulse (`blowbackForce`) that pushes the character back.</span>
+                            </p>
+                        </div>
                    </div>
                 <div class="mt-8">
                     <h4 class="text-xl font-bold text-center text-white mb-4">
@@ -651,7 +670,8 @@
                     </h4>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="gallery-item">
-                            <div class="image-container" style="padding-top: 56.25%;"><img src="https://i.imgur.com/dtACOWr.png" alt="Изображение проекта Holodog"></div>
+                            <!-- MODIFIED FOR LAZY LOAD -->
+                            <div class="image-container" style="padding-top: 56.25%;"><img class="lazy-image" src="https://i.imgur.com/dtACOWr.png" data-src="https://i.imgur.com/dtACOWr.png" alt="Изображение проекта Holodog"></div>
                         </div>
                         <div class="video-container video-placeholder" data-video-ids="iMwMMa9qOFY">
                            <img src="https://img.youtube.com/vi/iMwMMa9qOFY/hqdefault.jpg" alt="Holodog Shader Preview" class="video-thumbnail">
@@ -672,7 +692,8 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     <!-- Item 1 -->
                     <div class="gallery-item">
-                        <div class="image-container"><img src="https://i.imgur.com/6rBvWMZ.jpeg" alt="Описание рендера 1"></div>
+                        <!-- MODIFIED FOR LAZY LOAD -->
+                        <div class="image-container"><img class="lazy-image" src="https://i.imgur.com/6rBvWMZ.jpeg" data-src="https://i.imgur.com/6rBvWMZ.jpeg" alt="Описание рендера 1"></div>
                         <div class="texture-maps-container">
                             <div class="texture-map" data-src="https://i.imgur.com/35qlvjZ.jpeg"><img src="https://i.imgur.com/35qlvjZ.jpeg" alt="Normal Map"></div>
                             <div class="texture-map" data-src="https://i.imgur.com/EQWThkq.jpeg"><img src="https://i.imgur.com/EQWThkq.jpeg" alt="AO Map"></div>
@@ -683,7 +704,8 @@
                     </div>
                     <!-- Item 2 with Texture Maps -->
                     <div class="gallery-item">
-                        <div class="image-container"><img src="https://i.imgur.com/GUQXp76.jpeg" alt="Описание скриншота 1"></div>
+                        <!-- MODIFIED FOR LAZY LOAD -->
+                        <div class="image-container"><img class="lazy-image" src="https://i.imgur.com/GUQXp76.jpeg" data-src="https://i.imgur.com/GUQXp76.jpeg" alt="Описание скриншота 1"></div>
                         <div class="texture-maps-container">
                             <div class="texture-map" data-src="https://i.imgur.com/rZLBXq9.jpeg"><img src="https://i.imgur.com/rZLBXq9.jpeg" alt="Normal Map"></div>
                             <div class="texture-map" data-src="https://i.imgur.com/CNYGFAB.jpeg"><img src="https://i.imgur.com/CNYGFAB.jpeg" alt="AO Map"></div>
@@ -696,7 +718,8 @@
                     </div>
                     <!-- Item 3 with Texture Maps -->
                     <div class="gallery-item">
-                        <div class="image-container"><img src="https://i.imgur.com/EJPhxOK.jpeg" alt="Описание материала 1"></div>
+                        <!-- MODIFIED FOR LAZY LOAD -->
+                        <div class="image-container"><img class="lazy-image" src="https://i.imgur.com/EJPhxOK.jpeg" data-src="https://i.imgur.com/EJPhxOK.jpeg" alt="Описание материала 1"></div>
                         <div class="texture-maps-container">
                             <div class="texture-map" data-src="https://i.imgur.com/IkjccBa.jpeg"><img src="https://i.imgur.com/IkjccBa.jpeg" alt="Normal Map"></div>
                             <div class="texture-map" data-src="https://i.imgur.com/Vds94Eg.jpeg"><img src="https://i.imgur.com/Vds94Eg.jpeg" alt="AO Map"></div>
@@ -707,7 +730,8 @@
                     </div>
                     <!-- Item 4 with Texture Maps -->
                     <div class="gallery-item">
-                        <div class="image-container"><img src="https://i.imgur.com/I2IQa0W.jpeg" alt="Описание нодов VFX"></div>
+                        <!-- MODIFIED FOR LAZY LOAD -->
+                        <div class="image-container"><img class="lazy-image" src="https://i.imgur.com/I2IQa0W.jpeg" data-src="https://i.imgur.com/I2IQa0W.jpeg" alt="Описание нодов VFX"></div>
                         <div class="texture-maps-container">
                             <div class="texture-map" data-src="https://i.imgur.com/8OZaL3m.jpeg"><img src="https://i.imgur.com/8OZaL3m.jpeg" alt="Normal Map"></div>
                             <div class="texture-map" data-src="https://i.imgur.com/6hajogn.jpeg"><img src="https://i.imgur.com/6hajogn.jpeg" alt="AO Map"></div>
@@ -717,19 +741,27 @@
                         </div>
                     </div>
                     <!-- Item 5 -->
-                    <div class="gallery-item"><div class="image-container"><img src="https://i.imgur.com/R6cQpXx.png" alt="Описание рендера 2"></div></div>
+                    <div class="gallery-item">
+                        <!-- MODIFIED FOR LAZY LOAD -->
+                        <div class="image-container"><img class="lazy-image" src="https://i.imgur.com/R6cQpXx.png" data-src="https://i.imgur.com/R6cQpXx.png" alt="Описание рендера 2"></div>
+                    </div>
                     <!-- Item 6 -->
-                    <div class="gallery-item"><div class="image-container"><img src="https://i.imgur.com/vBkQVP2.png" alt="Описание графа шейдера"></div></div>
+                    <div class="gallery-item">
+                        <!-- MODIFIED FOR LAZY LOAD -->
+                        <div class="image-container"><img class="lazy-image" src="https://i.imgur.com/vBkQVP2.png" data-src="https://i.imgur.com/vBkQVP2.png" alt="Описание графа шейдера"></div>
+                    </div>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
                     <div class="gallery-item">
                         <div class="image-container" style="padding-top: 56.25%;">
-                            <img src="https://i.imgur.com/ZpB6oAo.png" alt="Дополнительное изображение 1">
+                            <!-- MODIFIED FOR LAZY LOAD -->
+                            <img class="lazy-image" src="https://i.imgur.com/ZpB6oAo.png" data-src="https://i.imgur.com/ZpB6oAo.png" alt="Дополнительное изображение 1">
                         </div>
                     </div>
                     <div class="gallery-item">
                         <div class="image-container" style="padding-top: 56.25%;">
-                            <img src="https://i.imgur.com/LBZ8Rwi.png" alt="Дополнительное изображение 2">
+                            <!-- MODIFIED FOR LAZY LOAD -->
+                            <img class="lazy-image" src="https://i.imgur.com/LBZ8Rwi.png" data-src="https://i.imgur.com/LBZ8Rwi.png" alt="Дополнительное изображение 2">
                         </div>
                     </div>
                 </div>
@@ -740,8 +772,8 @@
             <!-- CONTRACT WORK SECTION -->
             <section class="mb-16">
                  <h2 class="section-title">
-                    <span data-lang-ru>Контрактная работа</span>
-                    <span data-lang-en>Contract Work</span>
+                     <span data-lang-ru>Контрактная работа</span>
+                     <span data-lang-en>Contract Work</span>
                  </h2>
                 <div class="grid grid-cols-1 sm:grid-cols-4 lg:grid-cols-2 gap-6">
                     <!-- Bit Blast Zero -->
@@ -891,7 +923,9 @@
             const lightboxClose = document.getElementById('lightbox-close');
             
             function openLightbox(src) {
-                lightboxImage.src = src;
+                // For lazy-loaded images, ensure we get the high-res source
+                const highResSrc = src.dataset && src.dataset.src ? src.dataset.src : src.src;
+                lightboxImage.src = highResSrc;
                 lightbox.classList.remove('opacity-0', 'pointer-events-none');
                 setTimeout(() => {
                     lightboxImage.classList.remove('scale-95');
@@ -905,9 +939,13 @@
 
             // Open lightbox for main gallery images
             document.querySelectorAll('.gallery-item').forEach(item => {
-                item.addEventListener('click', () => {
-                    const imgSrc = item.querySelector('img').src;
-                    openLightbox(imgSrc);
+                item.addEventListener('click', (e) => {
+                    // Make sure the click is not on a texture map
+                    if (e.target.closest('.texture-map')) {
+                        return;
+                    }
+                    const img = item.querySelector('img');
+                    openLightbox(img);
                 });
             });
 
@@ -916,7 +954,7 @@
                 map.addEventListener('click', (e) => {
                     e.stopPropagation(); // This is crucial! Prevents the parent gallery-item click.
                     const imgSrc = map.dataset.src;
-                    openLightbox(imgSrc);
+                    openLightbox({ src: imgSrc }); // Pass an object to simulate an image element
                 });
             });
 
@@ -993,6 +1031,50 @@
 
             document.querySelectorAll('.video-placeholder').forEach(placeholder => {
                 videoObserver.observe(placeholder);
+            });
+
+            // --- NEW: LAZY LOADING FOR IMAGES ---
+            const lazyImages = document.querySelectorAll('.lazy-image');
+
+            // NOTE: For best results, the 'src' should point to a very small,
+            // low-quality placeholder of the actual image. The 'data-src' holds the final, high-res image.
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    // When the image is about to enter the viewport
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        const highResSrc = img.dataset.src;
+
+                        if (!highResSrc) return;
+
+                        // To ensure a smooth transition, we load the high-res image in the background first.
+                        const tempImage = new Image();
+                        tempImage.src = highResSrc;
+                        
+                        // Once it's fully loaded, we update the actual image tag on the page.
+                        tempImage.onload = () => {
+                            img.src = highResSrc;
+                            img.classList.add('loaded'); // This class triggers the CSS to remove the blur.
+                        };
+                        
+                        // Handle cases where the high-res image might fail to load.
+                        tempImage.onerror = () => {
+                            console.error(`Failed to load image: ${highResSrc}`);
+                            // Still remove the blur to show the browser's broken image icon.
+                            img.classList.add('loaded');
+                        }
+
+                        // We only need to do this once per image, so we can stop observing it.
+                        observer.unobserve(img);
+                    }
+                });
+            }, {
+                // Start loading the image when it's 250px away from the bottom of the viewport.
+                rootMargin: '0px 0px 250px 0px' 
+            });
+
+            lazyImages.forEach(img => {
+                imageObserver.observe(img);
             });
 
 
@@ -1170,11 +1252,3 @@
 </body>
 
 </html>
-
-
-
-
-
-
-
-
