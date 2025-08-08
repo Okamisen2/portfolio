@@ -247,16 +247,14 @@
             z-index: 10;
         }
 
-        /* --- NEW STYLES FOR LAZY LOADING --- */
+        /* --- STYLES FOR LAZY LOADING --- */
         .lazy-image {
-            /* Start with a blur effect and a smooth transition */
             filter: blur(20px);
-            transform: scale(1.1); /* Slightly zoom in to hide blurred edges */
+            transform: scale(1.1);
             transition: filter 0.5s ease-out, transform 0.5s ease-out;
         }
 
         .lazy-image.loaded {
-            /* Remove the blur and scale when the 'loaded' class is added */
             filter: blur(0);
             transform: scale(1);
         }
@@ -268,7 +266,6 @@
 
         <!-- HEADER / CV -->
         <header class="mb-16">
-            <!-- Header content remains the same -->
              <div class="relative text-center mb-10">
                  <div class="absolute top-0 right-0 lang-switcher">
                      <button id="lang-ru">RU</button>
@@ -276,6 +273,7 @@
                  </div>
                  <div class="flex justify-center items-center gap-8 flex-wrap">
                      <div class="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-gray-700" style="filter: grayscale(100%);">
+                         <!-- Profile picture loads immediately, not lazy -->
                          <img data-lang-ru src="https://i.imgur.com/ITDQEcO.png" alt="Фото Артура Фёдорова" class="w-full h-full object-cover">
                          <img data-lang-en src="https://i.imgur.com/ITDQEcO.png" alt="Photo of Artur Fiodarav" class="w-full h-full object-cover">
                      </div>
@@ -349,8 +347,9 @@
                              <span data-lang-en>An enthusiastic specialist who believes that elegant technical solutions and a creative approach are the key to creating an unforgettable gaming experience. Also:</span>
                          </p>
                          <div>
-                             <img data-lang-ru src="https://i.imgur.com/UuxFb56.gif" class="w-full rounded-lg" alt="I like nodes gif">
-                             <img data-lang-en src="https://i.imgur.com/OKZw81L.gif" class="w-full rounded-lg" alt="I like nodes gif">
+                             <!-- GIFs are now properly lazy-loaded -->
+                             <img data-lang-ru src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://i.imgur.com/UuxFb56.gif" class="lazy-image w-full rounded-lg" alt="I like nodes gif">
+                             <img data-lang-en src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://i.imgur.com/OKZw81L.gif" class="lazy-image w-full rounded-lg" alt="I like nodes gif">
                          </div>
                      </div>
                  </div>
@@ -372,7 +371,7 @@
                                  <span data-lang-ru>Арт-инструменты</span>
                                  <span data-lang-en>Art Tools</span>
                              </h4>
-                             <p><span class="tag">Substance Designer</span> <span class="tag">Blender</span> <span class="tag">Photoshop</span> <span class="tag">Krita</span> <span class="tag">PixelCreator</span> <span class="tag">Aseprite</span><span class="tag">Premiere</span></p>
+                             <p><span class="tag">Substance Designer</span> <span class="tag">Blender</span> <span class="tag">Photoshop</span> <span class="tag">Krita</span> <span class="tag">PixelCreator</span> <span class="tag">Aseprite</span></p>
                          </div>
                          <div>
                              <h4 class="font-semibold text-blue-300">
@@ -440,9 +439,8 @@
                   <span class="text-gray-500">|</span>
                   <a href="https://www.linkedin.com/in/v-v-15362034a/" target="_blank" class="text-white hover:text-blue-400">LinkedIn</a>
                    <span class="text-gray-500">|</span>
-                                    <a href="https://t.me/Okamisen" target="_blank" class="text-white hover:text-blue-400">Telegram</a>
+                   <a href="https://t.me/Okamisen" target="_blank" class="text-white hover:text-blue-400">Telegram</a>
                    <span class="text-gray-500">|</span>
-
                   <span class="text-white">
                       <span data-lang-ru>Беларусь, Минск</span>
                       <span data-lang-en>Minsk, Belarus</span>
@@ -469,7 +467,8 @@
                     </p>
                 </div>
                 <div class="video-container mb-8 video-placeholder" data-video-ids="94KlTkUudzQ">
-                    <img src="https://img.youtube.com/vi/94KlTkUudzQ/hqdefault.jpg" alt="Too Late for Valhalla Preview" class="video-thumbnail">
+                    <!-- Video thumbnails are now lazy-loaded -->
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/94KlTkUudzQ/hqdefault.jpg" alt="Too Late for Valhalla Preview" class="lazy-image video-thumbnail">
                     <div class="play-button"></div>
                 </div>
                 <!-- Feature cards remain the same -->
@@ -552,32 +551,29 @@
                     </h4>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="video-container video-placeholder" data-video-ids="x3PraWAXz_0">
-                           <img src="https://img.youtube.com/vi/x3PraWAXz_0/hqdefault.jpg" alt="Shader Preview 1" class="video-thumbnail">
+                           <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/x3PraWAXz_0/hqdefault.jpg" alt="Shader Preview 1" class="lazy-image video-thumbnail">
                            <div class="play-button"></div>
                         </div>
                         <div class="gallery-item">
-                            <!-- MODIFIED FOR LAZY LOAD -->
-                            <div class="image-container" style="padding-top: 56.25%;"><img class="lazy-image" src="https://i.imgur.com/lVdIWfR.png" data-src="https://i.imgur.com/lVdIWfR.png" alt="Изображение проекта Valhalla 1"></div>
+                            <div class="image-container" style="padding-top: 56.25%;"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://i.imgur.com/lVdIWfR.png" alt="Изображение проекта Valhalla 1"></div>
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                          <div class="video-container video-placeholder" data-video-ids="lp7c6l9emQ0">
-                           <img src="https://img.youtube.com/vi/lp7c6l9emQ0/hqdefault.jpg" alt="Shader Preview 2" class="video-thumbnail">
+                           <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/lp7c6l9emQ0/hqdefault.jpg" alt="Shader Preview 2" class="lazy-image video-thumbnail">
                            <div class="play-button"></div>
                         </div>
                         <div class="gallery-item">
-                            <!-- MODIFIED FOR LAZY LOAD -->
-                            <div class="image-container" style="padding-top: 56.25%;"><img class="lazy-image" src="https://i.imgur.com/UXicjrs.png" data-src="https://i.imgur.com/UXicjrs.png" alt="Изображение проекта Valhalla 2"></div>
+                            <div class="image-container" style="padding-top: 56.25%;"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://i.imgur.com/UXicjrs.png" alt="Изображение проекта Valhalla 2"></div>
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                          <div class="video-container video-placeholder" data-video-ids="oBYO5QTS890">
-                           <img src="https://img.youtube.com/vi/oBYO5QTS890/hqdefault.jpg" alt="Shader Preview 3" class="video-thumbnail">
+                           <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/oBYO5QTS890/hqdefault.jpg" alt="Shader Preview 3" class="lazy-image video-thumbnail">
                            <div class="play-button"></div>
                         </div>
                         <div class="gallery-item">
-                            <!-- MODIFIED FOR LAZY LOAD -->
-                            <div class="image-container" style="padding-top: 56.25%;"><img class="lazy-image" src="https://i.imgur.com/f0Ucdbl.png" data-src="https://i.imgur.com/f0Ucdbl.png" alt="Изображение проекта Valhalla 2"></div>
+                            <div class="image-container" style="padding-top: 56.25%;"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://i.imgur.com/f0Ucdbl.png" alt="Изображение проекта Valhalla 2"></div>
                         </div>
                     </div>                      
                 </div>
@@ -597,7 +593,7 @@
                     </p>
                 </div>
                 <div class="video-container mb-8 video-placeholder" data-video-ids="hSL2H4MMssM">
-                    <img src="https://img.youtube.com/vi/hSL2H4MMssM/hqdefault.jpg" alt="HOLODOG Preview" class="video-thumbnail">
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/hSL2H4MMssM/hqdefault.jpg" alt="HOLODOG Preview" class="lazy-image video-thumbnail">
                     <div class="play-button"></div>
                 </div>
                 <!-- Feature cards remain the same -->
@@ -670,11 +666,10 @@
                     </h4>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="gallery-item">
-                            <!-- MODIFIED FOR LAZY LOAD -->
-                            <div class="image-container" style="padding-top: 56.25%;"><img class="lazy-image" src="https://i.imgur.com/dtACOWr.png" data-src="https://i.imgur.com/dtACOWr.png" alt="Изображение проекта Holodog"></div>
+                            <div class="image-container" style="padding-top: 56.25%;"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://i.imgur.com/dtACOWr.png" alt="Изображение проекта Holodog"></div>
                         </div>
                         <div class="video-container video-placeholder" data-video-ids="iMwMMa9qOFY">
-                           <img src="https://img.youtube.com/vi/iMwMMa9qOFY/hqdefault.jpg" alt="Holodog Shader Preview" class="video-thumbnail">
+                           <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/iMwMMa9qOFY/hqdefault.jpg" alt="Holodog Shader Preview" class="lazy-image video-thumbnail">
                            <div class="play-button"></div>
                         </div>
                     </div>
@@ -692,8 +687,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     <!-- Item 1 -->
                     <div class="gallery-item">
-                        <!-- MODIFIED FOR LAZY LOAD -->
-                        <div class="image-container"><img class="lazy-image" src="https://i.imgur.com/6rBvWMZ.jpeg" data-src="https://i.imgur.com/6rBvWMZ.jpeg" alt="Описание рендера 1"></div>
+                        <div class="image-container"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://i.imgur.com/6rBvWMZ.jpeg" alt="Описание рендера 1"></div>
                         <div class="texture-maps-container">
                             <div class="texture-map" data-src="https://i.imgur.com/35qlvjZ.jpeg"><img src="https://i.imgur.com/35qlvjZ.jpeg" alt="Normal Map"></div>
                             <div class="texture-map" data-src="https://i.imgur.com/EQWThkq.jpeg"><img src="https://i.imgur.com/EQWThkq.jpeg" alt="AO Map"></div>
@@ -704,8 +698,7 @@
                     </div>
                     <!-- Item 2 with Texture Maps -->
                     <div class="gallery-item">
-                        <!-- MODIFIED FOR LAZY LOAD -->
-                        <div class="image-container"><img class="lazy-image" src="https://i.imgur.com/GUQXp76.jpeg" data-src="https://i.imgur.com/GUQXp76.jpeg" alt="Описание скриншота 1"></div>
+                        <div class="image-container"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://i.imgur.com/GUQXp76.jpeg" alt="Описание скриншота 1"></div>
                         <div class="texture-maps-container">
                             <div class="texture-map" data-src="https://i.imgur.com/rZLBXq9.jpeg"><img src="https://i.imgur.com/rZLBXq9.jpeg" alt="Normal Map"></div>
                             <div class="texture-map" data-src="https://i.imgur.com/CNYGFAB.jpeg"><img src="https://i.imgur.com/CNYGFAB.jpeg" alt="AO Map"></div>
@@ -718,8 +711,7 @@
                     </div>
                     <!-- Item 3 with Texture Maps -->
                     <div class="gallery-item">
-                        <!-- MODIFIED FOR LAZY LOAD -->
-                        <div class="image-container"><img class="lazy-image" src="https://i.imgur.com/EJPhxOK.jpeg" data-src="https://i.imgur.com/EJPhxOK.jpeg" alt="Описание материала 1"></div>
+                        <div class="image-container"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://i.imgur.com/EJPhxOK.jpeg" alt="Описание материала 1"></div>
                         <div class="texture-maps-container">
                             <div class="texture-map" data-src="https://i.imgur.com/IkjccBa.jpeg"><img src="https://i.imgur.com/IkjccBa.jpeg" alt="Normal Map"></div>
                             <div class="texture-map" data-src="https://i.imgur.com/Vds94Eg.jpeg"><img src="https://i.imgur.com/Vds94Eg.jpeg" alt="AO Map"></div>
@@ -730,8 +722,7 @@
                     </div>
                     <!-- Item 4 with Texture Maps -->
                     <div class="gallery-item">
-                        <!-- MODIFIED FOR LAZY LOAD -->
-                        <div class="image-container"><img class="lazy-image" src="https://i.imgur.com/I2IQa0W.jpeg" data-src="https://i.imgur.com/I2IQa0W.jpeg" alt="Описание нодов VFX"></div>
+                        <div class="image-container"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://i.imgur.com/I2IQa0W.jpeg" alt="Описание нодов VFX"></div>
                         <div class="texture-maps-container">
                             <div class="texture-map" data-src="https://i.imgur.com/8OZaL3m.jpeg"><img src="https://i.imgur.com/8OZaL3m.jpeg" alt="Normal Map"></div>
                             <div class="texture-map" data-src="https://i.imgur.com/6hajogn.jpeg"><img src="https://i.imgur.com/6hajogn.jpeg" alt="AO Map"></div>
@@ -742,26 +733,22 @@
                     </div>
                     <!-- Item 5 -->
                     <div class="gallery-item">
-                        <!-- MODIFIED FOR LAZY LOAD -->
-                        <div class="image-container"><img class="lazy-image" src="https://i.imgur.com/R6cQpXx.png" data-src="https://i.imgur.com/R6cQpXx.png" alt="Описание рендера 2"></div>
+                        <div class="image-container"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://i.imgur.com/R6cQpXx.png" alt="Описание рендера 2"></div>
                     </div>
                     <!-- Item 6 -->
                     <div class="gallery-item">
-                        <!-- MODIFIED FOR LAZY LOAD -->
-                        <div class="image-container"><img class="lazy-image" src="https://i.imgur.com/vBkQVP2.png" data-src="https://i.imgur.com/vBkQVP2.png" alt="Описание графа шейдера"></div>
+                        <div class="image-container"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://i.imgur.com/vBkQVP2.png" alt="Описание графа шейдера"></div>
                     </div>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
                     <div class="gallery-item">
                         <div class="image-container" style="padding-top: 56.25%;">
-                            <!-- MODIFIED FOR LAZY LOAD -->
-                            <img class="lazy-image" src="https://i.imgur.com/ZpB6oAo.png" data-src="https://i.imgur.com/ZpB6oAo.png" alt="Дополнительное изображение 1">
+                            <img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://i.imgur.com/ZpB6oAo.png" alt="Дополнительное изображение 1">
                         </div>
                     </div>
                     <div class="gallery-item">
                         <div class="image-container" style="padding-top: 56.25%;">
-                            <!-- MODIFIED FOR LAZY LOAD -->
-                            <img class="lazy-image" src="https://i.imgur.com/LBZ8Rwi.png" data-src="https://i.imgur.com/LBZ8Rwi.png" alt="Дополнительное изображение 2">
+                            <img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://i.imgur.com/LBZ8Rwi.png" alt="Дополнительное изображение 2">
                         </div>
                     </div>
                 </div>
@@ -779,7 +766,7 @@
                     <!-- Bit Blast Zero -->
                     <div class="cv-card">
                         <div class="video-container mb-4 video-placeholder" data-video-ids="pEYhLY0KeFg,CibIFGiDiwM">
-                           <img src="https://img.youtube.com/vi/CibIFGiDiwM/hqdefault.jpg" alt="Bit Blast Zero Preview" class="video-thumbnail">
+                           <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/CibIFGiDiwM/hqdefault.jpg" alt="Bit Blast Zero Preview" class="lazy-image video-thumbnail">
                            <div class="play-button"></div>
                         </div>
                         <h4 class="text-lg font-bold text-white"><span data-lang-ru>Blast Bit Zero</span><span data-lang-en>Blast Bit Zero</span></h4>
@@ -788,7 +775,7 @@
                     <!-- Temple of Patience -->
                     <div class="cv-card">
                         <div class="video-container mb-4 video-placeholder" data-video-ids="19y2TDY3Myw">
-                           <img src="https://img.youtube.com/vi/19y2TDY3Myw/hqdefault.jpg" alt="Temple of Patience Preview" class="video-thumbnail">
+                           <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/19y2TDY3Myw/hqdefault.jpg" alt="Temple of Patience Preview" class="lazy-image video-thumbnail">
                            <div class="play-button"></div>
                         </div>
                         <h4 class="text-lg font-bold text-white"><span data-lang-ru>Temple of Patience</span><span data-lang-en>Temple of Patience</span></h4>
@@ -797,7 +784,7 @@
                     <!-- Argon Flight -->
                     <div class="cv-card">
                         <div class="video-container mb-4 video-placeholder" data-video-ids="PdigEk_1eV8">
-                           <img src="https://img.youtube.com/vi/PdigEk_1eV8/hqdefault.jpg" alt="Argon Flight Preview" class="video-thumbnail">
+                           <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/PdigEk_1eV8/hqdefault.jpg" alt="Argon Flight Preview" class="lazy-image video-thumbnail">
                            <div class="play-button"></div>
                         </div>
                         <h4 class="text-lg font-bold text-white"><span data-lang-ru>Argon Flight</span><span data-lang-en>Argon Flight</span></h4>
@@ -806,7 +793,7 @@
                     <!-- Don't press X -->
                     <div class="cv-card">
                         <div class="video-container mb-4 video-placeholder" data-video-ids="AjCEn4VBokU">
-                           <img src="https://img.youtube.com/vi/AjCEn4VBokU/hqdefault.jpg" alt="Don't press X Preview" class="video-thumbnail">
+                           <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/AjCEn4VBokU/hqdefault.jpg" alt="Don't press X Preview" class="lazy-image video-thumbnail">
                            <div class="play-button"></div>
                         </div>
                         <h4 class="text-lg font-bold text-white"><span data-lang-ru>Don't press X to free the pirate</span><span data-lang-en>Don't press X to free the pirate</span></h4>
@@ -815,7 +802,7 @@
                     <!-- Dissolve Feature -->
                     <div class="cv-card">
                         <div class="video-container mb-4 video-placeholder" data-video-ids="Yq5r_JC4H2Q,ildYX8BSKlQ,sm_MsfI60jE">
-                           <img src="https://img.youtube.com/vi/Yq5r_JC4H2Q/hqdefault.jpg" alt="Dissolve Feature Preview" class="video-thumbnail">
+                           <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/Yq5r_JC4H2Q/hqdefault.jpg" alt="Dissolve Feature Preview" class="lazy-image video-thumbnail">
                            <div class="play-button"></div>
                         </div>
                         <h4 class="text-lg font-bold text-white"><span data-lang-ru>Рендер-фича: Dissolve Effect</span><span data-lang-en>Render Feature: Dissolve Effect</span></h4>
@@ -824,7 +811,7 @@
                     <!-- Mobile Game Effects -->
                     <div class="cv-card">
                         <div class="video-container mb-4 video-placeholder" data-video-ids="vInap1vfovQ,HjkhupE7mMw,EWbRH-CbFwI,JtkUp9m-JUg">
-                           <img src="https://img.youtube.com/vi/vInap1vfovQ/hqdefault.jpg" alt="Mobile Game Effects Preview" class="video-thumbnail">
+                           <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/vInap1vfovQ/hqdefault.jpg" alt="Mobile Game Effects Preview" class="lazy-image video-thumbnail">
                            <div class="play-button"></div>
                         </div>
                         <h4 class="text-lg font-bold text-white"><span data-lang-ru>Эффекты для мобильной игры</span><span data-lang-en>Effects for a Mobile Game</span></h4>
@@ -833,7 +820,7 @@
                     <!-- VR Features -->
                     <div class="cv-card">
                         <div class="video-container mb-4 video-placeholder" data-video-ids="HsWOmk55LDw">
-                           <img src="https://img.youtube.com/vi/HsWOmk55LDw/hqdefault.jpg" alt="VR Features Preview" class="video-thumbnail">
+                           <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/HsWOmk55LDw/hqdefault.jpg" alt="VR Features Preview" class="lazy-image video-thumbnail">
                            <div class="play-button"></div>
                         </div>
                         <h4 class="text-lg font-bold text-white"><span data-lang-ru>Разработка фичей для VR</span><span data-lang-en>VR Feature Development</span></h4>
@@ -842,7 +829,7 @@
                     <!-- VFX Graph Explosion -->
                     <div class="cv-card">
                         <div class="video-container mb-4 video-placeholder" data-video-ids="snpor-cynDA,ECA9xlg1N1o">
-                           <img src="https://img.youtube.com/vi/c_3WGAYfRww/hqdefault.jpg" alt="VFX Graph Explosion Preview" class="video-thumbnail">
+                           <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/c_3WGAYfRww/hqdefault.jpg" alt="VFX Graph Explosion Preview" class="lazy-image video-thumbnail">
                            <div class="play-button"></div>
                         </div>
                         <h4 class="text-lg font-bold text-white"><span data-lang-ru>Настраиваемый взрыв (VFX Graph)</span><span data-lang-en>Configurable Explosion (VFX Graph)</span></h4>
@@ -910,7 +897,6 @@
                     ruElements.forEach(el => el.style.display = 'none');
                     pdfLink.href = "https://drive.google.com/file/d/1zvjyhmnlUGAVbTp30eHBmQENS-uUoqLV/view?usp=sharing"; // Set English PDF path
                 }
-                // Update game text on lang change
                 if(game) game.setLanguage(lang);
             }
 
@@ -923,7 +909,6 @@
             const lightboxClose = document.getElementById('lightbox-close');
             
             function openLightbox(src) {
-                // For lazy-loaded images, ensure we get the high-res source
                 const highResSrc = src.dataset && src.dataset.src ? src.dataset.src : src.src;
                 lightboxImage.src = highResSrc;
                 lightbox.classList.remove('opacity-0', 'pointer-events-none');
@@ -937,10 +922,8 @@
                 lightbox.classList.add('opacity-0', 'pointer-events-none');
             }
 
-            // Open lightbox for main gallery images
             document.querySelectorAll('.gallery-item').forEach(item => {
                 item.addEventListener('click', (e) => {
-                    // Make sure the click is not on a texture map
                     if (e.target.closest('.texture-map')) {
                         return;
                     }
@@ -949,12 +932,11 @@
                 });
             });
 
-            // Open lightbox for texture maps, and stop the click from bubbling up
             document.querySelectorAll('.texture-map').forEach(map => {
                 map.addEventListener('click', (e) => {
-                    e.stopPropagation(); // This is crucial! Prevents the parent gallery-item click.
+                    e.stopPropagation();
                     const imgSrc = map.dataset.src;
-                    openLightbox({ src: imgSrc }); // Pass an object to simulate an image element
+                    openLightbox({ src: imgSrc });
                 });
             });
 
@@ -983,7 +965,10 @@
                 iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
                 iframe.allowFullscreen = true;
 
-                placeholder.innerHTML = '';
+                // Clear placeholder content before adding iframe
+                while (placeholder.firstChild) {
+                    placeholder.removeChild(placeholder.firstChild);
+                }
                 placeholder.appendChild(iframe);
                 placeholder.classList.add('video-loaded');
             }
@@ -995,29 +980,30 @@
                 if (!videoIds) return;
 
                 const firstVideoId = videoIds.split(',')[0];
-                const altText = placeholder.querySelector('img')?.alt || "Video Preview";
-
-                placeholder.innerHTML = '';
+                
+                // Clear iframe
+                while (placeholder.firstChild) {
+                    placeholder.removeChild(placeholder.firstChild);
+                }
 
                 const thumbnail = document.createElement('img');
-                thumbnail.src = `https://img.youtube.com/vi/${firstVideoId}/hqdefault.jpg`;
-                thumbnail.alt = altText;
-                thumbnail.className = 'video-thumbnail';
+                // Use the same lazy-load pattern for reset video thumbnails
+                thumbnail.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+                thumbnail.dataset.src = `https://img.youtube.com/vi/${firstVideoId}/hqdefault.jpg`;
+                thumbnail.alt = "Video Preview";
+                thumbnail.className = 'lazy-image video-thumbnail';
 
                 const playButton = document.createElement('div');
                 playButton.className = 'play-button';
 
                 placeholder.appendChild(thumbnail);
                 placeholder.appendChild(playButton);
+                
+                // Re-observe the new lazy image
+                imageObserver.observe(thumbnail);
 
                 placeholder.classList.remove('video-loaded');
             }
-
-            const videoObserverOptions = {
-                root: null,
-                rootMargin: '0px',
-                threshold: 0.5
-            };
 
             const videoObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
@@ -1027,49 +1013,40 @@
                         resetVideo(entry.target);
                     }
                 });
-            }, videoObserverOptions);
+            }, { root: null, rootMargin: '0px', threshold: 0.5 });
 
             document.querySelectorAll('.video-placeholder').forEach(placeholder => {
                 videoObserver.observe(placeholder);
             });
 
-            // --- NEW: LAZY LOADING FOR IMAGES ---
+            // --- LAZY LOADING FOR ALL IMAGES WITH '.lazy-image' CLASS ---
             const lazyImages = document.querySelectorAll('.lazy-image');
 
-            // NOTE: For best results, the 'src' should point to a very small,
-            // low-quality placeholder of the actual image. The 'data-src' holds the final, high-res image.
             const imageObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
-                    // When the image is about to enter the viewport
                     if (entry.isIntersecting) {
                         const img = entry.target;
                         const highResSrc = img.dataset.src;
 
                         if (!highResSrc) return;
 
-                        // To ensure a smooth transition, we load the high-res image in the background first.
                         const tempImage = new Image();
                         tempImage.src = highResSrc;
                         
-                        // Once it's fully loaded, we update the actual image tag on the page.
                         tempImage.onload = () => {
                             img.src = highResSrc;
-                            img.classList.add('loaded'); // This class triggers the CSS to remove the blur.
+                            img.classList.add('loaded');
                         };
                         
-                        // Handle cases where the high-res image might fail to load.
                         tempImage.onerror = () => {
                             console.error(`Failed to load image: ${highResSrc}`);
-                            // Still remove the blur to show the browser's broken image icon.
                             img.classList.add('loaded');
                         }
 
-                        // We only need to do this once per image, so we can stop observing it.
                         observer.unobserve(img);
                     }
                 });
             }, {
-                // Start loading the image when it's 250px away from the bottom of the viewport.
                 rootMargin: '0px 0px 250px 0px' 
             });
 
