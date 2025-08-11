@@ -12,6 +12,7 @@
     <style>
         :root {
             --sheen-speed: 4s;
+            --angle: 0deg;
         }
 
         body {
@@ -271,6 +272,7 @@
             align-items: center;
             padding: 2rem 0;
         }
+
         .music-container {
             background-color: rgba(17, 24, 39, 0.8);
             border: 1px solid #374151;
@@ -284,16 +286,64 @@
             width: 100%;
             max-width: 420px;
         }
+
+        /* New Sun Ray Sheen Effect */
         .music-container::before {
             content: '';
             position: absolute;
-            top: -2px; left: -2px;
-            right: -2px; bottom: -2px;
-            background: conic-gradient(from var(--angle), #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
-            border-radius: inherit;
+            inset: -10px; /* Controls the size of the rays */
             z-index: -1;
+            border-radius: inherit;
+            background: conic-gradient(from var(--angle), #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
             animation: rotateSheen var(--sheen-speed) linear infinite;
             animation-play-state: paused;
+            
+            /* This mask creates the sun-ray shape */
+            mask-image: radial-gradient(
+                circle at center,
+                transparent 55%, /* Inner transparent circle to create the outline effect */
+                black 55.5%,     /* Start of the rays */
+                /* Creating 16 rays (360deg / 16 = 22.5deg per ray+gap) */
+                black 58%, transparent 58.1%, /* Ray 1 */
+                black 60.2%, transparent 60.3%, /* Ray 2 */
+                black 62.4%, transparent 62.5%, /* Ray 3 */
+                black 64.6%, transparent 64.7%,
+                black 66.8%, transparent 66.9%,
+                black 69%,   transparent 69.1%,
+                black 71.2%, transparent 71.3%,
+                black 73.4%, transparent 73.5%,
+                black 75.6%, transparent 75.7%,
+                black 77.8%, transparent 77.9%,
+                black 80%,   transparent 80.1%,
+                black 82.2%, transparent 82.3%,
+                black 84.4%, transparent 84.5%,
+                black 86.6%, transparent 86.7%,
+                black 88.8%, transparent 88.9%,
+                black 91%,   transparent 91.1%,
+                transparent 100% /* Fade out at the end */
+            );
+            -webkit-mask-image: radial-gradient(
+                circle at center,
+                transparent 55%,
+                black 55.5%,
+                black 58%, transparent 58.1%,
+                black 60.2%, transparent 60.3%,
+                black 62.4%, transparent 62.5%,
+                black 64.6%, transparent 64.7%,
+                black 66.8%, transparent 66.9%,
+                black 69%,   transparent 69.1%,
+                black 71.2%, transparent 71.3%,
+                black 73.4%, transparent 73.5%,
+                black 75.6%, transparent 75.7%,
+                black 77.8%, transparent 77.9%,
+                black 80%,   transparent 80.1%,
+                black 82.2%, transparent 82.3%,
+                black 84.4%, transparent 84.5%,
+                black 86.6%, transparent 86.7%,
+                black 88.8%, transparent 88.9%,
+                black 91%,   transparent 91.1%,
+                transparent 100%
+            );
         }
 
         .music-container.play::before {
@@ -350,22 +400,27 @@
             width: 0%;
             transition: width 0.1s linear;
         }
+        
+        /* Fixed Disc Styles */
         .img-container {
             position: relative;
             width: 110px;
+            height: 110px;
+            flex-shrink: 0; /* Prevents the container from shrinking */
         }
         .img-container img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
             object-fit: cover;
-            height: 110px;
-            width: inherit;
-            position: absolute;
-            bottom: 0;
-            left: 0;
             animation: rotateImage 3s linear infinite;
             animation-play-state: paused;
             border: 3px solid #374151;
         }
+
         .music-container.play .img-container img {
             animation-play-state: running;
         }
@@ -379,11 +434,11 @@
             border: 2px solid #374151;
             border-radius: 50%;
             position: absolute;
-            bottom: 50%;
+            top: 50%;
             left: 50%;
             width: 20px;
             height: 20px;
-            transform: translate(-50%, 50%);
+            transform: translate(-50%, -50%);
         }
         .navigation {
             display: flex;
@@ -417,8 +472,10 @@
 <body class="p-4 sm:p-8">
     <div class="max-w-7xl mx-auto">
 
+        <!-- HEADER / CV -->
         <header class="mb-16">
-            <div class="relative text-center mb-10">
+            <!-- ... [Your existing header content remains unchanged] ... -->
+             <div class="relative text-center mb-10">
                  <div class="absolute top-0 right-0 lang-switcher">
                      <button id="lang-ru">RU</button>
                      <button id="lang-en" class="active">EN</button>
@@ -498,6 +555,7 @@
                              <span data-lang-en>An enthusiastic specialist who believes that elegant technical solutions and a creative approach are the key to creating an unforgettable gaming experience. Also:</span>
                          </p>
                          <div>
+                             <!-- GIFs are now properly lazy-loaded -->
                              <img data-lang-ru src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/NodesRu.gif" class="lazy-image w-full rounded-lg" alt="I like nodes gif">
                              <img data-lang-en src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/Nodes.gif" class="lazy-image w-full rounded-lg" alt="I like nodes gif">
                          </div>
@@ -598,14 +656,17 @@
               </div>
         </header>
 
+        <!-- PROJECTS -->
         <main>
             <h2 class="section-title">
                 <span data-lang-ru>Личные проекты</span>
                 <span data-lang-en>Personal Projects</span>
             </h2>
 
+            <!-- PROJECT: Too Late for Valhalla -->
             <section class="mb-16">
-                <div class="text-center mb-8">
+                <!-- ... [Your existing project content remains unchanged] ... -->
+                 <div class="text-center mb-8">
                      <h3 class="project-title">Too Late for Valhalla</h3>
                      <p class="text-xl text-gray-400 max-w-4xl mx-auto">
                          <strong class="text-blue-300" data-lang-ru>Ключевая задача:</strong>
@@ -615,9 +676,11 @@
                      </p>
                  </div>
                  <div class="video-container mb-8 video-placeholder" data-video-ids="94KlTkUudzQ">
+                     <!-- Video thumbnails are now lazy-loaded -->
                      <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/94KlTkUudzQ/hqdefault.jpg" alt="Too Late for Valhalla Preview" class="lazy-image video-thumbnail">
                      <div class="play-button"></div>
                  </div>
+                 <!-- Feature cards remain the same -->
                  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                      <div class="feature-card p-6 rounded-xl">
                          <h4 class="font-bold text-lg text-blue-300 mb-2">
@@ -727,7 +790,9 @@
             
             <hr class="divider">
 
+            <!-- PROJECT: HOLODOG -->
             <section class="mb-16">
+                 <!-- ... [Your existing project content remains unchanged] ... -->
                  <div class="text-center mb-8">
                      <h3 class="project-title">HOLODOG</h3>
                      <p class="text-xl text-gray-400 max-w-4xl mx-auto">
@@ -741,6 +806,7 @@
                      <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/hSL2H4MMssM/hqdefault.jpg" alt="HOLODOG Preview" class="lazy-image video-thumbnail">
                      <div class="play-button"></div>
                  </div>
+                 <!-- Feature cards remain the same -->
                  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                       <div class="feature-card p-6 rounded-xl">
                          <h4 class="font-bold text-lg text-blue-300 mb-2">
@@ -822,12 +888,15 @@
             
             <hr class="divider">
             
+            <!-- GALLERY SECTION -->
             <section class="mb-16">
-                 <h2 class="section-title">
+                 <!-- ... [Your existing gallery content remains unchanged] ... -->
+                  <h2 class="section-title">
                       <span data-lang-ru>Галерея</span>
                       <span data-lang-en>Gallery</span>
                   </h2>
                   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                      <!-- Item 1 -->
                       <div class="gallery-item">
                           <div class="image-container"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/Bark.jpg" alt="Bark Material Render"></div>
                           <div class="texture-maps-container">
@@ -838,6 +907,7 @@
                               <div class="texture-map" data-src="img/Bark_height.jpg"><img src="img/Bark_height.jpg" alt="Height Map"></div>
                           </div>
                       </div>
+                      <!-- Item 2 with Texture Maps -->
                       <div class="gallery-item">
                           <div class="image-container"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/Brick_1.jpg" alt="Brick Material Render"></div>
                           <div class="texture-maps-container">
@@ -848,6 +918,7 @@
                               <div class="texture-map" data-src="img/Brick_1_height.jpg"><img src="img/Brick_1_height.jpg" alt="Height Map"></div>
                           </div>
                       </div>
+                      <!-- Item 3 with Texture Maps -->
                       <div class="gallery-item">
                           <div class="image-container"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/OrnateFabric.jpeg" alt="Ornate Fabric Material Render"></div>
                           <div class="texture-maps-container">
@@ -860,6 +931,7 @@
                               <div class="texture-map" data-src="img/OrnateFabric_translucensy.jpg"><img src="img/OrnateFabric_translucensy.jpg" alt="Translucensy Map"></div>
                           </div>
                       </div>
+                      <!-- Item 4 with Texture Maps -->
                       <div class="gallery-item">
                           <div class="image-container"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/BrokenTiles.jpg" alt="Broken Tiles Material Render"></div>
                           <div class="texture-maps-container">
@@ -870,9 +942,11 @@
                               <div class="texture-map" data-src="img/Broken_Tiles_height.jpg"><img src="img/Broken_Tiles_height.jpg" alt="Height Map"></div>
                           </div>
                       </div>
+                      <!-- Item 5 -->
                       <div class="gallery-item">
                           <div class="image-container"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/Render_1.png" alt="Описание рендера 2"></div>
                       </div>
+                      <!-- Item 6 -->
                       <div class="gallery-item">
                           <div class="image-container"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/Render_2.png" alt="Описание графа шейдера"></div>
                       </div>
@@ -899,12 +973,15 @@
             </section>
             <hr class="divider">
 
+            <!-- CONTRACT WORK SECTION -->
             <section class="mb-16">
-                 <h2 class="section-title">
+                 <!-- ... [Your existing contract work content remains unchanged] ... -->
+                  <h2 class="section-title">
                       <span data-lang-ru>Контрактная работа</span>
                       <span data-lang-en>Contract Work</span>
                   </h2>
                  <div class="grid grid-cols-1 sm:grid-cols-4 lg:grid-cols-2 gap-6">
+                     <!-- Bit Blast Zero -->
                      <div class="cv-card">
                          <div class="video-container mb-4 video-placeholder" data-video-ids="pEYhLY0KeFg,CibIFGiDiwM">
                             <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/CibIFGiDiwM/hqdefault.jpg" alt="Bit Blast Zero Preview" class="lazy-image video-thumbnail">
@@ -913,6 +990,7 @@
                          <h4 class="text-lg font-bold text-white"><span data-lang-ru>Blast Bit Zero</span><span data-lang-en>Blast Bit Zero</span></h4>
                          <p class="text-gray-400 text-sm"><span data-lang-ru>Разработал бесконечный shoot 'em up. Ключевой особенностью проекта является кастомная система на базе Scriptable Objects, которая значительно упрощает и ускоряет создание новых волн противников и боссов.</span><span data-lang-en>Developed an endless shoot 'em up. The project's core feature is a custom system based on Scriptable Objects, designed to significantly simplify and accelerate the creation of new enemy waves and bosses.</span></p>
                      </div>
+                     <!-- Temple of Patience -->
                      <div class="cv-card">
                          <div class="video-container mb-4 video-placeholder" data-video-ids="19y2TDY3Myw">
                             <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/19y2TDY3Myw/hqdefault.jpg" alt="Temple of Patience Preview" class="lazy-image video-thumbnail">
@@ -921,6 +999,7 @@
                          <h4 class="text-lg font-bold text-white"><span data-lang-ru>Temple of Patience</span><span data-lang-en>Temple of Patience</span></h4>
                          <p class="text-gray-400 text-sm"><span data-lang-ru>Создал сингл-скрин платформер. Основной задачей была разработка архитектуры на основе тайловых карт и префабов, позволяющей собирать новые уровни прямо в редакторе Unity за считанные минуты.</span><span data-lang-en>Created a single-screen platformer. The main goal was to develop an architecture using tilemaps and nested prefabs, enabling the assembly of new levels directly in the Unity editor in minutes.</span></p>
                      </div>
+                     <!-- Argon Flight -->
                      <div class="cv-card">
                          <div class="video-container mb-4 video-placeholder" data-video-ids="PdigEk_1eV8">
                             <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/PdigEk_1eV8/hqdefault.jpg" alt="Argon Flight Preview" class="lazy-image video-thumbnail">
@@ -929,6 +1008,7 @@
                          <h4 class="text-lg font-bold text-white"><span data-lang-ru>Argon Flight</span><span data-lang-en>Argon Flight</span></h4>
                          <p class="text-gray-400 text-sm"><span data-lang-ru>Разработал короткий рельсовый шутер, стилистически вдохновлённый техно-демо 90-х. В основе проекта лежит система событий, привязанных к таймлайну, которая управляет всеми игровыми моментами.</span><span data-lang-en>Developed a short on-rails shooter, stylistically inspired by 90s tech demos. The project is built upon a timeline-based event system that drives all in-game moments.</span></p>
                      </div>
+                     <!-- Don't press X -->
                      <div class="cv-card">
                          <div class="video-container mb-4 video-placeholder" data-video-ids="AjCEn4VBokU">
                             <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/AjCEn4VBokU/hqdefault.jpg" alt="Don't press X Preview" class="lazy-image video-thumbnail">
@@ -937,6 +1017,7 @@
                          <h4 class="text-lg font-bold text-white"><span data-lang-ru>Don't press X to free the pirate</span><span data-lang-en>Don't press X to free the pirate</span></h4>
                          <p class="text-gray-400 text-sm"><span data-lang-ru>Создал сатирическую мета-игру, построенную вокруг простой концепции: не нажимать кнопку Х. Основной технической задачей стала разработка гибкой системы ветвящихся диалогов на Scriptable Objects, включающей озвучку каждого печатаемого символа.</span><span data-lang-en>Created a satirical meta-game built around a simple concept: don't press X. The main technical challenge was developing a flexible, branching dialogue system using Scriptable Objects, which included per-character audio feedback as text is typed.</span></p>
                      </div>
+                     <!-- Dissolve Feature -->
                      <div class="cv-card">
                          <div class="video-container mb-4 video-placeholder" data-video-ids="Yq5r_JC4H2Q,ildYX8BSKlQ,sm_MsfI60jE">
                             <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/Yq5r_JC4H2Q/hqdefault.jpg" alt="Dissolve Feature Preview" class="lazy-image video-thumbnail">
@@ -945,6 +1026,7 @@
                          <h4 class="text-lg font-bold text-white"><span data-lang-ru>Рендер-фича: Dissolve Effect</span><span data-lang-en>Render Feature: Dissolve Effect</span></h4>
                          <p class="text-gray-400 text-sm"><span data-lang-ru>Разработал кастомную рендер-фичу (URP Render Feature) для создания эффекта, имитирующего датамошинг, который "распыляет" пиксели предыдущего кадра на текущий. Дополнительно реализовал ряд других шейдерных эффектов.</span><span data-lang-en>Developed a custom URP Render Feature to create a datamoshing-inspired effect that "atomizes" pixels from the previous frame onto the current one. Additionally implemented several other shader effects.</span></p>
                      </div>
+                     <!-- Mobile Game Effects -->
                      <div class="cv-card">
                          <div class="video-container mb-4 video-placeholder" data-video-ids="vInap1vfovQ,HjkhupE7mMw,EWbRH-CbFwI,JtkUp9m-JUg">
                             <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/vInap1vfovQ/hqdefault.jpg" alt="Mobile Game Effects Preview" class="lazy-image video-thumbnail">
@@ -953,6 +1035,7 @@
                          <h4 class="text-lg font-bold text-white"><span data-lang-ru>Эффекты для мобильной игры</span><span data-lang-en>Effects for a Mobile Game</span></h4>
                          <p class="text-gray-400 text-sm"><span data-lang-ru>Разработал серию эффектов частиц, оптимизированных для работы без VFX Graph. Управление параметрами Shuriken реализовано через передачу данных в кастомных UV-каналах для высокой производительности.</span><span data-lang-en>Developed a series of particle effects optimized to run without VFX Graph. Instead, Shuriken parameters are controlled by passing data through custom UV channels, ensuring high performance.</span></p>
                      </div>
+                     <!-- VR Features -->
                      <div class="cv-card">
                          <div class="video-container mb-4 video-placeholder" data-video-ids="HsWOmk55LDw">
                             <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/HsWOmk55LDw/hqdefault.jpg" alt="VR Features Preview" class="lazy-image video-thumbnail">
@@ -961,6 +1044,7 @@
                          <h4 class="text-lg font-bold text-white"><span data-lang-ru>Разработка фичей для VR</span><span data-lang-en>VR Feature Development</span></h4>
                          <p class="text-gray-400 text-sm"><span data-lang-ru>Реализовал комплекс фичей для VR-проекта: высокооптимизированные шейдеры, кастомную физическую систему для интерактивных объектов (двери, ящики) и ивентовую систему SFX на Scriptable Objects.</span><span data-lang-en>Implemented a suite of features for a VR project: highly-optimized shaders, a custom physics-based interaction system for objects like doors and drawers, and an event-driven SFX management system using Scriptable Objects.</span></p>
                      </div>
+                     <!-- VFX Graph Explosion -->
                      <div class="cv-card">
                          <div class="video-container mb-4 video-placeholder" data-video-ids="snpor-cynDA,ECA9xlg1N1o">
                             <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/c_3WGAYfRww/hqdefault.jpg" alt="VFX Graph Explosion Preview" class="lazy-image video-thumbnail">
@@ -974,6 +1058,7 @@
 
             <hr class="divider">
 
+            <!-- MUSIC SAMPLES SECTION -->
             <section class="mb-16">
                 <h2 class="section-title">
                     <span data-lang-ru>Музыкальные примеры</span>
@@ -987,9 +1072,9 @@
                                 <div class="progress" id="progress"></div>
                             </div>
                         </div>
-                        <audio src="https://github.com/bradtraversy/vanillawebprojects/blob/master/music-player/music/summer.mp3?raw=true" id="audio" crossorigin="anonymous"></audio>
+                        <audio id="audio" crossorigin="anonymous"></audio>
                         <div class="img-container">
-                            <img src="https://github.com/bradtraversy/vanillawebprojects/blob/master/music-player/images/summer.jpg?raw=true" alt="music-cover" id="cover" />
+                            <img src="" alt="music-cover" id="cover" />
                         </div>
                         <div class="navigation">
                             <button id="prev" class="action-btn">
@@ -1008,6 +1093,7 @@
             
             <hr class="divider">
 
+            <!-- GAME SECTION -->
             <section>
                 <h2 class="section-title">
                     <span data-lang-ru>Пока вы думаете...</span>
@@ -1030,6 +1116,7 @@
         </main>
     </div>
 
+    <!-- Lightbox HTML -->
     <div id="lightbox" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-4 z-50 opacity-0 pointer-events-none">
         <img id="lightbox-image" src="" alt="Full size view" class="max-w-full max-h-full object-contain transform scale-95">
         <button id="lightbox-close" class="absolute top-4 right-4 text-white text-4xl">&times;</button>
@@ -1226,19 +1313,35 @@
             const title = document.getElementById("title");
             const cover = document.getElementById("cover");
             
-            // --- NOTE: Add your own song titles, and make sure the audio and image files exist in the specified paths ---
-            const songs = ["summer", "hey", "ukulele"];
+            // Updated songs array with your track
+            const songs = [
+                {
+                    name: 'The Industrial Pulse',
+                    audioSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/The%20Industrial%20Pulse.mp3',
+                    coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/The%20Industrial%20Pulse.png'
+                },
+                {
+                    name: 'Summer',
+                    audioSrc: 'https://github.com/bradtraversy/vanillawebprojects/blob/master/music-player/music/summer.mp3?raw=true',
+                    coverSrc: 'https://github.com/bradtraversy/vanillawebprojects/blob/master/music-player/images/summer.jpg?raw=true'
+                },
+                {
+                    name: 'Hey',
+                    audioSrc: 'https://github.com/bradtraversy/vanillawebprojects/blob/master/music-player/music/hey.mp3?raw=true',
+                    coverSrc: 'https://github.com/bradtraversy/vanillawebprojects/blob/master/music-player/images/hey.jpg?raw=true'
+                },
+                 {
+                    name: 'Ukulele',
+                    audioSrc: 'https://github.com/bradtraversy/vanillawebprojects/blob/master/music-player/music/ukulele.mp3?raw=true',
+                    coverSrc: 'https://github.com/bradtraversy/vanillawebprojects/blob/master/music-player/images/ukulele.jpg?raw=true'
+                }
+            ];
             let songIndex = 0;
 
-            function getSongTitle(song) {
-                return song.charAt(0).toUpperCase() + song.slice(1);
-            }
-
-            function loadSong(song) {
-                title.innerText = getSongTitle(song);
-                // --- NOTE: Update these paths to your actual file locations ---
-                audio.src = `https://github.com/bradtraversy/vanillawebprojects/blob/master/music-player/music/${song}.mp3?raw=true`;
-                cover.src = `https://github.com/bradtraversy/vanillawebprojects/blob/master/music-player/images/${song}.jpg?raw=true`;
+            function loadSong(songData) {
+                title.innerText = songData.name;
+                audio.src = songData.audioSrc;
+                cover.src = songData.coverSrc;
             }
 
             function playSong() {
