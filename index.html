@@ -8,7 +8,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css'>
     <style>
+        :root {
+            --sheen-speed: 4s;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             background-color: #030712; /* gray-950 */
@@ -259,14 +264,161 @@
             transform: scale(1);
         }
 
+        /* --- MUSIC PLAYER STYLES --- */
+        .music-player-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 0;
+        }
+        .music-container {
+            background-color: rgba(17, 24, 39, 0.8);
+            border: 1px solid #374151;
+            border-radius: 1rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+            display: flex;
+            padding: 20px 30px;
+            position: relative;
+            margin: 20px 0;
+            z-index: 10;
+            width: 100%;
+            max-width: 420px;
+        }
+        .music-container::before {
+            content: '';
+            position: absolute;
+            top: -2px; left: -2px;
+            right: -2px; bottom: -2px;
+            background: conic-gradient(from var(--angle), #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+            border-radius: inherit;
+            z-index: -1;
+            animation: rotateSheen var(--sheen-speed) linear infinite;
+            animation-play-state: paused;
+        }
+
+        .music-container.play::before {
+            animation-play-state: running;
+        }
+
+        @property --angle {
+          syntax: '<angle>';
+          initial-value: 0deg;
+          inherits: false;
+        }
+
+        @keyframes rotateSheen {
+          from { --angle: 0deg; }
+          to { --angle: 360deg; }
+        }
+
+        .music-info {
+            background-color: rgba(31, 41, 55, 0.8);
+            backdrop-filter: blur(5px);
+            border-radius: 15px 15px 0 0;
+            position: absolute;
+            top: 0;
+            left: 20px;
+            width: calc(100% - 40px);
+            padding: 10px 10px 10px 150px;
+            opacity: 0;
+            transform: translateY(0%);
+            transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+            z-index: 0;
+            color: #fff;
+        }
+        .music-container.play .music-info {
+            opacity: 1;
+            transform: translateY(-100%);
+        }
+        .music-info h2 {
+            font-size: 1rem;
+            font-weight: bold;
+            margin: 0;
+        }
+        .progress-container {
+            background-color: #374151;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 0;
+            height: 6px;
+            width: 100%;
+        }
+        .progress {
+            background-color: #3b82f6;
+            border-radius: 5px;
+            height: 100%;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+        .img-container {
+            position: relative;
+            width: 110px;
+        }
+        .img-container img {
+            border-radius: 50%;
+            object-fit: cover;
+            height: 110px;
+            width: inherit;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            animation: rotateImage 3s linear infinite;
+            animation-play-state: paused;
+            border: 3px solid #374151;
+        }
+        .music-container.play .img-container img {
+            animation-play-state: running;
+        }
+        @keyframes rotateImage {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .img-container::after {
+            content: '';
+            background-color: #030712;
+            border: 2px solid #374151;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            transform: translate(-50%, 50%);
+        }
+        .navigation {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+            margin-left: 20px;
+        }
+        .action-btn {
+            background-color: transparent;
+            border: 0;
+            color: #d1d5db;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 10px;
+            margin: 0 20px;
+            transition: color 0.3s;
+        }
+        .action-btn:focus {
+            outline: none;
+        }
+        .action-btn.action-btn-big {
+            color: #d1d5db;
+            font-size: 30px;
+        }
+        .action-btn:hover, .action-btn.action-btn-big:hover {
+            color: #3b82f6;
+        }
     </style>
 </head>
 <body class="p-4 sm:p-8">
     <div class="max-w-7xl mx-auto">
 
-        <!-- HEADER / CV -->
         <header class="mb-16">
-             <div class="relative text-center mb-10">
+            <div class="relative text-center mb-10">
                  <div class="absolute top-0 right-0 lang-switcher">
                      <button id="lang-ru">RU</button>
                      <button id="lang-en" class="active">EN</button>
@@ -296,7 +448,7 @@
                          <span data-lang-ru>Опыт работы</span>
                          <span data-lang-en>Work Experience</span>
                      </h3>
-                     <ol class="relative border-l border-gray-700">                      
+                     <ol class="relative border-l border-gray-700">                        
                          <li class="mb-10 ml-4">
                              <div class="absolute w-3 h-3 bg-gray-700 rounded-full mt-1.5 -left-1.5 border border-gray-900"></div>
                              <time class="mb-1 text-sm font-normal leading-none text-gray-500">2020 - 2025</time>
@@ -346,7 +498,6 @@
                              <span data-lang-en>An enthusiastic specialist who believes that elegant technical solutions and a creative approach are the key to creating an unforgettable gaming experience. Also:</span>
                          </p>
                          <div>
-                             <!-- GIFs are now properly lazy-loaded -->
                              <img data-lang-ru src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/NodesRu.gif" class="lazy-image w-full rounded-lg" alt="I like nodes gif">
                              <img data-lang-en src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/Nodes.gif" class="lazy-image w-full rounded-lg" alt="I like nodes gif">
                          </div>
@@ -389,11 +540,11 @@
                      </div>
                  </div>
                  <div class="cv-card">
-                       <h3>
+                     <h3>
                          <span data-lang-ru>Образование и Обучение</span>
                          <span data-lang-en>Education & Training</span>
-                       </h3>
-                       <div class="space-y-4">
+                     </h3>
+                     <div class="space-y-4">
                          <div>
                              <h4 class="font-semibold text-white">
                                  <span data-lang-ru>БГЭУ, Экономист-информатик</span>
@@ -414,7 +565,7 @@
                                  <span data-lang-en>Numerous in-depth courses on Blender, Unity, C#, shader writing, VFX, lighting, and FMOD.</span>
                              </p>
                          </div>
-                        </div>
+                     </div>
                  </div>
                   <div class="cv-card">
                       <h3>
@@ -447,406 +598,416 @@
               </div>
         </header>
 
-        <!-- PROJECTS -->
         <main>
             <h2 class="section-title">
                 <span data-lang-ru>Личные проекты</span>
                 <span data-lang-en>Personal Projects</span>
             </h2>
 
-            <!-- PROJECT: Too Late for Valhalla -->
             <section class="mb-16">
                 <div class="text-center mb-8">
-                    <h3 class="project-title">Too Late for Valhalla</h3>
-                    <p class="text-xl text-gray-400 max-w-4xl mx-auto">
-                        <strong class="text-blue-300" data-lang-ru>Ключевая задача:</strong>
-                        <strong class="text-blue-300" data-lang-en>Core Task:</strong>
-                        <span data-lang-ru>Создать аудио-центричную архитектуру, где музыкальный трек в FMOD является "дирижером", управляющим геймплеем, генерацией уровней, шейдерами и UI.</span>
-                        <span data-lang-en>To create an audio-centric architecture where the FMOD music track acts as a "conductor," controlling gameplay, level generation, shaders, and UI.</span>
-                    </p>
-                </div>
-                <div class="video-container mb-8 video-placeholder" data-video-ids="94KlTkUudzQ">
-                    <!-- Video thumbnails are now lazy-loaded -->
-                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/94KlTkUudzQ/hqdefault.jpg" alt="Too Late for Valhalla Preview" class="lazy-image video-thumbnail">
-                    <div class="play-button"></div>
-                </div>
-                <!-- Feature cards remain the same -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <div class="feature-card p-6 rounded-xl">
-                        <h4 class="font-bold text-lg text-blue-300 mb-2">
-                           <span data-lang-ru>1. Аудио-реактивность на DSP</span>
-                           <span data-lang-en>1. DSP-Based Audio Reactivity</span>
-                        </h4>
-                        <p>
-                           <span data-lang-ru>Система анализа звука в реальном времени через DSP с FFT. "Энергия" музыки управляет Post-FX, тряской камеры и параметрами шейдеров.</span>
-                           <span data-lang-en>A real-time audio analysis system using DSP with FFT. The music's "energy" controls Post-FX, camera shake, and shader parameters.</span>
-                        </p>
-                    </div>
-                    <div class="feature-card p-6 rounded-xl">
-                        <h4 class="font-bold text-lg text-blue-300 mb-2">
-                           <span data-lang-ru>2. Процедурная анимация караоке</span>
-                           <span data-lang-en>2. Procedural Karaoke Animation</span>
-                        </h4>
-                        <p>
-                           <span data-lang-ru>Полноценный аниматор текста, управляемый из FMOD через timeline-маркеры. Анимирует десятки параметров материала (`AnimationCurve`).</span>
-                           <span data-lang-en>A full-fledged text animator controlled by FMOD via timeline markers, animating dozens of material parameters with `AnimationCurve`.</span>
-                        </p>
-                    </div>
-                    <div class="feature-card p-6 rounded-xl">
-                        <h4 class="font-bold text-lg text-blue-300 mb-2">
-                           <span data-lang-ru>3. Динамическая генерация уровней</span>
-                           <span data-lang-en>3. Dynamic Level Generation</span>
-                        </h4>
-                        <p>
-                           <span data-lang-ru>Бесконечный раннер, где структура и сложность уровня полностью синхронизированы с FMOD-маркерами в музыкальной композиции.</span>
-                           <span data-lang-en>An endless runner where the level structure and difficulty are fully synchronized with FMOD markers in the music track.</span>
-                        </p>
-                    </div>
-                    <div class="feature-card p-6 rounded-xl">
-                        <h4 class="font-bold text-lg text-blue-300 mb-2">
-                           <span data-lang-ru>4. Комплексный процедурный шейдер воды</span>
-                           <span data-lang-en>4. Complex Procedural Water Shader</span>
-                        </h4>
-                        <p>
-                           <span data-lang-ru>Шейдер воды, управляемый через систему состояний. Плавно переключается между состояниями ("меню", "геймплей"), меняя десятки параметров.</span>
-                           <span data-lang-en>A state-driven water shader that smoothly transitions between states ("menu," "gameplay"), changing dozens of parameters.</span>
-                        </p>
-                    </div>
-                    <div class="feature-card p-6 rounded-xl">
-                        <h4 class="font-bold text-lg text-blue-300 mb-2">
-                           <span data-lang-ru>5. Кастомный Post-Processing в URP</span>
-                           <span data-lang-en>5. Custom Post-Processing in URP</span>
-                        </h4>
-                        <p>
-                           <span data-lang-ru>Собственный `ScriptableRendererFeature`, который инъецирует полноэкранный шейдер в URP. Параметры контролируются состоянием игрока, событиями и музыкой.</span>
-                           <span data-lang-en>A custom `ScriptableRendererFeature` that injects a fullscreen shader into URP. Parameters are controlled by player state, events, and music.</span>
-                        </p>
-                    </div>
-                    <div class="feature-card p-6 rounded-xl">
-                        <h4 class="font-bold text-lg text-blue-300 mb-2">
-                           <span data-lang-ru>6. Глубокая интеграция камеры и UI</span>
-                           <span data-lang-en>6. Deep Camera & UI Integration</span>
-                        </h4>
-                        <p>
-                           <span data-lang-ru>Живая, отзывчивая система обратной связи. Камера использует стейт-машину Cinemachine и `Impulse`, а UI — объект с кастомным шейдером.</span>
-                           <span data-lang-en>A living, responsive feedback system. The camera uses a Cinemachine state machine and `Impulse`, while the UI is an object with a custom shader.</span>
-                        </p>
-                    </div>
-                     <div class="feature-card p-6 rounded-xl md:col-span-2 lg:col-span-3">
-                        <h4 class="font-bold text-lg text-blue-300 mb-2">
-                           <span data-lang-ru>7. Динамический саундтрек и процедурная генерация SFX</span>
-                           <span data-lang-en>7. Dynamic Soundtrack & Procedural SFX</span>
-                        </h4>
-                        <p>
-                           <span data-lang-ru>Продвинутая звуковая система. В реальном времени управляет количеством музыкальных слоев. SFX урона и подбора еды генерируются процедурно через фильтры и наложение слоев, что гарантирует уникальность каждого звука.</span>
-                           <span data-lang-en>An advanced sound system. It controls the number of music layers in real-time. Damage and item pickup SFX are generated procedurally via filters and layer blending, ensuring each sound is unique.</span>
-                        </p>
-                    </div>
-                </div>
-                <div class="mt-8 space-y-6">
-                    <h4 class="text-xl font-bold text-center text-white">
-                        <span data-lang-ru>Шейдеры</span>
-                        <span data-lang-en>Shaders</span>
-                    </h4>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="video-container video-placeholder" data-video-ids="x3PraWAXz_0">
-                           <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/x3PraWAXz_0/hqdefault.jpg" alt="Shader Preview 1" class="lazy-image video-thumbnail">
-                           <div class="play-button"></div>
-                        </div>
-                        <div class="gallery-item">
-                            <div class="image-container" style="padding-top: 56.25%;"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/SH1_Energy.png" alt="Изображение проекта Valhalla 1"></div>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                         <div class="video-container video-placeholder" data-video-ids="lp7c6l9emQ0">
-                           <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/lp7c6l9emQ0/hqdefault.jpg" alt="Shader Preview 2" class="lazy-image video-thumbnail">
-                           <div class="play-button"></div>
-                        </div>
-                        <div class="gallery-item">
-                            <div class="image-container" style="padding-top: 56.25%;"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/SH2_Water.png" alt="Изображение проекта Valhalla 2"></div>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                         <div class="video-container video-placeholder" data-video-ids="oBYO5QTS890">
-                           <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/oBYO5QTS890/hqdefault.jpg" alt="Shader Preview 3" class="lazy-image video-thumbnail">
-                           <div class="play-button"></div>
-                        </div>
-                        <div class="gallery-item">
-                            <div class="image-container" style="padding-top: 56.25%;"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/SH3_Vignette.png" alt="Изображение проекта Valhalla 2"></div>
-                        </div>
-                    </div>                      
-                </div>
+                     <h3 class="project-title">Too Late for Valhalla</h3>
+                     <p class="text-xl text-gray-400 max-w-4xl mx-auto">
+                         <strong class="text-blue-300" data-lang-ru>Ключевая задача:</strong>
+                         <strong class="text-blue-300" data-lang-en>Core Task:</strong>
+                         <span data-lang-ru>Создать аудио-центричную архитектуру, где музыкальный трек в FMOD является "дирижером", управляющим геймплеем, генерацией уровней, шейдерами и UI.</span>
+                         <span data-lang-en>To create an audio-centric architecture where the FMOD music track acts as a "conductor," controlling gameplay, level generation, shaders, and UI.</span>
+                     </p>
+                 </div>
+                 <div class="video-container mb-8 video-placeholder" data-video-ids="94KlTkUudzQ">
+                     <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/94KlTkUudzQ/hqdefault.jpg" alt="Too Late for Valhalla Preview" class="lazy-image video-thumbnail">
+                     <div class="play-button"></div>
+                 </div>
+                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                     <div class="feature-card p-6 rounded-xl">
+                         <h4 class="font-bold text-lg text-blue-300 mb-2">
+                            <span data-lang-ru>1. Аудио-реактивность на DSP</span>
+                            <span data-lang-en>1. DSP-Based Audio Reactivity</span>
+                         </h4>
+                         <p>
+                            <span data-lang-ru>Система анализа звука в реальном времени через DSP с FFT. "Энергия" музыки управляет Post-FX, тряской камеры и параметрами шейдеров.</span>
+                            <span data-lang-en>A real-time audio analysis system using DSP with FFT. The music's "energy" controls Post-FX, camera shake, and shader parameters.</span>
+                         </p>
+                     </div>
+                     <div class="feature-card p-6 rounded-xl">
+                         <h4 class="font-bold text-lg text-blue-300 mb-2">
+                            <span data-lang-ru>2. Процедурная анимация караоке</span>
+                            <span data-lang-en>2. Procedural Karaoke Animation</span>
+                         </h4>
+                         <p>
+                            <span data-lang-ru>Полноценный аниматор текста, управляемый из FMOD через timeline-маркеры. Анимирует десятки параметров материала (`AnimationCurve`).</span>
+                            <span data-lang-en>A full-fledged text animator controlled by FMOD via timeline markers, animating dozens of material parameters with `AnimationCurve`.</span>
+                         </p>
+                     </div>
+                     <div class="feature-card p-6 rounded-xl">
+                         <h4 class="font-bold text-lg text-blue-300 mb-2">
+                            <span data-lang-ru>3. Динамическая генерация уровней</span>
+                            <span data-lang-en>3. Dynamic Level Generation</span>
+                         </h4>
+                         <p>
+                            <span data-lang-ru>Бесконечный раннер, где структура и сложность уровня полностью синхронизированы с FMOD-маркерами в музыкальной композиции.</span>
+                            <span data-lang-en>An endless runner where the level structure and difficulty are fully synchronized with FMOD markers in the music track.</span>
+                         </p>
+                     </div>
+                     <div class="feature-card p-6 rounded-xl">
+                         <h4 class="font-bold text-lg text-blue-300 mb-2">
+                            <span data-lang-ru>4. Комплексный процедурный шейдер воды</span>
+                            <span data-lang-en>4. Complex Procedural Water Shader</span>
+                         </h4>
+                         <p>
+                            <span data-lang-ru>Шейдер воды, управляемый через систему состояний. Плавно переключается между состояниями ("меню", "геймплей"), меняя десятки параметров.</span>
+                            <span data-lang-en>A state-driven water shader that smoothly transitions between states ("menu," "gameplay"), changing dozens of parameters.</span>
+                         </p>
+                     </div>
+                     <div class="feature-card p-6 rounded-xl">
+                         <h4 class="font-bold text-lg text-blue-300 mb-2">
+                            <span data-lang-ru>5. Кастомный Post-Processing в URP</span>
+                            <span data-lang-en>5. Custom Post-Processing in URP</span>
+                         </h4>
+                         <p>
+                            <span data-lang-ru>Собственный `ScriptableRendererFeature`, который инъецирует полноэкранный шейдер в URP. Параметры контролируются состоянием игрока, событиями и музыкой.</span>
+                            <span data-lang-en>A custom `ScriptableRendererFeature` that injects a fullscreen shader into URP. Parameters are controlled by player state, events, and music.</span>
+                         </p>
+                     </div>
+                     <div class="feature-card p-6 rounded-xl">
+                         <h4 class="font-bold text-lg text-blue-300 mb-2">
+                            <span data-lang-ru>6. Глубокая интеграция камеры и UI</span>
+                            <span data-lang-en>6. Deep Camera & UI Integration</span>
+                         </h4>
+                         <p>
+                            <span data-lang-ru>Живая, отзывчивая система обратной связи. Камера использует стейт-машину Cinemachine и `Impulse`, а UI — объект с кастомным шейдером.</span>
+                            <span data-lang-en>A living, responsive feedback system. The camera uses a Cinemachine state machine and `Impulse`, while the UI is an object with a custom shader.</span>
+                         </p>
+                     </div>
+                      <div class="feature-card p-6 rounded-xl md:col-span-2 lg:col-span-3">
+                         <h4 class="font-bold text-lg text-blue-300 mb-2">
+                            <span data-lang-ru>7. Динамический саундтрек и процедурная генерация SFX</span>
+                            <span data-lang-en>7. Dynamic Soundtrack & Procedural SFX</span>
+                         </h4>
+                         <p>
+                            <span data-lang-ru>Продвинутая звуковая система. В реальном времени управляет количеством музыкальных слоев. SFX урона и подбора еды генерируются процедурно через фильтры и наложение слоев, что гарантирует уникальность каждого звука.</span>
+                            <span data-lang-en>An advanced sound system. It controls the number of music layers in real-time. Damage and item pickup SFX are generated procedurally via filters and layer blending, ensuring each sound is unique.</span>
+                         </p>
+                     </div>
+                 </div>
+                 <div class="mt-8 space-y-6">
+                     <h4 class="text-xl font-bold text-center text-white">
+                         <span data-lang-ru>Шейдеры</span>
+                         <span data-lang-en>Shaders</span>
+                     </h4>
+                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                         <div class="video-container video-placeholder" data-video-ids="x3PraWAXz_0">
+                             <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/x3PraWAXz_0/hqdefault.jpg" alt="Shader Preview 1" class="lazy-image video-thumbnail">
+                             <div class="play-button"></div>
+                         </div>
+                         <div class="gallery-item">
+                             <div class="image-container" style="padding-top: 56.25%;"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/SH1_Energy.png" alt="Изображение проекта Valhalla 1"></div>
+                         </div>
+                     </div>
+                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div class="video-container video-placeholder" data-video-ids="lp7c6l9emQ0">
+                             <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/lp7c6l9emQ0/hqdefault.jpg" alt="Shader Preview 2" class="lazy-image video-thumbnail">
+                             <div class="play-button"></div>
+                         </div>
+                         <div class="gallery-item">
+                             <div class="image-container" style="padding-top: 56.25%;"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/SH2_Water.png" alt="Изображение проекта Valhalla 2"></div>
+                         </div>
+                     </div>
+                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div class="video-container video-placeholder" data-video-ids="oBYO5QTS890">
+                             <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/oBYO5QTS890/hqdefault.jpg" alt="Shader Preview 3" class="lazy-image video-thumbnail">
+                             <div class="play-button"></div>
+                         </div>
+                         <div class="gallery-item">
+                             <div class="image-container" style="padding-top: 56.25%;"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/SH3_Vignette.png" alt="Изображение проекта Valhalla 2"></div>
+                         </div>
+                     </div>                        
+                 </div>
             </section>
             
             <hr class="divider">
 
-            <!-- PROJECT: HOLODOG -->
             <section class="mb-16">
-                <div class="text-center mb-8">
-                    <h3 class="project-title">HOLODOG</h3>
-                    <p class="text-xl text-gray-400 max-w-4xl mx-auto">
-                        <strong class="text-blue-300" data-lang-ru>Ключевая задача:</strong>
-                        <strong class="text-blue-300" data-lang-en>Core Task:</strong>
-                        <span data-lang-ru>Создать полностью модульную, управляемую физикой систему процедурной анимации для 2D-меха, позволяющую "собирать" персонажа из независимых частей по рецепту.</span>
-                        <span data-lang-en>To create a fully modular, physics-driven procedural animation system for a 2D mech, allowing character assembly from independent parts based on a recipe.</span>
-                    </p>
+                 <div class="text-center mb-8">
+                     <h3 class="project-title">HOLODOG</h3>
+                     <p class="text-xl text-gray-400 max-w-4xl mx-auto">
+                         <strong class="text-blue-300" data-lang-ru>Ключевая задача:</strong>
+                         <strong class="text-blue-300" data-lang-en>Core Task:</strong>
+                         <span data-lang-ru>Создать полностью модульную, управляемую физикой систему процедурной анимации для 2D-меха, позволяющую "собирать" персонажа из независимых частей по рецепту.</span>
+                         <span data-lang-en>To create a fully modular, physics-driven procedural animation system for a 2D mech, allowing character assembly from independent parts based on a recipe.</span>
+                     </p>
+                 </div>
+                 <div class="video-container mb-8 video-placeholder" data-video-ids="hSL2H4MMssM">
+                     <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/hSL2H4MMssM/hqdefault.jpg" alt="HOLODOG Preview" class="lazy-image video-thumbnail">
+                     <div class="play-button"></div>
+                 </div>
+                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      <div class="feature-card p-6 rounded-xl">
+                         <h4 class="font-bold text-lg text-blue-300 mb-2">
+                             <span data-lang-ru>1. Модульная процедурная анимация</span>
+                             <span data-lang-en>1. Modular Procedural Animation</span>
+                         </h4>
+                         <p>
+                             <span data-lang-ru>Создана система, позволяющая собирать мех "по рецепту". Ядро `ChassisController` через события управляет модулями: процедурной локомоцией, кастомным IK для рук, физикой отдачи и `JiggleBone`.</span>
+                             <span data-lang-en>A system for assembling a mech "by recipe". The `ChassisController` core manages modules via events: procedural locomotion, custom arm IK, physics-based kickback, and `JiggleBone`.</span>
+                         </p>
+                     </div>
+                      <div class="feature-card p-6 rounded-xl">
+                         <h4 class="font-bold text-lg text-blue-300 mb-2">
+                             <span data-lang-ru>2. Продвинутый 2D-шейдер освещения</span>
+                             <span data-lang-en>2. Advanced 2D Lighting Shader</span>
+                         </h4>
+                         <p>
+                             <span data-lang-ru>Разработан шейдер, формирующий собственную систему освещения, смешивая до двух источников света через режимы Overlay, Hard Light и Burn для создания сложного стилизованного 2D-освещения.</span>
+                             <span data-lang-en>A custom shader that forms its own lighting system, blending up to two light sources using Overlay, Hard Light, and Burn modes to create complex, stylized 2D lighting.</span>
+                         </p>
+                     </div>
+                      <div class="feature-card p-6 rounded-xl">
+                         <h4 class="font-bold text-lg text-blue-300 mb-2">
+                             <span data-lang-ru>3. Эффективная кастомизация</span>
+                             <span data-lang-en>3. Efficient Customization</span>
+                         </h4>
+                         <p>
+                             <span data-lang-ru>Реализована система `MaterialOverrideController`, позволяющая на лету через `MaterialPropertyBlock` изменять параметры шейдера для отдельных частей, не создавая новых экземпляров материала.</span>
+                             <span data-lang-en>Implemented `MaterialOverrideController` to change shader parameters on-the-fly for individual parts via `MaterialPropertyBlock`, avoiding new material instances.</span>
+                         </p>
+                     </div>
+                      <div class="feature-card p-6 rounded-xl">
+                         <h4 class="font-bold text-lg text-blue-300 mb-2">
+                             <span data-lang-ru>4. Динамический шейдерный щит</span>
+                             <span data-lang-en>4. Dynamic Shader Shield</span>
+                         </h4>
+                         <p>
+                             <span data-lang-ru>Эффект энергетического щита с имитацией объема на 2D-спрайте. Шейдер анализирует карту глубины и процедурно рассчитывает нормали, позволяя щиту корректно реагировать на свет.</span>
+                             <span data-lang-en>An energy shield effect that fakes volume on a 2D sprite. The shader analyzes the depth map and procedurally calculates normals, allowing it to react correctly to light.</span>
+                         </p>
+                     </div>
+                      <div class="feature-card p-6 rounded-xl">
+                         <h4 class="font-bold text-lg text-blue-300 mb-2">
+                             <span data-lang-ru>5. Архитектура, управляемая событиями</span>
+                             <span data-lang-en>5. Event-Driven Architecture</span>
+                         </h4>
+                         <p>
+                             <span data-lang-ru>В основе проекта лежит гибкая архитектура, где компоненты общаются через систему событий (`Action`). Это обеспечивает низкую связанность кода и упрощает добавление новых механик.</span>
+                             <span data-lang-en>The project is based on a flexible architecture where components communicate via an event system (`Action`), ensuring low code coupling and easy addition of new mechanics.</span>
+                         </p>
+                     </div>
+                      <div class="feature-card p-6 rounded-xl">
+                         <h4 class="font-bold text-lg text-blue-300 mb-2">
+                             <span data-lang-ru>6. Физически-корректное взаимодействие</span>
+                             <span data-lang-en>6. Physics-Based Interaction</span>
+                         </h4>
+                         <p>
+                             <span data-lang-ru>Особое внимание уделено ощущению "веса". Движение управляется через `Rigidbody2D` с инерцией, а оружие генерирует физический импульс (`blowbackForce`), который толкает персонажа назад.</span>
+                             <span data-lang-en>Special attention is paid to the feeling of "weight". Movement is controlled via `Rigidbody2D` with inertia, and weapons generate a physical impulse (`blowbackForce`) that pushes the character back.</span>
+                         </p>
+                     </div>
                 </div>
-                <div class="video-container mb-8 video-placeholder" data-video-ids="hSL2H4MMssM">
-                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/hSL2H4MMssM/hqdefault.jpg" alt="HOLODOG Preview" class="lazy-image video-thumbnail">
-                    <div class="play-button"></div>
-                </div>
-                <!-- Feature cards remain the same -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <div class="feature-card p-6 rounded-xl">
-                            <h4 class="font-bold text-lg text-blue-300 mb-2">
-                                <span data-lang-ru>1. Модульная процедурная анимация</span>
-                                <span data-lang-en>1. Modular Procedural Animation</span>
-                            </h4>
-                            <p>
-                                <span data-lang-ru>Создана система, позволяющая собирать мех "по рецепту". Ядро `ChassisController` через события управляет модулями: процедурной локомоцией, кастомным IK для рук, физикой отдачи и `JiggleBone`.</span>
-                                <span data-lang-en>A system for assembling a mech "by recipe". The `ChassisController` core manages modules via events: procedural locomotion, custom arm IK, physics-based kickback, and `JiggleBone`.</span>
-                            </p>
-                        </div>
-                        <div class="feature-card p-6 rounded-xl">
-                            <h4 class="font-bold text-lg text-blue-300 mb-2">
-                                <span data-lang-ru>2. Продвинутый 2D-шейдер освещения</span>
-                                <span data-lang-en>2. Advanced 2D Lighting Shader</span>
-                            </h4>
-                            <p>
-                                <span data-lang-ru>Разработан шейдер, формирующий собственную систему освещения, смешивая до двух источников света через режимы Overlay, Hard Light и Burn для создания сложного стилизованного 2D-освещения.</span>
-                                <span data-lang-en>A custom shader that forms its own lighting system, blending up to two light sources using Overlay, Hard Light, and Burn modes to create complex, stylized 2D lighting.</span>
-                            </p>
-                        </div>
-                        <div class="feature-card p-6 rounded-xl">
-                            <h4 class="font-bold text-lg text-blue-300 mb-2">
-                                <span data-lang-ru>3. Эффективная кастомизация</span>
-                                <span data-lang-en>3. Efficient Customization</span>
-                            </h4>
-                            <p>
-                                <span data-lang-ru>Реализована система `MaterialOverrideController`, позволяющая на лету через `MaterialPropertyBlock` изменять параметры шейдера для отдельных частей, не создавая новых экземпляров материала.</span>
-                                <span data-lang-en>Implemented `MaterialOverrideController` to change shader parameters on-the-fly for individual parts via `MaterialPropertyBlock`, avoiding new material instances.</span>
-                            </p>
-                        </div>
-                        <div class="feature-card p-6 rounded-xl">
-                            <h4 class="font-bold text-lg text-blue-300 mb-2">
-                                <span data-lang-ru>4. Динамический шейдерный щит</span>
-                                <span data-lang-en>4. Dynamic Shader Shield</span>
-                            </h4>
-                            <p>
-                                <span data-lang-ru>Эффект энергетического щита с имитацией объема на 2D-спрайте. Шейдер анализирует карту глубины и процедурно рассчитывает нормали, позволяя щиту корректно реагировать на свет.</span>
-                                <span data-lang-en>An energy shield effect that fakes volume on a 2D sprite. The shader analyzes the depth map and procedurally calculates normals, allowing it to react correctly to light.</span>
-                            </p>
-                        </div>
-                        <div class="feature-card p-6 rounded-xl">
-                            <h4 class="font-bold text-lg text-blue-300 mb-2">
-                                <span data-lang-ru>5. Архитектура, управляемая событиями</span>
-                                <span data-lang-en>5. Event-Driven Architecture</span>
-                            </h4>
-                            <p>
-                                <span data-lang-ru>В основе проекта лежит гибкая архитектура, где компоненты общаются через систему событий (`Action`). Это обеспечивает низкую связанность кода и упрощает добавление новых механик.</span>
-                                <span data-lang-en>The project is based on a flexible architecture where components communicate via an event system (`Action`), ensuring low code coupling and easy addition of new mechanics.</span>
-                            </p>
-                        </div>
-                        <div class="feature-card p-6 rounded-xl">
-                            <h4 class="font-bold text-lg text-blue-300 mb-2">
-                                <span data-lang-ru>6. Физически-корректное взаимодействие</span>
-                                <span data-lang-en>6. Physics-Based Interaction</span>
-                            </h4>
-                            <p>
-                                <span data-lang-ru>Особое внимание уделено ощущению "веса". Движение управляется через `Rigidbody2D` с инерцией, а оружие генерирует физический импульс (`blowbackForce`), который толкает персонажа назад.</span>
-                                <span data-lang-en>Special attention is paid to the feeling of "weight". Movement is controlled via `Rigidbody2D` with inertia, and weapons generate a physical impulse (`blowbackForce`) that pushes the character back.</span>
-                            </p>
-                        </div>
-                   </div>
-                <div class="mt-8">
-                    <h4 class="text-xl font-bold text-center text-white mb-4">
-                        <span data-lang-ru>Шейдеры</span>
-                        <span data-lang-en>Shaders</span>
-                    </h4>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="gallery-item">
-                            <div class="image-container" style="padding-top: 56.25%;"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/SH4_Shield.png" alt="Изображение проекта Holodog"></div>
-                        </div>
-                        <div class="video-container video-placeholder" data-video-ids="iMwMMa9qOFY">
-                           <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/iMwMMa9qOFY/hqdefault.jpg" alt="Holodog Shader Preview" class="lazy-image video-thumbnail">
-                           <div class="play-button"></div>
-                        </div>
-                    </div>
-                </div>
+                 <div class="mt-8">
+                     <h4 class="text-xl font-bold text-center text-white mb-4">
+                         <span data-lang-ru>Шейдеры</span>
+                         <span data-lang-en>Shaders</span>
+                     </h4>
+                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                         <div class="gallery-item">
+                             <div class="image-container" style="padding-top: 56.25%;"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/SH4_Shield.png" alt="Изображение проекта Holodog"></div>
+                         </div>
+                         <div class="video-container video-placeholder" data-video-ids="iMwMMa9qOFY">
+                            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/iMwMMa9qOFY/hqdefault.jpg" alt="Holodog Shader Preview" class="lazy-image video-thumbnail">
+                            <div class="play-button"></div>
+                         </div>
+                     </div>
+                 </div>
             </section>
             
             <hr class="divider">
-
-            <!-- GALLERY SECTION -->
-            <section class="mb-16">
-                <h2 class="section-title">
-                    <span data-lang-ru>Галерея</span>
-                    <span data-lang-en>Gallery</span>
-                </h2>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Item 1 -->
-                    <div class="gallery-item">
-                        <div class="image-container"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/Bark.jpg" alt="Bark Material Render"></div>
-                        <div class="texture-maps-container">
-                            <div class="texture-map" data-src="img/Bark_normal.jpg"><img src="img/Bark_normal.jpg" alt="Normal Map"></div>
-                            <div class="texture-map" data-src="img/Bark_ao.jpg"><img src="img/Bark_ao.jpg" alt="AO Map"></div>
-                            <div class="texture-map" data-src="img/Bark_roughness.jpg"><img src="img/Bark_roughness.jpg" alt="Roughness Map"></div>
-                            <div class="texture-map" data-src="img/Bark_basecolor.jpg"><img src="img/Bark_basecolor.jpg" alt="Color Map"></div>
-                            <div class="texture-map" data-src="img/Bark_height.jpg"><img src="img/Bark_height.jpg" alt="Height Map"></div>
-                        </div>
-                    </div>
-                    <!-- Item 2 with Texture Maps -->
-                    <div class="gallery-item">
-                        <div class="image-container"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/Brick_1.jpg" alt="Brick Material Render"></div>
-                        <div class="texture-maps-container">
-                            <div class="texture-map" data-src="img/Brick_1_normal.jpg"><img src="img/Brick_1_normal.jpg" alt="Normal Map"></div>
-                            <div class="texture-map" data-src="img/Brick_1_ambientocclusion.jpg"><img src="img/Brick_1_ambientocclusion.jpg" alt="AO Map"></div>
-                            <div class="texture-map" data-src="img/Brick_1_roughness.jpg"><img src="img/Brick_1_roughness.jpg" alt="Roughness Map"></div>
-                            <div class="texture-map" data-src="img/Brick_1_basecolor.jpg"><img src="img/Brick_1_basecolor.jpg" alt="Color Map"></div>
-                            <div class="texture-map" data-src="img/Brick_1_height.jpg"><img src="img/Brick_1_height.jpg" alt="Height Map"></div>
-                        </div>
-                    </div>
-                    <!-- Item 3 with Texture Maps -->
-                    <div class="gallery-item">
-                        <div class="image-container"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/OrnateFabric.jpeg" alt="Ornate Fabric Material Render"></div>
-                        <div class="texture-maps-container">
-                            <div class="texture-map" data-src="img/OrnateFabric_normal.jpg"><img src="img/OrnateFabric_normal.jpg" alt="Normal Map"></div>
-                            <div class="texture-map" data-src="img/OrnateFabric_ambientocclusion.jpg"><img src="img/OrnateFabric_ambientocclusion.jpg" alt="AO Map"></div>
-                            <div class="texture-map" data-src="img/OrnateFabric_roughness.jpg"><img src="img/OrnateFabric_roughness.jpg" alt="Roughness Map"></div>
-                            <div class="texture-map" data-src="img/OrnateFabric_basecolor.jpg"><img src="img/OrnateFabric_basecolor.jpg" alt="Color Map"></div>
-                            <div class="texture-map" data-src="img/OrnateFabric_height.jpg"><img src="img/OrnateFabric_height.jpg" alt="Height Map"></div>
-                            <div class="texture-map" data-src="img/OrnateFabric_metallic.jpg"><img src="img/OrnateFabric_metallic.jpg" alt="Metallic Map"></div>
-                            <div class="texture-map" data-src="img/OrnateFabric_translucensy.jpg"><img src="img/OrnateFabric_translucensy.jpg" alt="Translucensy Map"></div>
-                        </div>
-                    </div>
-                    <!-- Item 4 with Texture Maps -->
-                    <div class="gallery-item">
-                        <div class="image-container"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/BrokenTiles.jpg" alt="Broken Tiles Material Render"></div>
-                        <div class="texture-maps-container">
-                            <div class="texture-map" data-src="img/Broken_Tiles_normal.jpg"><img src="img/Broken_Tiles_normal.jpg" alt="Normal Map"></div>
-                            <div class="texture-map" data-src="img/Broken_Tiles_ambientocclusion.jpg"><img src="img/Broken_Tiles_ambientocclusion.jpg" alt="AO Map"></div>
-                            <div class="texture-map" data-src="img/Broken_Tiles_roughness.jpg"><img src="img/Broken_Tiles_roughness.jpg" alt="Roughness Map"></div>
-                            <div class="texture-map" data-src="img/Broken_Tiles_basecolor.jpg"><img src="img/Broken_Tiles_basecolor.jpg" alt="Color Map"></div>
-                            <div class="texture-map" data-src="img/Broken_Tiles_height.jpg"><img src="img/Broken_Tiles_height.jpg" alt="Height Map"></div>
-                        </div>
-                    </div>
-                    <!-- Item 5 -->
-                    <div class="gallery-item">
-                        <div class="image-container"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/Render_1.png" alt="Описание рендера 2"></div>
-                    </div>
-                    <!-- Item 6 -->
-                    <div class="gallery-item">
-                        <div class="image-container"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/Render_2.png" alt="Описание графа шейдера"></div>
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
-                    <div class="gallery-item">
-                        <div class="image-container" style="padding-top: 56.25%;">
-                            <img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/Pixel_1.png" alt="Дополнительное изображение 1">
-                        </div>
-                    </div>
-                    <div class="gallery-item">
-                        <div class="image-container" style="padding-top: 56.25%;">
-                            <img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/Pixel_2.png" alt="Дополнительное изображение 2">
-                        </div>
-                    </div>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-1 gap-6 mt-6">
-                    <div class="gallery-item">
-                        <div class="image-container" style="padding-top: 56.25%;">
-                            <img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/Mecha_Sewers_Biome.png" alt="Дополнительное изображение 1">
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <hr class="divider">
-
-            <!-- CONTRACT WORK SECTION -->
+            
             <section class="mb-16">
                  <h2 class="section-title">
-                     <span data-lang-ru>Контрактная работа</span>
-                     <span data-lang-en>Contract Work</span>
-                 </h2>
-                <div class="grid grid-cols-1 sm:grid-cols-4 lg:grid-cols-2 gap-6">
-                    <!-- Bit Blast Zero -->
-                    <div class="cv-card">
-                        <div class="video-container mb-4 video-placeholder" data-video-ids="pEYhLY0KeFg,CibIFGiDiwM">
-                           <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/CibIFGiDiwM/hqdefault.jpg" alt="Bit Blast Zero Preview" class="lazy-image video-thumbnail">
-                           <div class="play-button"></div>
+                      <span data-lang-ru>Галерея</span>
+                      <span data-lang-en>Gallery</span>
+                  </h2>
+                  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                      <div class="gallery-item">
+                          <div class="image-container"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/Bark.jpg" alt="Bark Material Render"></div>
+                          <div class="texture-maps-container">
+                              <div class="texture-map" data-src="img/Bark_normal.jpg"><img src="img/Bark_normal.jpg" alt="Normal Map"></div>
+                              <div class="texture-map" data-src="img/Bark_ao.jpg"><img src="img/Bark_ao.jpg" alt="AO Map"></div>
+                              <div class="texture-map" data-src="img/Bark_roughness.jpg"><img src="img/Bark_roughness.jpg" alt="Roughness Map"></div>
+                              <div class="texture-map" data-src="img/Bark_basecolor.jpg"><img src="img/Bark_basecolor.jpg" alt="Color Map"></div>
+                              <div class="texture-map" data-src="img/Bark_height.jpg"><img src="img/Bark_height.jpg" alt="Height Map"></div>
+                          </div>
+                      </div>
+                      <div class="gallery-item">
+                          <div class="image-container"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/Brick_1.jpg" alt="Brick Material Render"></div>
+                          <div class="texture-maps-container">
+                              <div class="texture-map" data-src="img/Brick_1_normal.jpg"><img src="img/Brick_1_normal.jpg" alt="Normal Map"></div>
+                              <div class="texture-map" data-src="img/Brick_1_ambientocclusion.jpg"><img src="img/Brick_1_ambientocclusion.jpg" alt="AO Map"></div>
+                              <div class="texture-map" data-src="img/Brick_1_roughness.jpg"><img src="img/Brick_1_roughness.jpg" alt="Roughness Map"></div>
+                              <div class="texture-map" data-src="img/Brick_1_basecolor.jpg"><img src="img/Brick_1_basecolor.jpg" alt="Color Map"></div>
+                              <div class="texture-map" data-src="img/Brick_1_height.jpg"><img src="img/Brick_1_height.jpg" alt="Height Map"></div>
+                          </div>
+                      </div>
+                      <div class="gallery-item">
+                          <div class="image-container"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/OrnateFabric.jpeg" alt="Ornate Fabric Material Render"></div>
+                          <div class="texture-maps-container">
+                              <div class="texture-map" data-src="img/OrnateFabric_normal.jpg"><img src="img/OrnateFabric_normal.jpg" alt="Normal Map"></div>
+                              <div class="texture-map" data-src="img/OrnateFabric_ambientocclusion.jpg"><img src="img/OrnateFabric_ambientocclusion.jpg" alt="AO Map"></div>
+                              <div class="texture-map" data-src="img/OrnateFabric_roughness.jpg"><img src="img/OrnateFabric_roughness.jpg" alt="Roughness Map"></div>
+                              <div class="texture-map" data-src="img/OrnateFabric_basecolor.jpg"><img src="img/OrnateFabric_basecolor.jpg" alt="Color Map"></div>
+                              <div class="texture-map" data-src="img/OrnateFabric_height.jpg"><img src="img/OrnateFabric_height.jpg" alt="Height Map"></div>
+                              <div class="texture-map" data-src="img/OrnateFabric_metallic.jpg"><img src="img/OrnateFabric_metallic.jpg" alt="Metallic Map"></div>
+                              <div class="texture-map" data-src="img/OrnateFabric_translucensy.jpg"><img src="img/OrnateFabric_translucensy.jpg" alt="Translucensy Map"></div>
+                          </div>
+                      </div>
+                      <div class="gallery-item">
+                          <div class="image-container"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/BrokenTiles.jpg" alt="Broken Tiles Material Render"></div>
+                          <div class="texture-maps-container">
+                              <div class="texture-map" data-src="img/Broken_Tiles_normal.jpg"><img src="img/Broken_Tiles_normal.jpg" alt="Normal Map"></div>
+                              <div class="texture-map" data-src="img/Broken_Tiles_ambientocclusion.jpg"><img src="img/Broken_Tiles_ambientocclusion.jpg" alt="AO Map"></div>
+                              <div class="texture-map" data-src="img/Broken_Tiles_roughness.jpg"><img src="img/Broken_Tiles_roughness.jpg" alt="Roughness Map"></div>
+                              <div class="texture-map" data-src="img/Broken_Tiles_basecolor.jpg"><img src="img/Broken_Tiles_basecolor.jpg" alt="Color Map"></div>
+                              <div class="texture-map" data-src="img/Broken_Tiles_height.jpg"><img src="img/Broken_Tiles_height.jpg" alt="Height Map"></div>
+                          </div>
+                      </div>
+                      <div class="gallery-item">
+                          <div class="image-container"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/Render_1.png" alt="Описание рендера 2"></div>
+                      </div>
+                      <div class="gallery-item">
+                          <div class="image-container"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/Render_2.png" alt="Описание графа шейдера"></div>
+                      </div>
+                  </div>
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
+                      <div class="gallery-item">
+                          <div class="image-container" style="padding-top: 56.25%;">
+                              <img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/Pixel_1.png" alt="Дополнительное изображение 1">
+                          </div>
+                      </div>
+                      <div class="gallery-item">
+                          <div class="image-container" style="padding-top: 56.25%;">
+                              <img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/Pixel_2.png" alt="Дополнительное изображение 2">
+                          </div>
+                      </div>
+                  </div>
+                  <div class="grid grid-cols-1 sm:grid-cols-1 gap-6 mt-6">
+                      <div class="gallery-item">
+                          <div class="image-container" style="padding-top: 56.25%;">
+                              <img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/Mecha_Sewers_Biome.png" alt="Дополнительное изображение 1">
+                          </div>
+                      </div>
+                  </div>
+            </section>
+            <hr class="divider">
+
+            <section class="mb-16">
+                 <h2 class="section-title">
+                      <span data-lang-ru>Контрактная работа</span>
+                      <span data-lang-en>Contract Work</span>
+                  </h2>
+                 <div class="grid grid-cols-1 sm:grid-cols-4 lg:grid-cols-2 gap-6">
+                     <div class="cv-card">
+                         <div class="video-container mb-4 video-placeholder" data-video-ids="pEYhLY0KeFg,CibIFGiDiwM">
+                            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/CibIFGiDiwM/hqdefault.jpg" alt="Bit Blast Zero Preview" class="lazy-image video-thumbnail">
+                            <div class="play-button"></div>
+                         </div>
+                         <h4 class="text-lg font-bold text-white"><span data-lang-ru>Blast Bit Zero</span><span data-lang-en>Blast Bit Zero</span></h4>
+                         <p class="text-gray-400 text-sm"><span data-lang-ru>Разработал бесконечный shoot 'em up. Ключевой особенностью проекта является кастомная система на базе Scriptable Objects, которая значительно упрощает и ускоряет создание новых волн противников и боссов.</span><span data-lang-en>Developed an endless shoot 'em up. The project's core feature is a custom system based on Scriptable Objects, designed to significantly simplify and accelerate the creation of new enemy waves and bosses.</span></p>
+                     </div>
+                     <div class="cv-card">
+                         <div class="video-container mb-4 video-placeholder" data-video-ids="19y2TDY3Myw">
+                            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/19y2TDY3Myw/hqdefault.jpg" alt="Temple of Patience Preview" class="lazy-image video-thumbnail">
+                            <div class="play-button"></div>
+                         </div>
+                         <h4 class="text-lg font-bold text-white"><span data-lang-ru>Temple of Patience</span><span data-lang-en>Temple of Patience</span></h4>
+                         <p class="text-gray-400 text-sm"><span data-lang-ru>Создал сингл-скрин платформер. Основной задачей была разработка архитектуры на основе тайловых карт и префабов, позволяющей собирать новые уровни прямо в редакторе Unity за считанные минуты.</span><span data-lang-en>Created a single-screen platformer. The main goal was to develop an architecture using tilemaps and nested prefabs, enabling the assembly of new levels directly in the Unity editor in minutes.</span></p>
+                     </div>
+                     <div class="cv-card">
+                         <div class="video-container mb-4 video-placeholder" data-video-ids="PdigEk_1eV8">
+                            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/PdigEk_1eV8/hqdefault.jpg" alt="Argon Flight Preview" class="lazy-image video-thumbnail">
+                            <div class="play-button"></div>
+                         </div>
+                         <h4 class="text-lg font-bold text-white"><span data-lang-ru>Argon Flight</span><span data-lang-en>Argon Flight</span></h4>
+                         <p class="text-gray-400 text-sm"><span data-lang-ru>Разработал короткий рельсовый шутер, стилистически вдохновлённый техно-демо 90-х. В основе проекта лежит система событий, привязанных к таймлайну, которая управляет всеми игровыми моментами.</span><span data-lang-en>Developed a short on-rails shooter, stylistically inspired by 90s tech demos. The project is built upon a timeline-based event system that drives all in-game moments.</span></p>
+                     </div>
+                     <div class="cv-card">
+                         <div class="video-container mb-4 video-placeholder" data-video-ids="AjCEn4VBokU">
+                            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/AjCEn4VBokU/hqdefault.jpg" alt="Don't press X Preview" class="lazy-image video-thumbnail">
+                            <div class="play-button"></div>
+                         </div>
+                         <h4 class="text-lg font-bold text-white"><span data-lang-ru>Don't press X to free the pirate</span><span data-lang-en>Don't press X to free the pirate</span></h4>
+                         <p class="text-gray-400 text-sm"><span data-lang-ru>Создал сатирическую мета-игру, построенную вокруг простой концепции: не нажимать кнопку Х. Основной технической задачей стала разработка гибкой системы ветвящихся диалогов на Scriptable Objects, включающей озвучку каждого печатаемого символа.</span><span data-lang-en>Created a satirical meta-game built around a simple concept: don't press X. The main technical challenge was developing a flexible, branching dialogue system using Scriptable Objects, which included per-character audio feedback as text is typed.</span></p>
+                     </div>
+                     <div class="cv-card">
+                         <div class="video-container mb-4 video-placeholder" data-video-ids="Yq5r_JC4H2Q,ildYX8BSKlQ,sm_MsfI60jE">
+                            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/Yq5r_JC4H2Q/hqdefault.jpg" alt="Dissolve Feature Preview" class="lazy-image video-thumbnail">
+                            <div class="play-button"></div>
+                         </div>
+                         <h4 class="text-lg font-bold text-white"><span data-lang-ru>Рендер-фича: Dissolve Effect</span><span data-lang-en>Render Feature: Dissolve Effect</span></h4>
+                         <p class="text-gray-400 text-sm"><span data-lang-ru>Разработал кастомную рендер-фичу (URP Render Feature) для создания эффекта, имитирующего датамошинг, который "распыляет" пиксели предыдущего кадра на текущий. Дополнительно реализовал ряд других шейдерных эффектов.</span><span data-lang-en>Developed a custom URP Render Feature to create a datamoshing-inspired effect that "atomizes" pixels from the previous frame onto the current one. Additionally implemented several other shader effects.</span></p>
+                     </div>
+                     <div class="cv-card">
+                         <div class="video-container mb-4 video-placeholder" data-video-ids="vInap1vfovQ,HjkhupE7mMw,EWbRH-CbFwI,JtkUp9m-JUg">
+                            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/vInap1vfovQ/hqdefault.jpg" alt="Mobile Game Effects Preview" class="lazy-image video-thumbnail">
+                            <div class="play-button"></div>
+                         </div>
+                         <h4 class="text-lg font-bold text-white"><span data-lang-ru>Эффекты для мобильной игры</span><span data-lang-en>Effects for a Mobile Game</span></h4>
+                         <p class="text-gray-400 text-sm"><span data-lang-ru>Разработал серию эффектов частиц, оптимизированных для работы без VFX Graph. Управление параметрами Shuriken реализовано через передачу данных в кастомных UV-каналах для высокой производительности.</span><span data-lang-en>Developed a series of particle effects optimized to run without VFX Graph. Instead, Shuriken parameters are controlled by passing data through custom UV channels, ensuring high performance.</span></p>
+                     </div>
+                     <div class="cv-card">
+                         <div class="video-container mb-4 video-placeholder" data-video-ids="HsWOmk55LDw">
+                            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/HsWOmk55LDw/hqdefault.jpg" alt="VR Features Preview" class="lazy-image video-thumbnail">
+                            <div class="play-button"></div>
+                         </div>
+                         <h4 class="text-lg font-bold text-white"><span data-lang-ru>Разработка фичей для VR</span><span data-lang-en>VR Feature Development</span></h4>
+                         <p class="text-gray-400 text-sm"><span data-lang-ru>Реализовал комплекс фичей для VR-проекта: высокооптимизированные шейдеры, кастомную физическую систему для интерактивных объектов (двери, ящики) и ивентовую систему SFX на Scriptable Objects.</span><span data-lang-en>Implemented a suite of features for a VR project: highly-optimized shaders, a custom physics-based interaction system for objects like doors and drawers, and an event-driven SFX management system using Scriptable Objects.</span></p>
+                     </div>
+                     <div class="cv-card">
+                         <div class="video-container mb-4 video-placeholder" data-video-ids="snpor-cynDA,ECA9xlg1N1o">
+                            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/c_3WGAYfRww/hqdefault.jpg" alt="VFX Graph Explosion Preview" class="lazy-image video-thumbnail">
+                            <div class="play-button"></div>
+                         </div>
+                         <h4 class="text-lg font-bold text-white"><span data-lang-ru>Настраиваемый взрыв (VFX Graph)</span><span data-lang-en>Configurable Explosion (VFX Graph)</span></h4>
+                         <p class="text-gray-400 text-sm"><span data-lang-ru>Создал конфигурируемый эффект взрыва при помощи VFX Graph как гибкий ассет с множеством вынесенных параметров (цвет, размер, интенсивность) для легкой кастомизации.</span><span data-lang-en>Created a configurable explosion effect using VFX Graph, designed as a flexible asset with numerous exposed parameters (e.g., color, size, intensity) for easy customization.</span></p>
+                     </div>
+                 </div>
+            </section>
+
+            <hr class="divider">
+
+            <section class="mb-16">
+                <h2 class="section-title">
+                    <span data-lang-ru>Музыкальные примеры</span>
+                    <span data-lang-en>Music Samples</span>
+                </h2>
+                <div class="music-player-wrapper">
+                    <div class="music-container" id="music-container">
+                        <div class="music-info">
+                            <h2 id="title" class="title"></h2>
+                            <div class="progress-container" id="progress-container">
+                                <div class="progress" id="progress"></div>
+                            </div>
                         </div>
-                        <h4 class="text-lg font-bold text-white"><span data-lang-ru>Blast Bit Zero</span><span data-lang-en>Blast Bit Zero</span></h4>
-                        <p class="text-gray-400 text-sm"><span data-lang-ru>Разработал бесконечный shoot 'em up. Ключевой особенностью проекта является кастомная система на базе Scriptable Objects, которая значительно упрощает и ускоряет создание новых волн противников и боссов.</span><span data-lang-en>Developed an endless shoot 'em up. The project's core feature is a custom system based on Scriptable Objects, designed to significantly simplify and accelerate the creation of new enemy waves and bosses.</span></p>
-                    </div>
-                    <!-- Temple of Patience -->
-                    <div class="cv-card">
-                        <div class="video-container mb-4 video-placeholder" data-video-ids="19y2TDY3Myw">
-                           <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/19y2TDY3Myw/hqdefault.jpg" alt="Temple of Patience Preview" class="lazy-image video-thumbnail">
-                           <div class="play-button"></div>
+                        <audio src="https://github.com/bradtraversy/vanillawebprojects/blob/master/music-player/music/summer.mp3?raw=true" id="audio" crossorigin="anonymous"></audio>
+                        <div class="img-container">
+                            <img src="https://github.com/bradtraversy/vanillawebprojects/blob/master/music-player/images/summer.jpg?raw=true" alt="music-cover" id="cover" />
                         </div>
-                        <h4 class="text-lg font-bold text-white"><span data-lang-ru>Temple of Patience</span><span data-lang-en>Temple of Patience</span></h4>
-                        <p class="text-gray-400 text-sm"><span data-lang-ru>Создал сингл-скрин платформер. Основной задачей была разработка архитектуры на основе тайловых карт и префабов, позволяющей собирать новые уровни прямо в редакторе Unity за считанные минуты.</span><span data-lang-en>Created a single-screen platformer. The main goal was to develop an architecture using tilemaps and nested prefabs, enabling the assembly of new levels directly in the Unity editor in minutes.</span></p>
-                    </div>
-                    <!-- Argon Flight -->
-                    <div class="cv-card">
-                        <div class="video-container mb-4 video-placeholder" data-video-ids="PdigEk_1eV8">
-                           <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/PdigEk_1eV8/hqdefault.jpg" alt="Argon Flight Preview" class="lazy-image video-thumbnail">
-                           <div class="play-button"></div>
+                        <div class="navigation">
+                            <button id="prev" class="action-btn">
+                                <i class="fas fa-backward"></i>
+                            </button>
+                            <button id="play" class="action-btn action-btn-big">
+                                <i class="fas fa-play"></i>
+                            </button>
+                            <button id="next" class="action-btn">
+                                <i class="fas fa-forward"></i>
+                            </button>
                         </div>
-                        <h4 class="text-lg font-bold text-white"><span data-lang-ru>Argon Flight</span><span data-lang-en>Argon Flight</span></h4>
-                        <p class="text-gray-400 text-sm"><span data-lang-ru>Разработал короткий рельсовый шутер, стилистически вдохновлённый техно-демо 90-х. В основе проекта лежит система событий, привязанных к таймлайну, которая управляет всеми игровыми моментами.</span><span data-lang-en>Developed a short on-rails shooter, stylistically inspired by 90s tech demos. The project is built upon a timeline-based event system that drives all in-game moments.</span></p>
-                    </div>
-                    <!-- Don't press X -->
-                    <div class="cv-card">
-                        <div class="video-container mb-4 video-placeholder" data-video-ids="AjCEn4VBokU">
-                           <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/AjCEn4VBokU/hqdefault.jpg" alt="Don't press X Preview" class="lazy-image video-thumbnail">
-                           <div class="play-button"></div>
-                        </div>
-                        <h4 class="text-lg font-bold text-white"><span data-lang-ru>Don't press X to free the pirate</span><span data-lang-en>Don't press X to free the pirate</span></h4>
-                        <p class="text-gray-400 text-sm"><span data-lang-ru>Создал сатирическую мета-игру, построенную вокруг простой концепции: не нажимать кнопку Х. Основной технической задачей стала разработка гибкой системы ветвящихся диалогов на Scriptable Objects, включающей озвучку каждого печатаемого символа.</span><span data-lang-en>Created a satirical meta-game built around a simple concept: don't press X. The main technical challenge was developing a flexible, branching dialogue system using Scriptable Objects, which included per-character audio feedback as text is typed.</span></p>
-                    </div>
-                    <!-- Dissolve Feature -->
-                    <div class="cv-card">
-                        <div class="video-container mb-4 video-placeholder" data-video-ids="Yq5r_JC4H2Q,ildYX8BSKlQ,sm_MsfI60jE">
-                           <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/Yq5r_JC4H2Q/hqdefault.jpg" alt="Dissolve Feature Preview" class="lazy-image video-thumbnail">
-                           <div class="play-button"></div>
-                        </div>
-                        <h4 class="text-lg font-bold text-white"><span data-lang-ru>Рендер-фича: Dissolve Effect</span><span data-lang-en>Render Feature: Dissolve Effect</span></h4>
-                        <p class="text-gray-400 text-sm"><span data-lang-ru>Разработал кастомную рендер-фичу (URP Render Feature) для создания эффекта, имитирующего датамошинг, который "распыляет" пиксели предыдущего кадра на текущий. Дополнительно реализовал ряд других шейдерных эффектов.</span><span data-lang-en>Developed a custom URP Render Feature to create a datamoshing-inspired effect that "atomizes" pixels from the previous frame onto the current one. Additionally implemented several other shader effects.</span></p>
-                    </div>
-                    <!-- Mobile Game Effects -->
-                    <div class="cv-card">
-                        <div class="video-container mb-4 video-placeholder" data-video-ids="vInap1vfovQ,HjkhupE7mMw,EWbRH-CbFwI,JtkUp9m-JUg">
-                           <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/vInap1vfovQ/hqdefault.jpg" alt="Mobile Game Effects Preview" class="lazy-image video-thumbnail">
-                           <div class="play-button"></div>
-                        </div>
-                        <h4 class="text-lg font-bold text-white"><span data-lang-ru>Эффекты для мобильной игры</span><span data-lang-en>Effects for a Mobile Game</span></h4>
-                        <p class="text-gray-400 text-sm"><span data-lang-ru>Разработал серию эффектов частиц, оптимизированных для работы без VFX Graph. Управление параметрами Shuriken реализовано через передачу данных в кастомных UV-каналах для высокой производительности.</span><span data-lang-en>Developed a series of particle effects optimized to run without VFX Graph. Instead, Shuriken parameters are controlled by passing data through custom UV channels, ensuring high performance.</span></p>
-                    </div>
-                    <!-- VR Features -->
-                    <div class="cv-card">
-                        <div class="video-container mb-4 video-placeholder" data-video-ids="HsWOmk55LDw">
-                           <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/HsWOmk55LDw/hqdefault.jpg" alt="VR Features Preview" class="lazy-image video-thumbnail">
-                           <div class="play-button"></div>
-                        </div>
-                        <h4 class="text-lg font-bold text-white"><span data-lang-ru>Разработка фичей для VR</span><span data-lang-en>VR Feature Development</span></h4>
-                        <p class="text-gray-400 text-sm"><span data-lang-ru>Реализовал комплекс фичей для VR-проекта: высокооптимизированные шейдеры, кастомную физическую систему для интерактивных объектов (двери, ящики) и ивентовую систему SFX на Scriptable Objects.</span><span data-lang-en>Implemented a suite of features for a VR project: highly-optimized shaders, a custom physics-based interaction system for objects like doors and drawers, and an event-driven SFX management system using Scriptable Objects.</span></p>
-                    </div>
-                    <!-- VFX Graph Explosion -->
-                    <div class="cv-card">
-                        <div class="video-container mb-4 video-placeholder" data-video-ids="snpor-cynDA,ECA9xlg1N1o">
-                           <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/c_3WGAYfRww/hqdefault.jpg" alt="VFX Graph Explosion Preview" class="lazy-image video-thumbnail">
-                           <div class="play-button"></div>
-                        </div>
-                        <h4 class="text-lg font-bold text-white"><span data-lang-ru>Настраиваемый взрыв (VFX Graph)</span><span data-lang-en>Configurable Explosion (VFX Graph)</span></h4>
-                        <p class="text-gray-400 text-sm"><span data-lang-ru>Создал конфигурируемый эффект взрыва при помощи VFX Graph как гибкий ассет с множеством вынесенных параметров (цвет, размер, интенсивность) для легкой кастомизации.</span><span data-lang-en>Created a configurable explosion effect using VFX Graph, designed as a flexible asset with numerous exposed parameters (e.g., color, size, intensity) for easy customization.</span></p>
                     </div>
                 </div>
             </section>
             
             <hr class="divider">
 
-            <!-- GAME SECTION -->
             <section>
                 <h2 class="section-title">
                     <span data-lang-ru>Пока вы думаете...</span>
@@ -866,11 +1027,9 @@
                     <span data-lang-en>Press Space or tap to jump</span>
                 </p>
             </section>
-
         </main>
     </div>
 
-    <!-- Lightbox HTML -->
     <div id="lightbox" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-4 z-50 opacity-0 pointer-events-none">
         <img id="lightbox-image" src="" alt="Full size view" class="max-w-full max-h-full object-contain transform scale-95">
         <button id="lightbox-close" class="absolute top-4 right-4 text-white text-4xl">&times;</button>
@@ -971,7 +1130,6 @@
                 iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
                 iframe.allowFullscreen = true;
 
-                // Clear placeholder content before adding iframe
                 while (placeholder.firstChild) {
                     placeholder.removeChild(placeholder.firstChild);
                 }
@@ -987,13 +1145,11 @@
 
                 const firstVideoId = videoIds.split(',')[0];
                 
-                // Clear iframe
                 while (placeholder.firstChild) {
                     placeholder.removeChild(placeholder.firstChild);
                 }
 
                 const thumbnail = document.createElement('img');
-                // Use the same lazy-load pattern for reset video thumbnails
                 thumbnail.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
                 thumbnail.dataset.src = `https://img.youtube.com/vi/${firstVideoId}/hqdefault.jpg`;
                 thumbnail.alt = "Video Preview";
@@ -1005,7 +1161,6 @@
                 placeholder.appendChild(thumbnail);
                 placeholder.appendChild(playButton);
                 
-                // Re-observe the new lazy image
                 imageObserver.observe(thumbnail);
 
                 placeholder.classList.remove('video-loaded');
@@ -1025,7 +1180,7 @@
                 videoObserver.observe(placeholder);
             });
 
-            // --- LAZY LOADING FOR ALL IMAGES WITH '.lazy-image' CLASS ---
+            // --- LAZY LOADING FOR ALL IMAGES ---
             const lazyImages = document.querySelectorAll('.lazy-image');
 
             const imageObserver = new IntersectionObserver((entries, observer) => {
@@ -1059,9 +1214,138 @@
             lazyImages.forEach(img => {
                 imageObserver.observe(img);
             });
+            
+            // --- MUSIC PLAYER LOGIC ---
+            const musicContainer = document.getElementById("music-container");
+            const playButton = document.getElementById("play");
+            const prevButton = document.getElementById("prev");
+            const nextButton = document.getElementById("next");
+            const audio = document.getElementById("audio");
+            const progress = document.getElementById("progress");
+            const progressContainer = document.getElementById("progress-container");
+            const title = document.getElementById("title");
+            const cover = document.getElementById("cover");
+            
+            // --- NOTE: Add your own song titles, and make sure the audio and image files exist in the specified paths ---
+            const songs = ["summer", "hey", "ukulele"];
+            let songIndex = 0;
 
+            function getSongTitle(song) {
+                return song.charAt(0).toUpperCase() + song.slice(1);
+            }
+
+            function loadSong(song) {
+                title.innerText = getSongTitle(song);
+                // --- NOTE: Update these paths to your actual file locations ---
+                audio.src = `https://github.com/bradtraversy/vanillawebprojects/blob/master/music-player/music/${song}.mp3?raw=true`;
+                cover.src = `https://github.com/bradtraversy/vanillawebprojects/blob/master/music-player/images/${song}.jpg?raw=true`;
+            }
+
+            function playSong() {
+                musicContainer.classList.add("play");
+                playButton.querySelector("i.fas").classList.remove("fa-play");
+                playButton.querySelector("i.fas").classList.add("fa-pause");
+                audio.play();
+            }
+
+            function pauseSong() {
+                musicContainer.classList.remove("play");
+                playButton.querySelector("i.fas").classList.remove("fa-pause");
+                playButton.querySelector("i.fas").classList.add("fa-play");
+                audio.pause();
+            }
+
+            function prevSong() {
+                songIndex--;
+                if (songIndex < 0) songIndex = songs.length - 1;
+                loadSong(songs[songIndex]);
+                playSong();
+            }
+
+            function nextSong() {
+                songIndex++;
+                if (songIndex > songs.length - 1) songIndex = 0;
+                loadSong(songs[songIndex]);
+                playSong();
+            }
+
+            function updateProgress(e) {
+                const { duration, currentTime } = e.srcElement;
+                const progressPercent = (currentTime / duration) * 100;
+                progress.style.width = `${progressPercent}%`;
+            }
+
+            function setProgress(e) {
+                const width = this.clientWidth;
+                const clickX = e.offsetX;
+                const duration = audio.duration;
+                audio.currentTime = (clickX / width) * duration;
+            }
+
+            // --- AUDIO REACTIVE SHEEN EFFECT ---
+            let audioContext, analyser, sourceNode, dataArray;
+
+            function setupAudioAnalysis() {
+                if (audioContext) return; // Initialize only once
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioContext.createAnalyser();
+                sourceNode = audioContext.createMediaElementSource(audio);
+                
+                sourceNode.connect(analyser);
+                analyser.connect(audioContext.destination);
+                
+                analyser.fftSize = 64;
+                const bufferLength = analyser.frequencyBinCount;
+                dataArray = new Uint8Array(bufferLength);
+
+                updateSheen();
+            }
+            
+            function updateSheen() {
+                if(musicContainer.classList.contains("play")) {
+                    analyser.getByteFrequencyData(dataArray);
+                    
+                    let sum = 0;
+                    for(let i = 0; i < dataArray.length; i++) {
+                        sum += dataArray[i];
+                    }
+                    const average = sum / dataArray.length;
+
+                    // Map the average frequency to animation speed.
+                    // Lower duration = faster animation.
+                    // We map frequency [0, 128] to duration [4s, 0.5s]
+                    const newSpeed = Math.max(0.5, 4 - (average / 128) * 3.5);
+                    musicContainer.style.setProperty('--sheen-speed', `${newSpeed}s`);
+                }
+                
+                requestAnimationFrame(updateSheen);
+            }
+
+            // Event Listeners for Music Player
+            playButton.addEventListener("click", () => {
+                // AudioContext must be started by a user gesture
+                if (!audioContext) {
+                    setupAudioAnalysis();
+                }
+                if (audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+                
+                const isPlaying = musicContainer.classList.contains("play");
+                isPlaying ? pauseSong() : playSong();
+            });
+
+            prevButton.addEventListener("click", prevSong);
+            nextButton.addEventListener("click", nextSong);
+            audio.addEventListener("timeupdate", updateProgress);
+            progressContainer.addEventListener("click", setProgress);
+            audio.addEventListener("ended", nextSong);
+            
+            // Init
+            loadSong(songs[songIndex]);
 
             // --- GAME LOGIC ---
+            // ... [Your existing game logic remains unchanged] ...
             const canvas = document.getElementById('game-canvas');
             const ctx = canvas.getContext('2d');
             const scoreEl = document.getElementById('score-value');
@@ -1233,8 +1517,4 @@
         });
     </script>
 </body>
-
 </html>
-
-
-
