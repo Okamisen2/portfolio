@@ -281,7 +281,7 @@
             flex-direction: column;
             align-items: center;
             width: 100%;
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             position: relative;
         }
@@ -324,7 +324,7 @@
             z-index: 90; /* Above background effect */
             border-radius: 50%;
             overflow: visible; 
-            opacity: 0.95;
+            opacity: 0.75;
         }
 
         .img-container img {
@@ -385,7 +385,7 @@
             object-fit: cover;
             filter: blur(40px);
             mix-blend-mode: soft-light;
-            opacity: var(---intensity);
+            opacity: var(--audio-intensity);
             animation: rotateImage-bg 20s linear infinite;
             animation-play-state: paused;
             transition: opacity 1s ease-out, filter 1.5s ease-out;
@@ -629,7 +629,7 @@
                         <div>
                             <h4 class="font-semibold text-blue-300">
                                 <span data-lang-ru>Аудио</span>
-                                <span data-lang-en></span>
+                                <span data-lang-en>Audio</span>
                             </h4>
                             <p><span class="tag">FMOD</span> <span class="tag">Adobe Audition</span> <span class="tag">FLStudio</span></p>
                         </div>
@@ -719,7 +719,7 @@
                         <strong class="text-blue-300" data-lang-ru>Ключевая задача:</strong>
                         <strong class="text-blue-300" data-lang-en>Core Task:</strong>
                         <span data-lang-ru>Создать аудио-центричную архитектуру, где музыкальный трек в FMOD является "дирижером", управляющим геймплеем, генерацией уровней, шейдерами и UI.</span>
-                        <span data-lang-en>To create an -centric architecture where the FMOD music track acts as a "conductor," controlling gameplay, level generation, shaders, and UI.</span>
+                        <span data-lang-en>To create an audio-centric architecture where the FMOD music track acts as a "conductor," controlling gameplay, level generation, shaders, and UI.</span>
                     </p>
                 </div>
                 <div class="video-container mb-8 video-placeholder" data-video-ids="94KlTkUudzQ">
@@ -731,11 +731,11 @@
                     <div class="feature-card p-6 rounded-xl">
                         <h4 class="font-bold text-lg text-blue-300 mb-2">
                              <span data-lang-ru>1. Аудио-реактивность на DSP</span>
-                             <span data-lang-en>1. DSP-Based  Reactivity</span>
+                             <span data-lang-en>1. DSP-Based Audio Reactivity</span>
                         </h4>
                         <p>
                              <span data-lang-ru>Система анализа звука в реальном времени через DSP с FFT. "Энергия" музыки управляет Post-FX, тряской камеры и параметрами шейдеров.</span>
-                             <span data-lang-en>A real-time  analysis system using DSP with FFT. The music's "energy" controls Post-FX, camera shake, and shader parameters.</span>
+                             <span data-lang-en>A real-time audio analysis system using DSP with FFT. The music's "energy" controls Post-FX, camera shake, and shader parameters.</span>
                         </p>
                     </div>
                     <div class="feature-card p-6 rounded-xl">
@@ -1036,7 +1036,7 @@
                                       </button>
                                   </div>
                               </div>
-                              < id="" crossorigin="anonymous"></>
+                              <audio id="audio" crossorigin="anonymous"></audio>
                           </div>
                       </div>
                   </div>
@@ -1085,7 +1085,7 @@
                              <div class="play-button"></div>
                         </div>
                         <h4 class="text-lg font-bold text-white"><span data-lang-ru>Don't press X to free the pirate</span><span data-lang-en>Don't press X to free the pirate</span></h4>
-                        <p class="text-gray-400 text-sm"><span data-lang-ru>Создал сатирическую мета-игру, построенную вокруг простой концепции: не нажимать кнопку Х. Основной технической задачей стала разработка гибкой системы ветвящихся диалогов на Scriptable Objects, включающей озвучку каждого печатаемого символа.</span><span data-lang-en>Created a satirical meta-game built around a simple concept: don't press X. The main technical challenge was developing a flexible, branching dialogue system using Scriptable Objects, which included per-character  feedback as text is typed.</span></p>
+                        <p class="text-gray-400 text-sm"><span data-lang-ru>Создал сатирическую мета-игру, построенную вокруг простой концепции: не нажимать кнопку Х. Основной технической задачей стала разработка гибкой системы ветвящихся диалогов на Scriptable Objects, включающей озвучку каждого печатаемого символа.</span><span data-lang-en>Created a satirical meta-game built around a simple concept: don't press X. The main technical challenge was developing a flexible, branching dialogue system using Scriptable Objects, which included per-character audio feedback as text is typed.</span></p>
                     </div>
                     <!-- Dissolve Feature -->
                     <div class="cv-card">
@@ -1343,44 +1343,44 @@
             const playButton = document.getElementById("play");
             const prevButton = document.getElementById("prev");
             const nextButton = document.getElementById("next");
-            const  = document.getElementById("");
+            const audio = document.getElementById("audio");
             const progress = document.getElementById("progress");
             const progressContainer = document.getElementById("progress-container");
             const title = document.getElementById("title");
             const cover = document.getElementById("cover");
             const coverBg = document.getElementById("cover-bg");
             
-            let Context, analyser, sourceNode, dataArray;
-            let isContextInitialized = false;
+            let audioContext, analyser, sourceNode, dataArray;
+            let isAudioContextInitialized = false;
             let smoothedIntensity = 0;
             let visualizerFrameId;
 
             const songs = [
-                { name: 'The Industrial Pulse', Src: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/The%20Industrial%20Pulse.mp3', coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/pulse.png' },
-                { name: 'Village Twilight', Src: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/Village%20Twilight.mp3', coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/village.png' },
-                { name: 'Arcade Fury', Src: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Arcade%20Fury.mp3', coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/arcade.png' },
-                { name: 'Crimson Repose', Src: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Crimson%20Repose.mp3', coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/crimson.png' },
-                { name: 'Data Stream Center', Src: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Data%20Stream%20Center.mp3', coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/data.png' },
-                { name: 'The Lich\'s Workshop', Src: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/The%20Lich\'s%20Workshop.mp3', coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/lich.png' },
-                { name: 'Mountain Monastery', Src: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Mountain%20Monastery.mp3', coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/monastery.png' },
-                { name: 'Castle Workshop', Src: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/Castle%20Workshop.mp3', coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/castle.png' },
-                { name: 'Bullet Ballet', Src: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/Bullet%20Ballet.mp3', coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/bullet.png' },
-                { name: 'Dance dance Magic', Src: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/Dance%20dance%20magic.mp3', coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/dance.png' },
-                { name: 'We\'ve Always Been Here', Src: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/We\'ve%20Always%20Been%20Here.mp3', coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/always.png' },
-                { name: 'The System Collapse', Src: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/The%20System%20Collapse.mp3', coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/collapse.png' }
+                { name: 'The Industrial Pulse', audioSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/The%20Industrial%20Pulse.mp3', coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/pulse.png' },
+                { name: 'Village Twilight', audioSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/Village%20Twilight.mp3', coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/village.png' },
+                { name: 'Arcade Fury', audioSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Arcade%20Fury.mp3', coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/arcade.png' },
+                { name: 'Crimson Repose', audioSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Crimson%20Repose.mp3', coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/crimson.png' },
+                { name: 'Data Stream Center', audioSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Data%20Stream%20Center.mp3', coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/data.png' },
+                { name: 'The Lich\'s Workshop', audioSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/The%20Lich\'s%20Workshop.mp3', coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/lich.png' },
+                { name: 'Mountain Monastery', audioSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Mountain%20Monastery.mp3', coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/monastery.png' },
+                { name: 'Castle Workshop', audioSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/Castle%20Workshop.mp3', coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/castle.png' },
+                { name: 'Bullet Ballet', audioSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/Bullet%20Ballet.mp3', coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/bullet.png' },
+                { name: 'Dance dance Magic', audioSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/Dance%20dance%20magic.mp3', coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/dance.png' },
+                { name: 'We\'ve Always Been Here', audioSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/We\'ve%20Always%20Been%20Here.mp3', coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/always.png' },
+                { name: 'The System Collapse', audioSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/The%20System%20Collapse.mp3', coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/collapse.png' }
             ];
             let songIndex = 0;
 
-            function initVisualizer() {
-                if (isContextInitialized) return;
-                Context = new (window.Context || window.webkitContext)();
-                analyser = Context.createAnalyser();
+            function initAudioVisualizer() {
+                if (isAudioContextInitialized) return;
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioContext.createAnalyser();
                 analyser.fftSize = 256;
-                sourceNode = Context.createMediaElementSource();
+                sourceNode = audioContext.createMediaElementSource(audio);
                 sourceNode.connect(analyser);
-                analyser.connect(Context.destination);
+                analyser.connect(audioContext.destination);
                 dataArray = new Uint8Array(analyser.frequencyBinCount);
-                isContextInitialized = true;
+                isAudioContextInitialized = true;
             }
             
             function visualizerLoop() {
@@ -1396,14 +1396,14 @@
 
                 const mappedOpacity = 0.3 + (smoothedIntensity / 255) * 0.5;
                 
-                musicContainer.style.setProperty('---intensity', mappedOpacity);
+                musicContainer.style.setProperty('--audio-intensity', mappedOpacity);
 
                 visualizerFrameId = requestAnimationFrame(visualizerLoop);
             }
 
             function loadSong(songData) {
                 title.innerText = songData.name;
-                .src = songData.Src;
+                audio.src = songData.audioSrc;
                 
                 // --- Updated Crossfade logic for BOTH covers ---
                 cover.classList.add('cover-fade');
@@ -1423,13 +1423,13 @@
             }
 
             function playSong() {
-                if (!isContextInitialized) {
-                    initVisualizer();
+                if (!isAudioContextInitialized) {
+                    initAudioVisualizer();
                 }
                 musicContainer.classList.add("play");
                 playButton.querySelector("i.fas").classList.remove("fa-play");
                 playButton.querySelector("i.fas").classList.add("fa-pause");
-                .play();
+                audio.play();
 
                 if (visualizerFrameId) cancelAnimationFrame(visualizerFrameId);
                 visualizerLoop();
@@ -1439,7 +1439,7 @@
                 musicContainer.classList.remove("play");
                 playButton.querySelector("i.fas").classList.remove("fa-pause");
                 playButton.querySelector("i.fas").classList.add("fa-play");
-                .pause();
+                audio.pause();
                 
                 cancelAnimationFrame(visualizerFrameId);
             }
@@ -1469,9 +1469,9 @@
             function setProgress(e) {
                 const width = this.clientWidth;
                 const clickX = e.offsetX;
-                const duration = .duration;
+                const duration = audio.duration;
                 if (duration) {
-                    .currentTime = (clickX / width) * duration;
+                    audio.currentTime = (clickX / width) * duration;
                 }
             }
 
@@ -1482,9 +1482,9 @@
 
             prevButton.addEventListener("click", prevSong);
             nextButton.addEventListener("click", nextSong);
-            .addEventListener("timeupdate", updateProgress);
+            audio.addEventListener("timeupdate", updateProgress);
             progressContainer.addEventListener("click", setProgress);
-            .addEventListener("ended", nextSong);
+            audio.addEventListener("ended", nextSong);
             
             loadSong(songs[songIndex]);
 
@@ -1656,5 +1656,3 @@
     </script>
 </body>
 </html>
-
-
