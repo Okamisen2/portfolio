@@ -324,6 +324,7 @@
             z-index: 90; /* Above background effect */
             border-radius: 50%;
             overflow: visible; 
+            opacity: 0.75;
         }
 
         .img-container img {
@@ -1391,9 +1392,9 @@
                 }
                 let average = sum / (dataArray.length / 2);
                 
-                smoothedIntensity += (average - smoothedIntensity) * 0.01;
+                smoothedIntensity += (average - smoothedIntensity) * 0.7;
 
-                const mappedOpacity = 0.3 + (smoothedIntensity / 255) * 0.5;
+                const mappedOpacity = 0.1 + (smoothedIntensity / 255) * 0.9;
                 
                 musicContainer.style.setProperty('--audio-intensity', mappedOpacity);
 
@@ -1655,4 +1656,3 @@
     </script>
 </body>
 </html>
-
