@@ -1515,7 +1515,7 @@
             // --- Initial Setup ---
             loadSong(songs[songIndex]); // Load the first song on page load.
 
-            // --- GAME LOGIC ---
+// --- GAME LOGIC ---
             // This is a simple "dino runner" style game using the HTML5 Canvas API.
             const canvas = document.getElementById('game-canvas');
             const ctx = canvas.getContext('2d'); // The context is the object used to draw on the canvas.
@@ -1576,8 +1576,8 @@
                     this.dino.dy += this.dino.gravity;
                     this.dino.y += this.dino.dy;
                     this.dino.onGround = false;
-                    if (this.dino.y >= this.canvas.height - 40) {
-                        this.dino.y = this.canvas.height - 40;
+                    if (this.dino.y >= this.canvas.height - 10 - this.dino.height) {
+                        this.dino.y = this.canvas.height - 10 - this.dino.height;
                         this.dino.dy = 0;
                         this.dino.onGround = true;
                     }
@@ -1595,11 +1595,19 @@
                         const obs = this.obstacles[i];
                         obs.x -= this.gameSpeed;
                         
+                        // --- COLLISION LOGIC FIX ---
+                        // Defines the bounding box for the player and the obstacle.
+                        const dinoRight = this.dino.x + this.dino.width;
+                        const dinoBottom = this.dino.y + this.dino.height;
+                        const obstacleRight = obs.x + obs.width;
+                        const obstacleTop = this.canvas.height - obs.height - 10;
+
                         // AABB (Axis-Aligned Bounding Box) collision check.
-                        if (this.dino.x < obs.x + obs.width &&
-                            this.dino.x + this.dino.width > obs.x &&
-                            this.dino.y < this.canvas.height - obs.height &&
-                            this.dino.y + this.dino.height > this.canvas.height - obs.height - 10) {
+                        // A collision occurs if all four of these conditions are true.
+                        if (dinoRight > obs.x &&                 // Dino's right edge is past the obstacle's left edge
+                            this.dino.x < obstacleRight &&       // Dino's left edge is before the obstacle's right edge
+                            dinoBottom > obstacleTop &&          // Dino's bottom edge is below the obstacle's top edge
+                            this.dino.y < this.canvas.height - 10) { // Dino's top edge is above the ground (obstacle's bottom)
                             this.endGame();
                         }
 
@@ -1715,3 +1723,5 @@
     </script>
 </body>
 </html>
+
+
