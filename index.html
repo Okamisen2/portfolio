@@ -1395,7 +1395,7 @@
 
                 const mappedOpacity = 0.1 + (smoothedIntensity / 255) * 0.9;
                 
-                musicContainer.style.setProperty('--audio-intensity', mappedOpacity);
+                musicContainer.style.setProperty('--', mappedOpacity);
 
                 visualizerFrameId = requestAnimationFrame(visualizerLoop);
             }
@@ -1655,4 +1655,5 @@
     </script>
 </body>
 </html>
+
 
