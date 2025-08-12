@@ -1,99 +1,135 @@
 <!DOCTYPE html>
+<!-- The 'lang' attribute specifies the primary language of the document's content. -->
 <html lang="en">
 <head>
+    <!-- Specifies the character encoding for the document. UTF-8 is the standard. -->
     <meta charset="UTF-8">
+    <!-- Ensures the page is responsive and scales correctly on different devices. -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- The title of the webpage, displayed in the browser tab. -->
     <title>Portfolio | Arthur Fiodarav - Technical Artist</title>
+    
+    <!-- Scripts & Stylesheets -->
+    <!-- Tailwind CSS: A utility-first CSS framework for rapid UI development. -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: For importing custom fonts. -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome: For icons (like play, pause, etc.). -->
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css'>
+    
+    <!-- Internal CSS Styles -->
     <style>
+        /*
+         * CSS Custom Properties (Variables)
+         * These are defined in the :root scope, making them globally available.
+         * This is great for theming and maintaining consistency.
+        */
         :root {
             --sheen-speed: 4s;
             --angle: 0deg;
             --mask-size: 100%;
         }
 
+        /* General body styling */
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #030712; /* gray-950 */
-            color: #d1d5db; /* gray-300 */
+            font-family: 'Inter', sans-serif; /* Sets the default font for the page. */
+            background-color: #030712; /* A very dark gray, almost black. */
+            color: #d1d5db; /* A light gray for text, providing good contrast. */
         }
+
+        /* --- Reusable Component Styles --- */
+
         .section-title {
-            font-size: 2.25rem; /* text-4xl */
-            font-weight: 800; /* font-extrabold */
-            color: #ffffff;
-            margin-bottom: 2rem;
-            text-align: center;
-            letter-spacing: -0.025em;
+            font-size: 2.25rem; /* Large text for section headings. */
+            font-weight: 800; /* Extra bold font weight. */
+            color: #ffffff; /* White color for high visibility. */
+            margin-bottom: 2rem; /* Space below the title. */
+            text-align: center; /* Center-aligns the text. */
+            letter-spacing: -0.025em; /* Slightly reduces space between characters. */
         }
+
         .project-title {
-            font-size: 2.5rem; /* text-4xl */
-            font-weight: 800; /* font-extrabold */
+            font-size: 2.5rem;
+            font-weight: 800;
             color: #ffffff;
             margin-bottom: 0.5rem;
         }
+        
+        /* Style for the glass-like feature cards */
         .feature-card {
-            background-color: rgba(31, 41, 55, 0.5); /* gray-800 with 50% opacity */
-            border: 1px solid #374151; /* gray-700 */
-            backdrop-filter: blur(8px);
-            transition: background-color 0.3s, border-color 0.3s, transform 0.3s;
-            height: 100%;
+            background-color: rgba(31, 41, 55, 0.5); /* Semi-transparent dark gray. */
+            border: 1px solid #374151; /* A subtle border. */
+            backdrop-filter: blur(8px); /* This creates the "frosted glass" effect by blurring content behind it. */
+            transition: all 0.3s; /* Smooth transition for hover effects. */
+            height: 100%; /* Ensures cards in the same row have equal height. */
         }
+
         .feature-card:hover {
-            background-color: rgba(55, 65, 81, 0.7); /* gray-700 with 70% opacity */
-            border-color: #93c5fd; /* blue-300 */
-            transform: translateY(-5px);
+            background-color: rgba(55, 65, 81, 0.7); /* Darkens the card on hover. */
+            border-color: #93c5fd; /* Highlights the border with a light blue. */
+            transform: translateY(-5px); /* Lifts the card slightly on hover. */
         }
+
         .tag {
-            background-color: #3b82f6; /* blue-500 */
+            background-color: #3b82f6; /* Blue background for tags. */
             color: #ffffff;
             font-size: 0.75rem;
             font-weight: 600;
             padding: 4px 10px;
-            border-radius: 9999px;
+            border-radius: 9999px; /* Creates a "pill" shape. */
             text-transform: uppercase;
             display: inline-block;
             margin-bottom: 4px;
         }
+
+        /* --- Video & Image Container Styles --- */
+
+        /* A container that maintains a 16:9 aspect ratio for videos. */
         .video-container {
-            position: relative;
+            position: relative; /* Required for absolute positioning of children. */
             width: 100%;
-            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            padding-top: 56.25%; /* This is the magic for 16:9 aspect ratio (9 / 16 * 100). */
             background-color: #000;
             border-radius: 0.75rem;
-            overflow: hidden;
+            overflow: hidden; /* Hides anything that goes outside the rounded corners. */
             border: 2px solid #374151;
             box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.2), 0 8px 10px -6px rgb(0 0 0 / 0.2);
         }
+
+        /* Makes the iframe or video fill its container. */
         .video-container iframe,
         .video-container video {
-            position: absolute;
+            position: absolute; /* Positions it relative to the .video-container. */
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: cover; /* Ensures the video covers the area without distortion. */
         }
+
+        /* Similar to video-container, but for a 4:3 aspect ratio, common for images. */
         .image-container {
-             position: relative;
+            position: relative;
             width: 100%;
-            padding-top: 75%; /* 4:3 Aspect Ratio for Gallery */
-            background-color: #111827; /* Added a background for better blur effect */
+            padding-top: 75%; /* 4:3 Aspect Ratio (3 / 4 * 100). */
+            background-color: #111827;
             border-radius: 0.5rem;
             overflow: hidden;
             border: 1px solid #374151;
             transition: transform 0.3s;
         }
+        
         .gallery-item {
             cursor: pointer;
-            position: relative; /* Needed for positioning the texture maps */
+            position: relative; /* Needed for positioning the texture map overlays. */
         }
+
         .gallery-item:hover .image-container {
-            transform: scale(1.05);
+            transform: scale(1.05); /* Slightly zooms into the image on hover. */
         }
+        
         .image-container img {
             position: absolute;
             top: 0;
@@ -102,11 +138,15 @@
             height: 100%;
             object-fit: cover;
         }
+
+        /* --- CV & Layout Styles --- */
+
         .divider {
-            border-color: #374151; /* gray-700 */
+            border-color: #374151;
             margin-top: 4rem;
             margin-bottom: 4rem;
         }
+
         .cv-card {
             background-color: rgba(17, 24, 39, 0.8);
             border: 1px solid #374151;
@@ -120,6 +160,8 @@
             color: #ffffff;
             margin-bottom: 1rem;
         }
+        
+        /* --- Language Switcher Styles --- */
         .lang-switcher button {
             padding: 8px 12px;
             border-radius: 8px;
@@ -132,9 +174,259 @@
             color: white;
             font-weight: bold;
         }
+        /* Hide English elements by default, JS will toggle them. */
         [data-lang-en] { display: none; }
 
-        /* Game Styles */
+        /* --- Lightbox (Image Popup) Styles --- */
+        #lightbox {
+            transition: opacity 0.3s ease;
+        }
+        #lightbox-image {
+            transition: transform 0.3s ease;
+        }
+
+        /* --- Video Lazy Loading Placeholder Styles --- */
+        .video-placeholder .video-thumbnail {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .video-placeholder:hover .video-thumbnail {
+            transform: scale(1.05);
+        }
+        .video-placeholder .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none; /* Allows clicks to pass through to the container. */
+            transition: background-color 0.3s ease;
+        }
+        /* Creates the triangle "play" icon using CSS borders. */
+        .video-placeholder .play-button::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 12px 0 12px 20px;
+            border-color: transparent transparent transparent white;
+            margin-left: 4px;
+        }
+        .video-placeholder:hover .play-button {
+            background-color: rgba(255, 0, 0, 0.8); /* Changes to a YouTube-like red on hover. */
+        }
+
+        /* --- Texture Maps Overlay Styles --- */
+        .texture-maps-container {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+        .texture-map {
+            width: 15%;
+            aspect-ratio: 1 / 1; /* Ensures the map previews are square. */
+            border-radius: 0.25rem;
+            overflow: hidden;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            opacity: 0.5;
+            transform: scale(1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .texture-map img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .texture-map:hover {
+            opacity: 1;
+            transform: scale(1.1);
+            z-index: 10; /* Brings the hovered map to the front. */
+        }
+
+        /* --- Lazy Loading Image Styles --- */
+        /* Start with a blurred, slightly zoomed-in image. */
+        .lazy-image {
+            filter: blur(20px);
+            transform: scale(1.1);
+            transition: filter 0.5s ease-out, transform 0.5s ease-out;
+        }
+        /* When the 'loaded' class is added by JS, transition to a sharp, normal-sized image. */
+        .lazy-image.loaded {
+            filter: blur(0);
+            transform: scale(1);
+        }
+        
+        /* --- MUSIC PLAYER STYLES (CLEANED) --- */
+        .music-player-wrapper {
+            display: flex;
+            flex-direction: column; /* Stack player and progress bar vertically */
+            align-items: center; /* Center items horizontally */
+            width: 100%;
+            margin: 0 auto; /* Center the whole wrapper */
+        }
+
+        .music-container {
+            background-color: rgba(17, 24, 39, 0.8);
+            border: 1px solid #374151;
+            border-radius: 1rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+            display: flex;
+            align-items: center;
+            padding: 0;
+            position: relative; /* Essential for z-index and absolute positioning of children. */
+            z-index: 1; /* Ensures player is above default page content. */
+            width: 100%;
+            max-width: 600px; /* Set a max width for the player */
+            height: 90px;
+            overflow: visible; /* Allows the spinning disc to poke out of the container. */
+        }
+        
+        .music-info {
+            position: absolute;
+            top: 5px; /* Positioned from the top. */
+            left: 120px; /* Pushed to the right of the spinning disc. */
+            right: 20px;
+            color: #fff;
+            z-index: 2; /* Sits on top of the disc. */
+            text-align: center;
+        }
+        .music-info h2 {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin: 0;
+            white-space: nowrap; /* Prevents title from wrapping. */
+            overflow: hidden; /* Hides overflow. */
+            text-overflow: ellipsis; /* Adds "..." if the title is too long. */
+        }
+
+        /* Styling for the spinning album art "disc". */
+        .img-container {
+            position: absolute;
+            width: 240px; /* Size of the disc. */
+            height: 240px;
+            left: -130px; /* Pokes out the left side. */
+            top: 50%;
+            transform: translateY(-40%); /* Vertically centers the disc. */
+            z-index: 2; /* Above the container background but below controls. */
+            border-radius: 50%; /* Makes it a circle. */
+            opacity: 0.85;
+        }
+        .img-container img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            /* The 'rotateImage' animation is defined below with @keyframes. */
+            animation: rotateImage 8s linear infinite; 
+            animation-play-state: paused; /* Animation is paused by default. */
+            border: 3px solid #374151;
+        }
+        
+        /* When the .play class is active, the animation runs. */
+        .music-container.play .img-container img {
+            animation-play-state: running;
+        }
+
+        /* Defines the rotation animation. */
+        @keyframes rotateImage {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Creates the small circle in the middle of the disc. */
+        .img-container::after {
+            content: '';
+            background-color: #030712;
+            border: 2px solid #374151;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            transform: translate(-50%, -50%);
+            z-index: 4; /* On top of everything. */
+        }
+
+        .player-controls {
+            display: flex;
+            flex-direction: column; /* Stacks info, progress, and buttons. */
+            justify-content: flex-end;
+            width: 100%;
+            height: 100%;
+            padding-left: 115px; /* Space for the disc. */
+            padding-right: 5px;
+            padding-bottom: 5px;
+        }
+        
+        .navigation {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+            margin-top: 0px; /* Space above the buttons. */
+        }
+        
+        .action-btn {
+            background-color: transparent;
+            border: 0;
+            color: #d1d5db;
+            font-size: 20px;
+            cursor: pointer;
+            padding: -10px;
+            margin: 0 15px;
+            transition: color 0.3s;
+        }
+        .action-btn:focus {
+            outline: none;
+        }
+        .action-btn.action-btn-big {
+            color: #d1d5db;
+            font-size: 30px;
+        }
+        .action-btn:hover, .action-btn.action-btn-big:hover {
+            color: #3b82f6; /* Highlight color on hover. */
+        }
+
+        /* --- Progress Bar Styles --- */
+        /* The container for the progress bar. */
+        #progress-container {
+            background-color: rgba(55, 65, 81, 0.5); /* Semi-transparent dark gray. */
+            border-radius: 2px;
+            cursor: pointer;
+            height: 2px;
+            width: 95%; /* Full width of its parent (.player-controls). */
+            margin-top: -5px;
+            position: relative;
+        }
+
+        /* The actual progress indicator. Its width is set by JavaScript. */
+        #progress {
+            background-color: #3b82f6; /* Blue color for the filled part. */
+            border-radius: 5px;
+            height: 100%;
+            width: 0%; /* Starts at 0%. */
+            transition: width 0.4s linear; /* Smooths the progress update slightly. */
+        }
+        
+        /* --- Game Styles (No Changes) --- */
         #game-container {
             position: relative;
             width: 100%;
@@ -171,518 +463,217 @@
             transition: opacity 0.5s;
             text-align: center;
         }
-        
-        /* Lightbox Styles */
-        #lightbox {
-            transition: opacity 0.3s ease;
-        }
-        #lightbox-image {
-            transition: transform 0.3s ease;
-        }
-
-        /* Video Lazy Loading Styles */
-        .video-placeholder .video-thumbnail {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-        .video-placeholder:hover .video-thumbnail {
-            transform: scale(1.05);
-        }
-        .video-placeholder .play-button {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 60px;
-            height: 60px;
-            background-color: rgba(0, 0, 0, 0.6);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            pointer-events: none;
-            transition: background-color 0.3s ease;
-        }
-        .video-placeholder .play-button::after {
-            content: '';
-            display: block;
-            width: 0;
-            height: 0;
-            border-style: solid;
-            border-width: 12px 0 12px 20px;
-            border-color: transparent transparent transparent white;
-            margin-left: 4px;
-        }
-        .video-placeholder:hover .play-button {
-            background-color: rgba(255, 0, 0, 0.8);
-        }
-
-        /* --- TEXTURE MAPS STYLES --- */
-        .texture-maps-container {
-            position: absolute;
-            bottom: 1rem;
-            left: 1rem;
-            right: 1rem;
-            display: flex;
-            gap: 0.5rem;
-            justify-content: center;
-        }
-        .texture-map {
-            width: 15%; /* Adjust size as needed */
-            aspect-ratio: 1 / 1;
-            border-radius: 0.25rem;
-            overflow: hidden;
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            opacity: 0.5;
-            transform: scale(1);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            cursor: pointer;
-        }
-        .texture-map img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .texture-map:hover {
-            opacity: 1;
-            transform: scale(1.1);
-            z-index: 10;
-        }
-
-        /* --- STYLES FOR LAZY LOADING --- */
-        .lazy-image {
-            filter: blur(20px);
-            transform: scale(1.1);
-            transition: filter 0.5s ease-out, transform 0.5s ease-out;
-        }
-
-        .lazy-image.loaded {
-            filter: blur(0);
-            transform: scale(1);
-        }
-
-        /* --- MUSIC PLAYER STYLES --- */
-        .music-player-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-        }
-
-        .music-container {
-            background-color: rgba(17, 24, 39, 0.8);
-            border: 1px solid #374151;
-            border-radius: 1rem;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
-            display: flex;
-            align-items: center;
-            padding: 20px;
-            position: relative;
-            z-index: 10;
-            width: 100%;
-            height: 130px;
-            overflow: visible; /* Allow sheen to go outside */
-        }
-
-        /* New Layered Sun Ray Sheen Effect */
-        .music-container::before, .music-container::after {
-            content: '';
-            position: absolute;
-            z-index: -1;
-            border-radius: inherit;
-            /* Muted color palette */
-            background: conic-gradient(from var(--angle), #2563eb, #3b82f6, #60a5fa, #38bdf8, #22d3ee, #67e8f9, #5b21b6, #a78bfa, #2563eb);
-            animation: rotateSheen var(--sheen-speed) linear infinite;
-            animation-play-state: paused;
-        }
-
-        .music-container::before {
-            inset: -2px;
-            filter: blur(5px); /* Soft blur for the main rays */
-            mask-image: radial-gradient(
-                circle at center,
-                transparent 68%,
-                black 68.5%,
-                black 71%, transparent 71.2%, 
-                black 75%, transparent 75.2%,
-                black 78%, transparent 78.2%,
-                black 83%, transparent 83.2%,
-                black 86%, transparent 86.2%,
-                black 92%, transparent 92.2%,
-                transparent 100%
-            );
-            -webkit-mask-image: radial-gradient(
-                circle at center,
-                transparent 68%,
-                black 68.5%,
-                black 71%, transparent 71.2%, 
-                black 75%, transparent 75.2%,
-                black 78%, transparent 78.2%,
-                black 83%, transparent 83.2%,
-                black 86%, transparent 86.2%,
-                black 92%, transparent 92.2%,
-                transparent 100%
-            );
-            mask-size: var(--mask-size, 100%) 100%;
-            mask-repeat: no-repeat;
-            mask-position: center;
-            transition: mask-size 0.2s ease-out;
-        }
-        
-        /* Duplicated, larger, and more blurred background layer */
-        .music-container::after {
-            inset: -2px;
-            transform: scale(1.2);
-            filter: blur(20px); /* Heavy blur for the background glow */
-            z-index: -2;
-        }
-
-
-        .music-container.play::before, .music-container.play::after {
-            animation-play-state: running;
-        }
-
-        @property --angle {
-          syntax: '<angle>';
-          initial-value: 0deg;
-          inherits: false;
-        }
-
-        @keyframes rotateSheen {
-          from { --angle: 0deg; }
-          to { --angle: 360deg; }
-        }
-        
-        .music-info {
-            position: absolute;
-            top: 20px;
-            left: 145px;
-            right: 20px;
-            color: #fff;
-            z-index: 2;
-            text-align: center;
-        }
-        .music-info h2 {
-            font-size: 1.1rem;
-            font-weight: bold;
-            margin: 0;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        /* External Progress Bar */
-        .external-progress-container {
-            background-color: #374151;
-            border-radius: 5px;
-            cursor: pointer;
-            height: 6px;
-            width: 100%;
-            max-width: 420px;
-            margin-top: -13px; /* Pulls it up to overlap the player's bottom border */
-            position: relative;
-            z-index: 11; /* Above the player */
-        }
-        .external-progress {
-            background-color: #3b82f6;
-            border-radius: 5px;
-            height: 100%;
-            width: 0%;
-            transition: width 0.1s linear;
-        }
-        
-        .img-container {
-            position: absolute;
-            width: 110px;
-            height: 110px;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 2;
-            opacity: 0.85; /* Added transparency */
-            overflow: hidden; /* Important for the inner sheen */
-            border-radius: 50%;
-        }
-        .img-container img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-            animation: rotateImage 3s linear infinite;
-            animation-play-state: paused;
-            border: 3px solid #374151;
-        }
-        
-        .img-container::before {
-            content: '';
-            position: absolute;
-            inset: -5px;
-            z-index: 3;
-            border-radius: inherit;
-            background: conic-gradient(from var(--angle), #3b82f6, #67e8f9, #a78bfa, #3b82f6);
-            animation: rotateSheen var(--sheen-speed) linear infinite reverse; /* Counter-clockwise */
-            animation-play-state: paused;
-            mask-image: radial-gradient(circle at center, transparent 95%, black 96%);
-            -webkit-mask-image: radial-gradient(circle at center, transparent 95%, black 96%);
-        }
-
-        .music-container.play .img-container::before {
-             animation-play-state: running;
-        }
-
-        .music-container.play .img-container img {
-            animation-play-state: running;
-        }
-        @keyframes rotateImage {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        .img-container::after {
-            content: '';
-            background-color: #030712;
-            border: 2px solid #374151;
-            border-radius: 50%;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 20px;
-            height: 20px;
-            transform: translate(-50%, -50%);
-            z-index: 4;
-        }
-        .player-controls {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end; /* Align controls to the bottom */
-            width: 100%;
-            height: 100%;
-            padding-left: 130px; /* Space for the overlapping disc */
-            padding-top: 30px; /* Space for the title */
-        }
-        .navigation {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1;
-        }
-        .action-btn {
-            background-color: transparent;
-            border: 0;
-            color: #d1d5db;
-            font-size: 20px;
-            cursor: pointer;
-            padding: 10px;
-            margin: 0 15px;
-            transition: color 0.3s;
-        }
-        .action-btn:focus {
-            outline: none;
-        }
-        .action-btn.action-btn-big {
-            color: #d1d5db;
-            font-size: 30px;
-        }
-        .action-btn:hover, .action-btn.action-btn-big:hover {
-            color: #3b82f6;
-        }
     </style>
 </head>
 <body class="p-4 sm:p-8">
+
+    <!-- Main container for the page content, centered and with a max width. -->
     <div class="max-w-7xl mx-auto">
 
-        <!-- HEADER / CV -->
+        <!-- HEADER / CV SECTION -->
+        <!-- The <header> tag is semantic, indicating it's the introductory content. -->
         <header class="mb-16">
-            <!-- ... [Your existing header content remains unchanged] ... -->
-             <div class="relative text-center mb-10">
-                 <div class="absolute top-0 right-0 lang-switcher">
-                     <button id="lang-ru">RU</button>
-                     <button id="lang-en" class="active">EN</button>
-                 </div>
-                 <div class="flex justify-center items-center gap-8 flex-wrap">
-                     <div class="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-gray-700" style="filter: grayscale(100%);">
-                         <img data-lang-ru src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/main_photo.png" alt="Фото Артура Фёдорова" class="lazy-image w-full h-full object-cover">
-                         <img data-lang-en src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/main_photo.png" alt="Photo of Artur Fiodarav" class="lazy-image w-full h-full object-cover">
-                     </div>
-                     <div>
-                         <h1 class="text-5xl md:text-7xl font-extrabold text-white">
-                             <span data-lang-ru>Фёдоров Артур</span>
-                             <span data-lang-en>Arthur Fiodarav</span>
-                         </h1>
-                         <h2 class="text-2xl md:text-3xl text-blue-400 font-medium mt-2">Technical Artist</h2>
-                     </div>
-                 </div>
-                  <p class="mt-6 text-2xl text-gray-300 font-light italic">
-                      <span data-lang-ru>"Играл в игры, писал про игры, продавал игры, продвигал игры — теперь их создаю!"</span>
-                      <span data-lang-en>"Played games, wrote about games, sold games, promoted games - now I create them!"</span>
-                  </p>
-             </div>
+            <div class="relative text-center mb-10">
+                <div class="absolute top-0 right-0 lang-switcher">
+                    <button id="lang-ru">RU</button>
+                    <button id="lang-en" class="active">EN</button>
+                </div>
+                <div class="flex justify-center items-center gap-8 flex-wrap">
+                    <div class="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-4 border-gray-700" style="filter: grayscale(100%);">
+                        <!-- 
+                          Lazy Loading Images:
+                          - 'src' is a tiny transparent GIF. The browser loads this instantly.
+                          - 'data-src' holds the URL of the real, high-quality image.
+                          - JavaScript will swap 'src' with 'data-src' when the image is close to the viewport.
+                          - This dramatically improves initial page load time.
+                        -->
+                        <img data-lang-ru src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/main_photo.png" alt="Фото Артура Фёдорова" class="lazy-image w-full h-full object-cover">
+                        <img data-lang-en src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/main_photo.png" alt="Photo of Artur Fiodarav" class="lazy-image w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h1 class="text-5xl md:text-7xl font-extrabold text-white">
+                            <!-- 
+                              Language Switching:
+                              - Elements with 'data-lang-ru' are for Russian, 'data-lang-en' for English.
+                              - JavaScript shows/hides these based on the selected language.
+                            -->
+                            <span data-lang-ru>Фёдоров Артур</span>
+                            <span data-lang-en>Arthur Fiodarav</span>
+                        </h1>
+                        <h2 class="text-2xl md:text-3xl text-blue-400 font-medium mt-2">Technical Artist</h2>
+                    </div>
+                </div>
+                 <p class="mt-6 text-2xl text-gray-300 font-light italic">
+                     <span data-lang-ru>"Играл в игры, писал про игры, продавал игры, продвигал игры — теперь их создаю!"</span>
+                     <span data-lang-en>"Played games, wrote about games, sold games, promoted games - now I create them!"</span>
+                 </p>
+            </div>
             
-             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-                 <div class="cv-card lg:col-span-2">
-                     <h3>
-                         <span data-lang-ru>Опыт работы</span>
-                         <span data-lang-en>Work Experience</span>
-                     </h3>
-                     <ol class="relative border-l border-gray-700">                        
-                         <li class="mb-10 ml-4">
-                             <div class="absolute w-3 h-3 bg-gray-700 rounded-full mt-1.5 -left-1.5 border border-gray-900"></div>
-                             <time class="mb-1 text-sm font-normal leading-none text-gray-500">2020 - 2025</time>
-                             <h4 class="text-lg font-semibold text-white">
-                                 <span data-lang-ru>Freelance 3D/2D Generalist & Tech Artist</span>
-                                 <span data-lang-en>Freelance 3D/2D Generalist & Tech Artist</span>
-                             </h4>
-                             <p class="text-base font-normal text-gray-400">
-                                 <span data-lang-ru>VFX, шейдеры, материалы, SFX, подготовка к релизам на Steam/PS Store, организация тестирований.</span>
-                                 <span data-lang-en>VFX, shaders, materials, SFX, preparing for Steam/PS Store releases, organizing testing sessions.</span>
-                             </p>
-                         </li>
-                         <li class="mb-10 ml-4">
-                             <div class="absolute w-3 h-3 bg-gray-700 rounded-full mt-1.5 -left-1.5 border border-gray-900"></div>
-                             <time class="mb-1 text-sm font-normal leading-none text-gray-500">2011 - 2020</time>
-                             <h4 class="text-lg font-semibold text-white">
-                                 <span data-lang-ru>Руководитель видеоигрового отдела, OZ.by</span>
-                                 <span data-lang-en>Head of Video Game Department, OZ.by</span>
-                             </h4>
-                             <p class="text-base font-normal text-gray-400">
-                                 <span data-lang-ru>Управлял полным циклом игрового направления: от переговоров с Nintendo и Blizzard до организации национальных киберспортивных турниров. Получил глубокое понимание рынка и жизненного цикла продукта.</span>
-                                 <span data-lang-en>Managed the full cycle of the gaming division: from negotiations with Nintendo and Blizzard to organizing national esports tournaments. Gained a deep understanding of the market and product lifecycle.</span>
-                             </p>
-                         </li>
-                         <li class="ml-4">
-                             <div class="absolute w-3 h-3 bg-gray-700 rounded-full mt-1.5 -left-1.5 border border-gray-900"></div>
-                             <time class="mb-1 text-sm font-normal leading-none text-gray-500">2008 - 2011</time>
-                             <h4 class="text-lg font-semibold text-white">
-                                 <span data-lang-ru>Копирайтер, Etxt</span>
-                                 <span data-lang-en>Copywriter, Etxt</span>
-                             </h4>
-                             <p class="text-base font-normal text-gray-400">
-                                 <span data-lang-ru>Начинал путь в индустрии с написания обзоров и гайдов, глубоко изучая игровые механики и то, что цепляет игроков.</span>
-                                 <span data-lang-en>Started my journey in the industry by writing reviews and guides, deeply studying game mechanics and what engages players.</span>
-                             </p>
-                         </li>
-                     </ol>
-                 </div>
+            <!-- CV Grid Layout -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <!-- Work Experience Card -->
+                <div class="cv-card lg:col-span-2">
+                    <h3>
+                        <span data-lang-ru>Опыт работы</span>
+                        <span data-lang-en>Work Experience</span>
+                    </h3>
+                    <ol class="relative border-l border-gray-700">                  
+                        <li class="mb-10 ml-4">
+                            <div class="absolute w-3 h-3 bg-gray-700 rounded-full mt-1.5 -left-1.5 border border-gray-900"></div>
+                            <time class="mb-1 text-sm font-normal leading-none text-gray-500">2020 - 2025</time>
+                            <h4 class="text-lg font-semibold text-white">
+                                <span data-lang-ru>Freelance 3D/2D Generalist & Tech Artist</span>
+                                <span data-lang-en>Freelance 3D/2D Generalist & Tech Artist</span>
+                            </h4>
+                            <p class="text-base font-normal text-gray-400">
+                                <span data-lang-ru>VFX, шейдеры, материалы, SFX, подготовка к релизам на Steam/PS Store, организация тестирований.</span>
+                                <span data-lang-en>VFX, shaders, materials, SFX, preparing for Steam/PS Store releases, organizing testing sessions.</span>
+                            </p>
+                        </li>
+                        <li class="mb-10 ml-4">
+                            <div class="absolute w-3 h-3 bg-gray-700 rounded-full mt-1.5 -left-1.5 border border-gray-900"></div>
+                            <time class="mb-1 text-sm font-normal leading-none text-gray-500">2011 - 2020</time>
+                            <h4 class="text-lg font-semibold text-white">
+                                <span data-lang-ru>Руководитель видеоигрового отдела, OZ.by</span>
+                                <span data-lang-en>Head of Video Game Department, OZ.by</span>
+                            </h4>
+                            <p class="text-base font-normal text-gray-400">
+                                <span data-lang-ru>Управлял полным циклом игрового направления: от переговоров с Nintendo и Blizzard до организации национальных киберспортивных турниров. Получил глубокое понимание рынка и жизненного цикла продукта.</span>
+                                <span data-lang-en>Managed the full cycle of the gaming division: from negotiations with Nintendo and Blizzard to organizing national esports tournaments. Gained a deep understanding of the market and product lifecycle.</span>
+                            </p>
+                        </li>
+                        <li class="ml-4">
+                            <div class="absolute w-3 h-3 bg-gray-700 rounded-full mt-1.5 -left-1.5 border border-gray-900"></div>
+                            <time class="mb-1 text-sm font-normal leading-none text-gray-500">2008 - 2011</time>
+                            <h4 class="text-lg font-semibold text-white">
+                                <span data-lang-ru>Копирайтер, Etxt</span>
+                                <span data-lang-en>Copywriter, Etxt</span>
+                            </h4>
+                            <p class="text-base font-normal text-gray-400">
+                                <span data-lang-ru>Начинал путь в индустрии с написания обзоров и гайдов, глубоко изучая игровые механики и то, что цепляет игроков.</span>
+                                <span data-lang-en>Started my journey in the industry by writing reviews and guides, deeply studying game mechanics and what engages players.</span>
+                            </p>
+                        </li>
+                    </ol>
+                </div>
+                <!-- About Me Card -->
+                <div class="cv-card">
+                    <h3>
+                        <span data-lang-ru>Обо мне</span>
+                        <span data-lang-en>About Me</span>
+                    </h3>
+                    <div>
+                        <p class="text-lg text-gray-300 mb-4">
+                            <span data-lang-ru>Увлеченный специалист, который верит, что элегантные технические решения и креативный подход — ключ к созданию незабываемого игрового опыта. А ещё:</span>
+                            <span data-lang-en>An enthusiastic specialist who believes that elegant technical solutions and a creative approach are the key to creating an unforgettable gaming experience. Also:</span>
+                        </p>
+                        <div>
+                            <img data-lang-ru src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/NodesRu.gif" class="lazy-image w-full rounded-lg" alt="I like nodes gif">
+                            <img data-lang-en src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/Nodes.gif" class="lazy-image w-full rounded-lg" alt="I like nodes gif">
+                        </div>
+                    </div>
+                </div>
+                <!-- Key Skills Card -->
+                <div class="cv-card">
+                    <h3>
+                        <span data-lang-ru>Ключевые навыки</span>
+                        <span data-lang-en>Key Skills</span>
+                    </h3>
+                    <div class="space-y-3">
+                        <div>
+                            <h4 class="font-semibold text-blue-300">
+                                <span data-lang-ru>Основное</span>
+                                <span data-lang-en>Core</span>
+                            </h4>
+                            <p><span class="tag">Unity</span> <span class="tag">C#</span> <span class="tag">C++ (basic)</span> <span class="tag">ShaderGraph</span> <span class="tag">VFXGraph</span> <span class="tag">SFX</span></p>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-blue-300">
+                                <span data-lang-ru>Арт-инструменты</span>
+                                <span data-lang-en>Art Tools</span>
+                            </h4>
+                            <p><span class="tag">Substance Designer</span> <span class="tag">Blender</span> <span class="tag">Photoshop</span> <span class="tag">Krita</span> <span class="tag">PixelCreator</span> <span class="tag">Aseprite</span></p>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-blue-300">
+                                <span data-lang-ru>Аудио</span>
+                                <span data-lang-en>Audio</span>
+                            </h4>
+                            <p><span class="tag">FMOD</span> <span class="tag">Adobe Audition</span> <span class="tag">FLStudio</span></p>
+                        </div>
+                         <div>
+                            <h4 class="font-semibold text-blue-300">
+                                <span data-lang-ru>Языки</span>
+                                <span data-lang-en>Languages</span>
+                            </h4>
+                            <p><span class="tag">Русский (Родной)</span> <span class="tag">English B2</span></p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Education Card -->
+                <div class="cv-card">
+                    <h3>
+                        <span data-lang-ru>Образование и Обучение</span>
+                        <span data-lang-en>Education & Training</span>
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-semibold text-white">
+                                <span data-lang-ru>БГЭУ, Экономист-информатик</span>
+                                <span data-lang-en>BSEU, Economist-Informatics</span>
+                            </h4>
+                            <p class="text-gray-400">
+                                <span data-lang-ru>Сильная база в математике, статистике и аналитике, помогающая в программировании и оптимизации.</span>
+                                <span data-lang-en>Strong foundation in mathematics, statistics, and analytics, which aids in programming and optimization.</span>
+                            </p>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-white">
+                                <span data-lang-ru>Специализированные курсы</span>
+                                <span data-lang-en>Specialized Courses</span>
+                            </h4>
+                            <p class="text-gray-400">
+                                <span data-lang-ru>Множество углубленных курсов по Blender, Unity, C#, написанию шейдеров, VFX, работе со светом и FMOD.</span>
+                                <span data-lang-en>Numerous in-depth courses on Blender, Unity, C#, shader writing, VFX, lighting, and FMOD.</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Printable Version Card -->
                  <div class="cv-card">
                      <h3>
-                         <span data-lang-ru>Обо мне</span>
-                         <span data-lang-en>About Me</span>
+                         <span data-lang-ru>Версия для печати</span>
+                         <span data-lang-en>Printable Version</span>
                      </h3>
-                     <div>
+                     <div class="h-full flex flex-col justify-between">
                          <p class="text-lg text-gray-300 mb-4">
-                             <span data-lang-ru>Увлеченный специалист, который верит, что элегантные технические решения и креативный подход — ключ к созданию незабываемого игрового опыта. А ещё:</span>
-                             <span data-lang-en>An enthusiastic specialist who believes that elegant technical solutions and a creative approach are the key to creating an unforgettable gaming experience. Also:</span>
+                             <span data-lang-ru>Для вашего удобства я подготовил краткую версию этого портфолио в формате PDF.</span>
+                             <span data-lang-en>For your convenience, I have prepared a brief version of this portfolio in PDF format.</span>
                          </p>
-                         <div>
-                             <!-- GIFs are now properly lazy-loaded -->
-                             <img data-lang-ru src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/NodesRu.gif" class="lazy-image w-full rounded-lg" alt="I like nodes gif">
-                             <img data-lang-en src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/Nodes.gif" class="lazy-image w-full rounded-lg" alt="I like nodes gif">
-                         </div>
+                         <a id="pdf-download-link" href="PATH_TO_YOUR_EN_PDF.pdf" target="_blank" class="mt-auto block text-center w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-colors">
+                             <span data-lang-ru>Скачать PDF</span>
+                             <span data-lang-en>Download PDF</span>
+                         </a>
                      </div>
                  </div>
-                 <div class="cv-card">
-                     <h3>
-                         <span data-lang-ru>Ключевые навыки</span>
-                         <span data-lang-en>Key Skills</span>
-                     </h3>
-                     <div class="space-y-3">
-                         <div>
-                             <h4 class="font-semibold text-blue-300">
-                                 <span data-lang-ru>Основное</span>
-                                 <span data-lang-en>Core</span>
-                             </h4>
-                             <p><span class="tag">Unity</span> <span class="tag">C#</span> <span class="tag">C++ (basic)</span> <span class="tag">ShaderGraph</span> <span class="tag">VFXGraph</span> <span class="tag">SFX</span></p>
-                         </div>
-                         <div>
-                             <h4 class="font-semibold text-blue-300">
-                                 <span data-lang-ru>Арт-инструменты</span>
-                                 <span data-lang-en>Art Tools</span>
-                             </h4>
-                             <p><span class="tag">Substance Designer</span> <span class="tag">Blender</span> <span class="tag">Photoshop</span> <span class="tag">Krita</span> <span class="tag">PixelCreator</span> <span class="tag">Aseprite</span></p>
-                         </div>
-                         <div>
-                             <h4 class="font-semibold text-blue-300">
-                                 <span data-lang-ru>Аудио</span>
-                                 <span data-lang-en>Audio</span>
-                             </h4>
-                             <p><span class="tag">FMOD</span> <span class="tag">Adobe Audition</span> <span class="tag">FLStudio</span></p>
-                         </div>
-                          <div>
-                             <h4 class="font-semibold text-blue-300">
-                                 <span data-lang-ru>Языки</span>
-                                 <span data-lang-en>Languages</span>
-                             </h4>
-                             <p><span class="tag">Русский (Родной)</span> <span class="tag">English B2</span></p>
-                         </div>
-                     </div>
-                 </div>
-                 <div class="cv-card">
-                     <h3>
-                         <span data-lang-ru>Образование и Обучение</span>
-                         <span data-lang-en>Education & Training</span>
-                     </h3>
-                     <div class="space-y-4">
-                         <div>
-                             <h4 class="font-semibold text-white">
-                                 <span data-lang-ru>БГЭУ, Экономист-информатик</span>
-                                 <span data-lang-en>BSEU, Economist-Informatics</span>
-                             </h4>
-                             <p class="text-gray-400">
-                                 <span data-lang-ru>Сильная база в математике, статистике и аналитике, помогающая в программировании и оптимизации.</span>
-                                 <span data-lang-en>Strong foundation in mathematics, statistics, and analytics, which aids in programming and optimization.</span>
-                             </p>
-                         </div>
-                         <div>
-                             <h4 class="font-semibold text-white">
-                                 <span data-lang-ru>Специализированные курсы</span>
-                                 <span data-lang-en>Specialized Courses</span>
-                             </h4>
-                             <p class="text-gray-400">
-                                 <span data-lang-ru>Множество углубленных курсов по Blender, Unity, C#, написанию шейдеров, VFX, работе со светом и FMOD.</span>
-                                 <span data-lang-en>Numerous in-depth courses on Blender, Unity, C#, shader writing, VFX, lighting, and FMOD.</span>
-                             </p>
-                         </div>
-                     </div>
-                 </div>
-                  <div class="cv-card">
-                      <h3>
-                          <span data-lang-ru>Версия для печати</span>
-                          <span data-lang-en>Printable Version</span>
-                      </h3>
-                      <div class="h-full flex flex-col justify-between">
-                          <p class="text-lg text-gray-300 mb-4">
-                              <span data-lang-ru>Для вашего удобства я подготовил краткую версию этого портфолио в формате PDF.</span>
-                              <span data-lang-en>For your convenience, I have prepared a brief version of this portfolio in PDF format.</span>
-                          </p>
-                          <a id="pdf-download-link" href="PATH_TO_YOUR_EN_PDF.pdf" target="_blank" class="mt-auto block text-center w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-colors">
-                              <span data-lang-ru>Скачать PDF</span>
-                              <span data-lang-en>Download PDF</span>
-                          </a>
-                      </div>
-                  </div>
-             </div>
-              <div class="mt-8 flex justify-center gap-x-6 gap-y-3 flex-wrap text-lg">
-                  <a href="mailto:okamisen@yandex.ru" class="text-white hover:text-blue-400">okamisen@yandex.ru</a>
+            </div>
+             <!-- Contact Links -->
+             <div class="mt-8 flex justify-center gap-x-6 gap-y-3 flex-wrap text-lg">
+                 <a href="mailto:okamisen@yandex.ru" class="text-white hover:text-blue-400">okamisen@yandex.ru</a>
+                 <span class="text-gray-500">|</span>
+                 <a href="https://www.linkedin.com/in/v-v-15362034a/" target="_blank" class="text-white hover:text-blue-400">LinkedIn</a>
                   <span class="text-gray-500">|</span>
-                  <a href="https://www.linkedin.com/in/v-v-15362034a/" target="_blank" class="text-white hover:text-blue-400">LinkedIn</a>
-                   <span class="text-gray-500">|</span>
-                   <a href="https://t.me/Okamisen" target="_blank" class="text-white hover:text-blue-400">Telegram</a>
-                   <span class="text-gray-500">|</span>
-                  <span class="text-white">
-                      <span data-lang-ru>Беларусь, Минск</span>
-                      <span data-lang-en>Minsk, Belarus</span>
-                  </span>
-              </div>
+                  <a href="https://t.me/Okamisen" target="_blank" class="text-white hover:text-blue-400">Telegram</a>
+                  <span class="text-gray-500">|</span>
+                 <span class="text-white">
+                     <span data-lang-ru>Беларусь, Минск</span>
+                     <span data-lang-en>Minsk, Belarus</span>
+                 </span>
+             </div>
         </header>
 
-        <!-- PROJECTS -->
+        <!-- MAIN CONTENT (PROJECTS) -->
+        <!-- The <main> tag is semantic, indicating it's the primary content of the page. -->
         <main>
             <h2 class="section-title">
                 <span data-lang-ru>Личные проекты</span>
@@ -691,134 +682,138 @@
 
             <!-- PROJECT: Too Late for Valhalla -->
             <section class="mb-16">
-                <!-- ... [Your existing project content remains unchanged] ... -->
-                 <div class="text-center mb-8">
-                     <h3 class="project-title">Too Late for Valhalla</h3>
-                     <p class="text-xl text-gray-400 max-w-4xl mx-auto">
-                         <strong class="text-blue-300" data-lang-ru>Ключевая задача:</strong>
-                         <strong class="text-blue-300" data-lang-en>Core Task:</strong>
-                         <span data-lang-ru>Создать аудио-центричную архитектуру, где музыкальный трек в FMOD является "дирижером", управляющим геймплеем, генерацией уровней, шейдерами и UI.</span>
-                         <span data-lang-en>To create an audio-centric architecture where the FMOD music track acts as a "conductor," controlling gameplay, level generation, shaders, and UI.</span>
-                     </p>
-                 </div>
-                 <div class="video-container mb-8 video-placeholder" data-video-ids="94KlTkUudzQ">
-                     <!-- Video thumbnails are now lazy-loaded -->
-                     <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/94KlTkUudzQ/hqdefault.jpg" alt="Too Late for Valhalla Preview" class="lazy-image video-thumbnail">
-                     <div class="play-button"></div>
-                 </div>
-                 <!-- Feature cards remain the same -->
-                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                     <div class="feature-card p-6 rounded-xl">
+                <div class="text-center mb-8">
+                    <h3 class="project-title">Too Late for Valhalla</h3>
+                    <p class="text-xl text-gray-400 max-w-4xl mx-auto">
+                        <strong class="text-blue-300" data-lang-ru>Ключевая задача:</strong>
+                        <strong class="text-blue-300" data-lang-en>Core Task:</strong>
+                        <span data-lang-ru>Создать аудио-центричную архитектуру, где музыкальный трек в FMOD является "дирижером", управляющим геймплеем, генерацией уровней, шейдерами и UI.</span>
+                        <span data-lang-en>To create an audio-centric architecture where the FMOD music track acts as a "conductor," controlling gameplay, level generation, shaders, and UI.</span>
+                    </p>
+                </div>
+                <!-- 
+                  Video Placeholder:
+                  - This div acts as a placeholder for a YouTube video.
+                  - 'data-video-ids' contains the YouTube video ID(s).
+                  - JavaScript will replace this with an iframe when it's scrolled into view.
+                -->
+                <div class="video-container mb-8 video-placeholder" data-video-ids="94KlTkUudzQ">
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/94KlTkUudzQ/hqdefault.jpg" alt="Too Late for Valhalla Preview" class="lazy-image video-thumbnail">
+                    <div class="play-button"></div>
+                </div>
+                <!-- Feature Cards Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="feature-card p-6 rounded-xl">
+                        <h4 class="font-bold text-lg text-blue-300 mb-2">
+                             <span data-lang-ru>1. Аудио-реактивность на DSP</span>
+                             <span data-lang-en>1. DSP-Based Audio Reactivity</span>
+                        </h4>
+                        <p>
+                             <span data-lang-ru>Система анализа звука в реальном времени через DSP с FFT. "Энергия" музыки управляет Post-FX, тряской камеры и параметрами шейдеров.</span>
+                             <span data-lang-en>A real-time audio analysis system using DSP with FFT. The music's "energy" controls Post-FX, camera shake, and shader parameters.</span>
+                        </p>
+                    </div>
+                    <div class="feature-card p-6 rounded-xl">
+                        <h4 class="font-bold text-lg text-blue-300 mb-2">
+                             <span data-lang-ru>2. Процедурная анимация караоке</span>
+                             <span data-lang-en>2. Procedural Karaoke Animation</span>
+                        </h4>
+                        <p>
+                             <span data-lang-ru>Полноценный аниматор текста, управляемый из FMOD через timeline-маркеры. Анимирует десятки параметров материала (`AnimationCurve`).</span>
+                             <span data-lang-en>A full-fledged text animator controlled by FMOD via timeline markers, animating dozens of material parameters with `AnimationCurve`.</span>
+                        </p>
+                    </div>
+                    <div class="feature-card p-6 rounded-xl">
+                        <h4 class="font-bold text-lg text-blue-300 mb-2">
+                             <span data-lang-ru>3. Динамическая генерация уровней</span>
+                             <span data-lang-en>3. Dynamic Level Generation</span>
+                        </h4>
+                        <p>
+                             <span data-lang-ru>Бесконечный раннер, где структура и сложность уровня полностью синхронизированы с FMOD-маркерами в музыкальной композиции.</span>
+                             <span data-lang-en>An endless runner where the level structure and difficulty are fully synchronized with FMOD markers in the music track.</span>
+                        </p>
+                    </div>
+                    <div class="feature-card p-6 rounded-xl">
+                        <h4 class="font-bold text-lg text-blue-300 mb-2">
+                             <span data-lang-ru>4. Комплексный процедурный шейдер воды</span>
+                             <span data-lang-en>4. Complex Procedural Water Shader</span>
+                        </h4>
+                        <p>
+                             <span data-lang-ru>Шейдер воды, управляемый через систему состояний. Плавно переключается между состояниями ("меню", "геймплей"), меняя десятки параметров.</span>
+                             <span data-lang-en>A state-driven water shader that smoothly transitions between states ("menu," "gameplay"), changing dozens of parameters.</span>
+                        </p>
+                    </div>
+                    <div class="feature-card p-6 rounded-xl">
+                        <h4 class="font-bold text-lg text-blue-300 mb-2">
+                             <span data-lang-ru>5. Кастомный Post-Processing в URP</span>
+                             <span data-lang-en>5. Custom Post-Processing in URP</span>
+                        </h4>
+                        <p>
+                             <span data-lang-ru>Собственный `ScriptableRendererFeature`, который инъецирует полноэкранный шейдер в URP. Параметры контролируются состоянием игрока, событиями и музыкой.</span>
+                             <span data-lang-en>A custom `ScriptableRendererFeature` that injects a fullscreen shader into URP. Parameters are controlled by player state, events, and music.</span>
+                        </p>
+                    </div>
+                    <div class="feature-card p-6 rounded-xl">
+                        <h4 class="font-bold text-lg text-blue-300 mb-2">
+                             <span data-lang-ru>6. Глубокая интеграция камеры и UI</span>
+                             <span data-lang-en>6. Deep Camera & UI Integration</span>
+                        </h4>
+                        <p>
+                             <span data-lang-ru>Живая, отзывчивая система обратной связи. Камера использует стейт-машину Cinemachine и `Impulse`, а UI — объект с кастомным шейдером.</span>
+                             <span data-lang-en>A living, responsive feedback system. The camera uses a Cinemachine state machine and `Impulse`, while the UI is an object with a custom shader.</span>
+                        </p>
+                    </div>
+                     <div class="feature-card p-6 rounded-xl md:col-span-2 lg:col-span-3">
                          <h4 class="font-bold text-lg text-blue-300 mb-2">
-                            <span data-lang-ru>1. Аудио-реактивность на DSP</span>
-                            <span data-lang-en>1. DSP-Based Audio Reactivity</span>
+                             <span data-lang-ru>7. Динамический саундтрек и процедурная генерация SFX</span>
+                             <span data-lang-en>7. Dynamic Soundtrack & Procedural SFX</span>
                          </h4>
                          <p>
-                            <span data-lang-ru>Система анализа звука в реальном времени через DSP с FFT. "Энергия" музыки управляет Post-FX, тряской камеры и параметрами шейдеров.</span>
-                            <span data-lang-en>A real-time audio analysis system using DSP with FFT. The music's "energy" controls Post-FX, camera shake, and shader parameters.</span>
+                             <span data-lang-ru>Продвинутая звуковая система. В реальном времени управляет количеством музыкальных слоев. SFX урона и подбора еды генерируются процедурно через фильтры и наложение слоев, что гарантирует уникальность каждого звука.</span>
+                             <span data-lang-en>An advanced sound system. It controls the number of music layers in real-time. Damage and item pickup SFX are generated procedurally via filters and layer blending, ensuring each sound is unique.</span>
                          </p>
-                     </div>
-                     <div class="feature-card p-6 rounded-xl">
-                         <h4 class="font-bold text-lg text-blue-300 mb-2">
-                            <span data-lang-ru>2. Процедурная анимация караоке</span>
-                            <span data-lang-en>2. Procedural Karaoke Animation</span>
-                         </h4>
-                         <p>
-                            <span data-lang-ru>Полноценный аниматор текста, управляемый из FMOD через timeline-маркеры. Анимирует десятки параметров материала (`AnimationCurve`).</span>
-                            <span data-lang-en>A full-fledged text animator controlled by FMOD via timeline markers, animating dozens of material parameters with `AnimationCurve`.</span>
-                         </p>
-                     </div>
-                     <div class="feature-card p-6 rounded-xl">
-                         <h4 class="font-bold text-lg text-blue-300 mb-2">
-                            <span data-lang-ru>3. Динамическая генерация уровней</span>
-                            <span data-lang-en>3. Dynamic Level Generation</span>
-                         </h4>
-                         <p>
-                            <span data-lang-ru>Бесконечный раннер, где структура и сложность уровня полностью синхронизированы с FMOD-маркерами в музыкальной композиции.</span>
-                            <span data-lang-en>An endless runner where the level structure and difficulty are fully synchronized with FMOD markers in the music track.</span>
-                         </p>
-                     </div>
-                     <div class="feature-card p-6 rounded-xl">
-                         <h4 class="font-bold text-lg text-blue-300 mb-2">
-                            <span data-lang-ru>4. Комплексный процедурный шейдер воды</span>
-                            <span data-lang-en>4. Complex Procedural Water Shader</span>
-                         </h4>
-                         <p>
-                            <span data-lang-ru>Шейдер воды, управляемый через систему состояний. Плавно переключается между состояниями ("меню", "геймплей"), меняя десятки параметров.</span>
-                            <span data-lang-en>A state-driven water shader that smoothly transitions between states ("menu," "gameplay"), changing dozens of parameters.</span>
-                         </p>
-                     </div>
-                     <div class="feature-card p-6 rounded-xl">
-                         <h4 class="font-bold text-lg text-blue-300 mb-2">
-                            <span data-lang-ru>5. Кастомный Post-Processing в URP</span>
-                            <span data-lang-en>5. Custom Post-Processing in URP</span>
-                         </h4>
-                         <p>
-                            <span data-lang-ru>Собственный `ScriptableRendererFeature`, который инъецирует полноэкранный шейдер в URP. Параметры контролируются состоянием игрока, событиями и музыкой.</span>
-                            <span data-lang-en>A custom `ScriptableRendererFeature` that injects a fullscreen shader into URP. Parameters are controlled by player state, events, and music.</span>
-                         </p>
-                     </div>
-                     <div class="feature-card p-6 rounded-xl">
-                         <h4 class="font-bold text-lg text-blue-300 mb-2">
-                            <span data-lang-ru>6. Глубокая интеграция камеры и UI</span>
-                            <span data-lang-en>6. Deep Camera & UI Integration</span>
-                         </h4>
-                         <p>
-                            <span data-lang-ru>Живая, отзывчивая система обратной связи. Камера использует стейт-машину Cinemachine и `Impulse`, а UI — объект с кастомным шейдером.</span>
-                            <span data-lang-en>A living, responsive feedback system. The camera uses a Cinemachine state machine and `Impulse`, while the UI is an object with a custom shader.</span>
-                         </p>
-                     </div>
-                      <div class="feature-card p-6 rounded-xl md:col-span-2 lg:col-span-3">
-                         <h4 class="font-bold text-lg text-blue-300 mb-2">
-                            <span data-lang-ru>7. Динамический саундтрек и процедурная генерация SFX</span>
-                            <span data-lang-en>7. Dynamic Soundtrack & Procedural SFX</span>
-                         </h4>
-                         <p>
-                            <span data-lang-ru>Продвинутая звуковая система. В реальном времени управляет количеством музыкальных слоев. SFX урона и подбора еды генерируются процедурно через фильтры и наложение слоев, что гарантирует уникальность каждого звука.</span>
-                            <span data-lang-en>An advanced sound system. It controls the number of music layers in real-time. Damage and item pickup SFX are generated procedurally via filters and layer blending, ensuring each sound is unique.</span>
-                         </p>
-                     </div>
-                 </div>
-                 <div class="mt-8 space-y-6">
-                     <h4 class="text-xl font-bold text-center text-white">
-                         <span data-lang-ru>Шейдеры</span>
-                         <span data-lang-en>Shaders</span>
-                     </h4>
-                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                         <div class="video-container video-placeholder" data-video-ids="x3PraWAXz_0">
-                             <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/x3PraWAXz_0/hqdefault.jpg" alt="Shader Preview 1" class="lazy-image video-thumbnail">
-                             <div class="play-button"></div>
-                         </div>
-                         <div class="gallery-item">
-                             <div class="image-container" style="padding-top: 56.25%;"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/SH1_Energy.png" alt="Изображение проекта Valhalla 1"></div>
-                         </div>
-                     </div>
-                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          <div class="video-container video-placeholder" data-video-ids="lp7c6l9emQ0">
-                             <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/lp7c6l9emQ0/hqdefault.jpg" alt="Shader Preview 2" class="lazy-image video-thumbnail">
-                             <div class="play-button"></div>
-                         </div>
-                         <div class="gallery-item">
-                             <div class="image-container" style="padding-top: 56.25%;"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/SH2_Water.png" alt="Изображение проекта Valhalla 2"></div>
-                         </div>
-                     </div>
-                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                          <div class="video-container video-placeholder" data-video-ids="oBYO5QTS890">
-                             <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/oBYO5QTS890/hqdefault.jpg" alt="Shader Preview 3" class="lazy-image video-thumbnail">
-                             <div class="play-button"></div>
-                         </div>
-                         <div class="gallery-item">
-                             <div class="image-container" style="padding-top: 56.25%;"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/SH3_Vignette.png" alt="Изображение проекта Valhalla 2"></div>
-                         </div>
-                     </div>                        
-                 </div>
+                    </div>
+                </div>
+                <!-- Shader Showcase -->
+                <div class="mt-8 space-y-6">
+                    <h4 class="text-xl font-bold text-center text-white">
+                        <span data-lang-ru>Шейдеры</span>
+                        <span data-lang-en>Shaders</span>
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="video-container video-placeholder" data-video-ids="x3PraWAXz_0">
+                            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/x3PraWAXz_0/hqdefault.jpg" alt="Shader Preview 1" class="lazy-image video-thumbnail">
+                            <div class="play-button"></div>
+                        </div>
+                        <div class="gallery-item">
+                            <div class="image-container" style="padding-top: 56.25%;"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/SH1_Energy.png" alt="Изображение проекта Valhalla 1"></div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                         <div class="video-container video-placeholder" data-video-ids="lp7c6l9emQ0">
+                            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/lp7c6l9emQ0/hqdefault.jpg" alt="Shader Preview 2" class="lazy-image video-thumbnail">
+                            <div class="play-button"></div>
+                        </div>
+                        <div class="gallery-item">
+                            <div class="image-container" style="padding-top: 56.25%;"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/SH2_Water.png" alt="Изображение проекта Valhalla 2"></div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                         <div class="video-container video-placeholder" data-video-ids="oBYO5QTS890">
+                            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/oBYO5QTS890/hqdefault.jpg" alt="Shader Preview 3" class="lazy-image video-thumbnail">
+                            <div class="play-button"></div>
+                        </div>
+                        <div class="gallery-item">
+                            <div class="image-container" style="padding-top: 56.25%;"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/SH3_Vignette.png" alt="Изображение проекта Valhalla 2"></div>
+                        </div>
+                    </div>                      
+                </div>
             </section>
             
             <hr class="divider">
 
             <!-- PROJECT: HOLODOG -->
             <section class="mb-16">
-                 <!-- ... [Your existing project content remains unchanged] ... -->
                  <div class="text-center mb-8">
                      <h3 class="project-title">HOLODOG</h3>
                      <p class="text-xl text-gray-400 max-w-4xl mx-auto">
@@ -829,100 +824,98 @@
                      </p>
                  </div>
                  <div class="video-container mb-8 video-placeholder" data-video-ids="hSL2H4MMssM">
-                     <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/hSL2H4MMssM/hqdefault.jpg" alt="HOLODOG Preview" class="lazy-image video-thumbnail">
-                     <div class="play-button"></div>
+                    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/hSL2H4MMssM/hqdefault.jpg" alt="HOLODOG Preview" class="lazy-image video-thumbnail">
+                    <div class="play-button"></div>
                  </div>
-                 <!-- Feature cards remain the same -->
                  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                       <div class="feature-card p-6 rounded-xl">
-                         <h4 class="font-bold text-lg text-blue-300 mb-2">
-                             <span data-lang-ru>1. Модульная процедурная анимация</span>
-                             <span data-lang-en>1. Modular Procedural Animation</span>
-                         </h4>
-                         <p>
-                             <span data-lang-ru>Создана система, позволяющая собирать мех "по рецепту". Ядро `ChassisController` через события управляет модулями: процедурной локомоцией, кастомным IK для рук, физикой отдачи и `JiggleBone`.</span>
-                             <span data-lang-en>A system for assembling a mech "by recipe". The `ChassisController` core manages modules via events: procedural locomotion, custom arm IK, physics-based kickback, and `JiggleBone`.</span>
-                         </p>
+                          <h4 class="font-bold text-lg text-blue-300 mb-2">
+                              <span data-lang-ru>1. Модульная процедурная анимация</span>
+                              <span data-lang-en>1. Modular Procedural Animation</span>
+                          </h4>
+                          <p>
+                              <span data-lang-ru>Создана система, позволяющая собирать мех "по рецепту". Ядро `ChassisController` через события управляет модулями: процедурной локомоцией, кастомным IK для рук, физикой отдачи и `JiggleBone`.</span>
+                              <span data-lang-en>A system for assembling a mech "by recipe". The `ChassisController` core manages modules via events: procedural locomotion, custom arm IK, physics-based kickback, and `JiggleBone`.</span>
+                          </p>
                      </div>
                       <div class="feature-card p-6 rounded-xl">
-                         <h4 class="font-bold text-lg text-blue-300 mb-2">
-                             <span data-lang-ru>2. Продвинутый 2D-шейдер освещения</span>
-                             <span data-lang-en>2. Advanced 2D Lighting Shader</span>
-                         </h4>
-                         <p>
-                             <span data-lang-ru>Разработан шейдер, формирующий собственную систему освещения, смешивая до двух источников света через режимы Overlay, Hard Light и Burn для создания сложного стилизованного 2D-освещения.</span>
-                             <span data-lang-en>A custom shader that forms its own lighting system, blending up to two light sources using Overlay, Hard Light, and Burn modes to create complex, stylized 2D lighting.</span>
-                         </p>
+                          <h4 class="font-bold text-lg text-blue-300 mb-2">
+                              <span data-lang-ru>2. Продвинутый 2D-шейдер освещения</span>
+                              <span data-lang-en>2. Advanced 2D Lighting Shader</span>
+                          </h4>
+                          <p>
+                              <span data-lang-ru>Разработан шейдер, формирующий собственную систему освещения, смешивая до двух источников света через режимы Overlay, Hard Light и Burn для создания сложного стилизованного 2D-освещения.</span>
+                              <span data-lang-en>A custom shader that forms its own lighting system, blending up to two light sources using Overlay, Hard Light, and Burn modes to create complex, stylized 2D lighting.</span>
+                          </p>
                      </div>
                       <div class="feature-card p-6 rounded-xl">
-                         <h4 class="font-bold text-lg text-blue-300 mb-2">
-                             <span data-lang-ru>3. Эффективная кастомизация</span>
-                             <span data-lang-en>3. Efficient Customization</span>
-                         </h4>
-                         <p>
-                             <span data-lang-ru>Реализована система `MaterialOverrideController`, позволяющая на лету через `MaterialPropertyBlock` изменять параметры шейдера для отдельных частей, не создавая новых экземпляров материала.</span>
-                             <span data-lang-en>Implemented `MaterialOverrideController` to change shader parameters on-the-fly for individual parts via `MaterialPropertyBlock`, avoiding new material instances.</span>
-                         </p>
+                          <h4 class="font-bold text-lg text-blue-300 mb-2">
+                              <span data-lang-ru>3. Эффективная кастомизация</span>
+                              <span data-lang-en>3. Efficient Customization</span>
+                          </h4>
+                          <p>
+                              <span data-lang-ru>Реализована система `MaterialOverrideController`, позволяющая на лету через `MaterialPropertyBlock` изменять параметры шейдера для отдельных частей, не создавая новых экземпляров материала.</span>
+                              <span data-lang-en>Implemented `MaterialOverrideController` to change shader parameters on-the-fly for individual parts via `MaterialPropertyBlock`, avoiding new material instances.</span>
+                          </p>
                      </div>
                       <div class="feature-card p-6 rounded-xl">
-                         <h4 class="font-bold text-lg text-blue-300 mb-2">
-                             <span data-lang-ru>4. Динамический шейдерный щит</span>
-                             <span data-lang-en>4. Dynamic Shader Shield</span>
-                         </h4>
-                         <p>
-                             <span data-lang-ru>Эффект энергетического щита с имитацией объема на 2D-спрайте. Шейдер анализирует карту глубины и процедурно рассчитывает нормали, позволяя щиту корректно реагировать на свет.</span>
-                             <span data-lang-en>An energy shield effect that fakes volume on a 2D sprite. The shader analyzes the depth map and procedurally calculates normals, allowing it to react correctly to light.</span>
-                         </p>
+                          <h4 class="font-bold text-lg text-blue-300 mb-2">
+                              <span data-lang-ru>4. Динамический шейдерный щит</span>
+                              <span data-lang-en>4. Dynamic Shader Shield</span>
+                          </h4>
+                          <p>
+                              <span data-lang-ru>Эффект энергетического щита с имитацией объема на 2D-спрайте. Шейдер анализирует карту глубины и процедурно рассчитывает нормали, позволяя щиту корректно реагировать на свет.</span>
+                              <span data-lang-en>An energy shield effect that fakes volume on a 2D sprite. The shader analyzes the depth map and procedurally calculates normals, allowing it to react correctly to light.</span>
+                          </p>
                      </div>
                       <div class="feature-card p-6 rounded-xl">
-                         <h4 class="font-bold text-lg text-blue-300 mb-2">
-                             <span data-lang-ru>5. Архитектура, управляемая событиями</span>
-                             <span data-lang-en>5. Event-Driven Architecture</span>
-                         </h4>
-                         <p>
-                             <span data-lang-ru>В основе проекта лежит гибкая архитектура, где компоненты общаются через систему событий (`Action`). Это обеспечивает низкую связанность кода и упрощает добавление новых механик.</span>
-                             <span data-lang-en>The project is based on a flexible architecture where components communicate via an event system (`Action`), ensuring low code coupling and easy addition of new mechanics.</span>
-                         </p>
+                          <h4 class="font-bold text-lg text-blue-300 mb-2">
+                              <span data-lang-ru>5. Архитектура, управляемая событиями</span>
+                              <span data-lang-en>5. Event-Driven Architecture</span>
+                          </h4>
+                          <p>
+                              <span data-lang-ru>В основе проекта лежит гибкая архитектура, где компоненты общаются через систему событий (`Action`). Это обеспечивает низкую связанность кода и упрощает добавление новых механик.</span>
+                              <span data-lang-en>The project is based on a flexible architecture where components communicate via an event system (`Action`), ensuring low code coupling and easy addition of new mechanics.</span>
+                          </p>
                      </div>
                       <div class="feature-card p-6 rounded-xl">
-                         <h4 class="font-bold text-lg text-blue-300 mb-2">
-                             <span data-lang-ru>6. Физически-корректное взаимодействие</span>
-                             <span data-lang-en>6. Physics-Based Interaction</span>
-                         </h4>
-                         <p>
-                             <span data-lang-ru>Особое внимание уделено ощущению "веса". Движение управляется через `Rigidbody2D` с инерцией, а оружие генерирует физический импульс (`blowbackForce`), который толкает персонажа назад.</span>
-                             <span data-lang-en>Special attention is paid to the feeling of "weight". Movement is controlled via `Rigidbody2D` with inertia, and weapons generate a physical impulse (`blowbackForce`) that pushes the character back.</span>
-                         </p>
-                     </div>
-                </div>
-                 <div class="mt-8">
-                     <h4 class="text-xl font-bold text-center text-white mb-4">
-                         <span data-lang-ru>Шейдеры</span>
-                         <span data-lang-en>Shaders</span>
-                     </h4>
-                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                         <div class="gallery-item">
-                             <div class="image-container" style="padding-top: 56.25%;"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/SH4_Shield.png" alt="Изображение проекта Holodog"></div>
-                         </div>
-                         <div class="video-container video-placeholder" data-video-ids="iMwMMa9qOFY">
-                            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/iMwMMa9qOFY/hqdefault.jpg" alt="Holodog Shader Preview" class="lazy-image video-thumbnail">
-                            <div class="play-button"></div>
-                         </div>
+                          <h4 class="font-bold text-lg text-blue-300 mb-2">
+                              <span data-lang-ru>6. Физически-корректное взаимодействие</span>
+                              <span data-lang-en>6. Physics-Based Interaction</span>
+                          </h4>
+                          <p>
+                              <span data-lang-ru>Особое внимание уделено ощущению "веса". Движение управляется через `Rigidbody2D` с инерцией, а оружие генерирует физический импульс (`blowbackForce`), который толкает персонажа назад.</span>
+                              <span data-lang-en>Special attention is paid to the feeling of "weight". Movement is controlled via `Rigidbody2D` with inertia, and weapons generate a physical impulse (`blowbackForce`) that pushes the character back.</span>
+                          </p>
                      </div>
                  </div>
+                <div class="mt-8">
+                    <h4 class="text-xl font-bold text-center text-white mb-4">
+                        <span data-lang-ru>Шейдеры</span>
+                        <span data-lang-en>Shaders</span>
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="gallery-item">
+                            <div class="image-container" style="padding-top: 56.25%;"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/SH4_Shield.png" alt="Изображение проекта Holodog"></div>
+                        </div>
+                        <div class="video-container video-placeholder" data-video-ids="iMwMMa9qOFY">
+                             <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/iMwMMa9qOFY/hqdefault.jpg" alt="Holodog Shader Preview" class="lazy-image video-thumbnail">
+                             <div class="play-button"></div>
+                        </div>
+                    </div>
+                </div>
             </section>
             
             <hr class="divider">
             
             <!-- GALLERY SECTION -->
             <section class="mb-16">
-                 <!-- ... [Your existing gallery content remains unchanged] ... -->
                   <h2 class="section-title">
                       <span data-lang-ru>Галерея</span>
                       <span data-lang-en>Gallery</span>
                   </h2>
                   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                      <!-- Item 1 -->
+                      <!-- Gallery Item 1 -->
                       <div class="gallery-item">
                           <div class="image-container"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/Bark.jpg" alt="Bark Material Render"></div>
                           <div class="texture-maps-container">
@@ -933,7 +926,7 @@
                               <div class="texture-map" data-src="img/Bark_height.jpg"><img src="img/Bark_height.jpg" alt="Height Map"></div>
                           </div>
                       </div>
-                      <!-- Item 2 with Texture Maps -->
+                      <!-- Gallery Item 2 -->
                       <div class="gallery-item">
                           <div class="image-container"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/Brick_1.jpg" alt="Brick Material Render"></div>
                           <div class="texture-maps-container">
@@ -944,7 +937,7 @@
                               <div class="texture-map" data-src="img/Brick_1_height.jpg"><img src="img/Brick_1_height.jpg" alt="Height Map"></div>
                           </div>
                       </div>
-                      <!-- Item 3 with Texture Maps -->
+                      <!-- Gallery Item 3 -->
                       <div class="gallery-item">
                           <div class="image-container"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/OrnateFabric.jpeg" alt="Ornate Fabric Material Render"></div>
                           <div class="texture-maps-container">
@@ -957,7 +950,7 @@
                               <div class="texture-map" data-src="img/OrnateFabric_translucensy.jpg"><img src="img/OrnateFabric_translucensy.jpg" alt="Translucensy Map"></div>
                           </div>
                       </div>
-                      <!-- Item 4 with Texture Maps -->
+                      <!-- Gallery Item 4 -->
                       <div class="gallery-item">
                           <div class="image-container"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/BrokenTiles.jpg" alt="Broken Tiles Material Render"></div>
                           <div class="texture-maps-container">
@@ -968,11 +961,11 @@
                               <div class="texture-map" data-src="img/Broken_Tiles_height.jpg"><img src="img/Broken_Tiles_height.jpg" alt="Height Map"></div>
                           </div>
                       </div>
-                      <!-- Item 5 -->
+                      <!-- Gallery Item 5 -->
                       <div class="gallery-item">
                           <div class="image-container"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/Render_1.png" alt="Описание рендера 2"></div>
                       </div>
-                      <!-- Item 6 -->
+                      <!-- Gallery Item 6 -->
                       <div class="gallery-item">
                           <div class="image-container"><img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/Render_2.png" alt="Описание графа шейдера"></div>
                       </div>
@@ -989,127 +982,130 @@
                           </div>
                       </div>
                   </div>
-                  <div class="grid grid-cols-1 sm:grid-cols-1 gap-6 mt-6">
+                   <div class="grid grid-cols-1 sm:grid-cols-1 gap-6 mt-6">
                       <div class="gallery-item">
                           <div class="image-container" style="padding-top: 56.25%;">
                               <img class="lazy-image" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="img/Mecha_Sewers_Biome.png" alt="Дополнительное изображение 1">
                           </div>
                       </div>
                   </div>
-                   <!-- Music Player as last item in gallery -->
-                   <div class="sm:col-span-2 lg:col-span-3 mt-6">
-                        <div class="music-player-wrapper">
-                            <div class="music-container" id="music-container">
-                                <div class="img-container">
-                                    <img src="" alt="Album Cover" id="cover" />
-                                </div>
-                                <div class="player-controls">
-                                    <div class="music-info">
-                                        <h2 id="title" class="title"></h2>
-                                    </div>
-                                    <div class="navigation">
-                                        <button id="prev" class="action-btn">
-                                            <i class="fas fa-backward"></i>
-                                        </button>
-                                        <button id="play" class="action-btn action-btn-big">
-                                            <i class="fas fa-play"></i>
-                                        </button>
-                                        <button id="next" class="action-btn">
-                                            <i class="fas fa-forward"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <audio id="audio" crossorigin="anonymous"></audio>
-                            </div>
-                            <div class="external-progress-container" id="progress-container">
-                                <div class="external-progress" id="progress"></div>
-                            </div>
-                        </div>
-                   </div>
+                  <!-- Music Player as last item in gallery -->
+                  <!-- The music player is placed in a full-width column to center it nicely. -->
+                  <div class="col-span-1 sm:col-span-2 lg:col-span-3 mt-10 flex justify-center">
+                      <div class="music-player-wrapper">
+                          <div class="music-container" id="music-container">
+                              <div class="img-container">
+                                  <img src="" alt="Album Cover" id="cover" />
+                              </div>
+                              <div class="player-controls">
+                                  <div class="music-info">
+                                      <h2 id="title" class="title"></h2>
+                                  </div>
+                                  <!-- The progress bar is now inside the main controls div. -->
+                                  <div class="progress-container" id="progress-container">
+                                      <div class="progress" id="progress"></div>
+                                  </div>
+                                  <div class="navigation">
+                                      <button id="prev" class="action-btn">
+                                          <i class="fas fa-backward"></i>
+                                      </button>
+                                      <button id="play" class="action-btn action-btn-big">
+                                          <i class="fas fa-play"></i>
+                                      </button>
+                                      <button id="next" class="action-btn">
+                                          <i class="fas fa-forward"></i>
+                                      </button>
+                                  </div>
+                              </div>
+                              <!-- The <audio> element is where the music actually plays. 'controls' is omitted so we can use our custom UI. -->
+                              <audio id="audio" crossorigin="anonymous"></audio>
+                          </div>
+                      </div>
+                  </div>
             </section>
+            
             <hr class="divider">
 
             <!-- CONTRACT WORK SECTION -->
             <section class="mb-16">
-                 <!-- ... [Your existing contract work content remains unchanged] ... -->
                   <h2 class="section-title">
                       <span data-lang-ru>Контрактная работа</span>
                       <span data-lang-en>Contract Work</span>
                   </h2>
-                 <div class="grid grid-cols-1 sm:grid-cols-4 lg:grid-cols-2 gap-6">
-                     <!-- Bit Blast Zero -->
-                     <div class="cv-card">
-                         <div class="video-container mb-4 video-placeholder" data-video-ids="pEYhLY0KeFg,CibIFGiDiwM">
-                            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/CibIFGiDiwM/hqdefault.jpg" alt="Bit Blast Zero Preview" class="lazy-image video-thumbnail">
-                            <div class="play-button"></div>
-                         </div>
-                         <h4 class="text-lg font-bold text-white"><span data-lang-ru>Blast Bit Zero</span><span data-lang-en>Blast Bit Zero</span></h4>
-                         <p class="text-gray-400 text-sm"><span data-lang-ru>Разработал бесконечный shoot 'em up. Ключевой особенностью проекта является кастомная система на базе Scriptable Objects, которая значительно упрощает и ускоряет создание новых волн противников и боссов.</span><span data-lang-en>Developed an endless shoot 'em up. The project's core feature is a custom system based on Scriptable Objects, designed to significantly simplify and accelerate the creation of new enemy waves and bosses.</span></p>
-                     </div>
-                     <!-- Temple of Patience -->
-                     <div class="cv-card">
-                         <div class="video-container mb-4 video-placeholder" data-video-ids="19y2TDY3Myw">
-                            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/19y2TDY3Myw/hqdefault.jpg" alt="Temple of Patience Preview" class="lazy-image video-thumbnail">
-                            <div class="play-button"></div>
-                         </div>
-                         <h4 class="text-lg font-bold text-white"><span data-lang-ru>Temple of Patience</span><span data-lang-en>Temple of Patience</span></h4>
-                         <p class="text-gray-400 text-sm"><span data-lang-ru>Создал сингл-скрин платформер. Основной задачей была разработка архитектуры на основе тайловых карт и префабов, позволяющей собирать новые уровни прямо в редакторе Unity за считанные минуты.</span><span data-lang-en>Created a single-screen platformer. The main goal was to develop an architecture using tilemaps and nested prefabs, enabling the assembly of new levels directly in the Unity editor in minutes.</span></p>
-                     </div>
-                     <!-- Argon Flight -->
-                     <div class="cv-card">
-                         <div class="video-container mb-4 video-placeholder" data-video-ids="PdigEk_1eV8">
-                            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/PdigEk_1eV8/hqdefault.jpg" alt="Argon Flight Preview" class="lazy-image video-thumbnail">
-                            <div class="play-button"></div>
-                         </div>
-                         <h4 class="text-lg font-bold text-white"><span data-lang-ru>Argon Flight</span><span data-lang-en>Argon Flight</span></h4>
-                         <p class="text-gray-400 text-sm"><span data-lang-ru>Разработал короткий рельсовый шутер, стилистически вдохновлённый техно-демо 90-х. В основе проекта лежит система событий, привязанных к таймлайну, которая управляет всеми игровыми моментами.</span><span data-lang-en>Developed a short on-rails shooter, stylistically inspired by 90s tech demos. The project is built upon a timeline-based event system that drives all in-game moments.</span></p>
-                     </div>
-                     <!-- Don't press X -->
-                     <div class="cv-card">
-                         <div class="video-container mb-4 video-placeholder" data-video-ids="AjCEn4VBokU">
-                            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/AjCEn4VBokU/hqdefault.jpg" alt="Don't press X Preview" class="lazy-image video-thumbnail">
-                            <div class="play-button"></div>
-                         </div>
-                         <h4 class="text-lg font-bold text-white"><span data-lang-ru>Don't press X to free the pirate</span><span data-lang-en>Don't press X to free the pirate</span></h4>
-                         <p class="text-gray-400 text-sm"><span data-lang-ru>Создал сатирическую мета-игру, построенную вокруг простой концепции: не нажимать кнопку Х. Основной технической задачей стала разработка гибкой системы ветвящихся диалогов на Scriptable Objects, включающей озвучку каждого печатаемого символа.</span><span data-lang-en>Created a satirical meta-game built around a simple concept: don't press X. The main technical challenge was developing a flexible, branching dialogue system using Scriptable Objects, which included per-character audio feedback as text is typed.</span></p>
-                     </div>
-                     <!-- Dissolve Feature -->
-                     <div class="cv-card">
-                         <div class="video-container mb-4 video-placeholder" data-video-ids="Yq5r_JC4H2Q,ildYX8BSKlQ,sm_MsfI60jE">
-                            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/Yq5r_JC4H2Q/hqdefault.jpg" alt="Dissolve Feature Preview" class="lazy-image video-thumbnail">
-                            <div class="play-button"></div>
-                         </div>
-                         <h4 class="text-lg font-bold text-white"><span data-lang-ru>Рендер-фича: Dissolve Effect</span><span data-lang-en>Render Feature: Dissolve Effect</span></h4>
-                         <p class="text-gray-400 text-sm"><span data-lang-ru>Разработал кастомную рендер-фичу (URP Render Feature) для создания эффекта, имитирующего датамошинг, который "распыляет" пиксели предыдущего кадра на текущий. Дополнительно реализовал ряд других шейдерных эффектов.</span><span data-lang-en>Developed a custom URP Render Feature to create a datamoshing-inspired effect that "atomizes" pixels from the previous frame onto the current one. Additionally implemented several other shader effects.</span></p>
-                     </div>
-                     <!-- Mobile Game Effects -->
-                     <div class="cv-card">
-                         <div class="video-container mb-4 video-placeholder" data-video-ids="vInap1vfovQ,HjkhupE7mMw,EWbRH-CbFwI,JtkUp9m-JUg">
-                            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/vInap1vfovQ/hqdefault.jpg" alt="Mobile Game Effects Preview" class="lazy-image video-thumbnail">
-                            <div class="play-button"></div>
-                         </div>
-                         <h4 class="text-lg font-bold text-white"><span data-lang-ru>Эффекты для мобильной игры</span><span data-lang-en>Effects for a Mobile Game</span></h4>
-                         <p class="text-gray-400 text-sm"><span data-lang-ru>Разработал серию эффектов частиц, оптимизированных для работы без VFX Graph. Управление параметрами Shuriken реализовано через передачу данных в кастомных UV-каналах для высокой производительности.</span><span data-lang-en>Developed a series of particle effects optimized to run without VFX Graph. Instead, Shuriken parameters are controlled by passing data through custom UV channels, ensuring high performance.</span></p>
-                     </div>
-                     <!-- VR Features -->
-                     <div class="cv-card">
-                         <div class="video-container mb-4 video-placeholder" data-video-ids="HsWOmk55LDw">
-                            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/HsWOmk55LDw/hqdefault.jpg" alt="VR Features Preview" class="lazy-image video-thumbnail">
-                            <div class="play-button"></div>
-                         </div>
-                         <h4 class="text-lg font-bold text-white"><span data-lang-ru>Разработка фичей для VR</span><span data-lang-en>VR Feature Development</span></h4>
-                         <p class="text-gray-400 text-sm"><span data-lang-ru>Реализовал комплекс фичей для VR-проекта: высокооптимизированные шейдеры, кастомную физическую систему для интерактивных объектов (двери, ящики) и ивентовую систему SFX на Scriptable Objects.</span><span data-lang-en>Implemented a suite of features for a VR project: highly-optimized shaders, a custom physics-based interaction system for objects like doors and drawers, and an event-driven SFX management system using Scriptable Objects.</span></p>
-                     </div>
-                     <!-- VFX Graph Explosion -->
-                     <div class="cv-card">
-                         <div class="video-container mb-4 video-placeholder" data-video-ids="snpor-cynDA,ECA9xlg1N1o">
-                            <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/c_3WGAYfRww/hqdefault.jpg" alt="VFX Graph Explosion Preview" class="lazy-image video-thumbnail">
-                            <div class="play-button"></div>
-                         </div>
-                         <h4 class="text-lg font-bold text-white"><span data-lang-ru>Настраиваемый взрыв (VFX Graph)</span><span data-lang-en>Configurable Explosion (VFX Graph)</span></h4>
-                         <p class="text-gray-400 text-sm"><span data-lang-ru>Создал конфигурируемый эффект взрыва при помощи VFX Graph как гибкий ассет с множеством вынесенных параметров (цвет, размер, интенсивность) для легкой кастомизации.</span><span data-lang-en>Created a configurable explosion effect using VFX Graph, designed as a flexible asset with numerous exposed parameters (e.g., color, size, intensity) for easy customization.</span></p>
-                     </div>
-                 </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
+                      <!-- Bit Blast Zero -->
+                      <div class="cv-card">
+                          <div class="video-container mb-4 video-placeholder" data-video-ids="pEYhLY0KeFg,CibIFGiDiwM">
+                             <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/CibIFGiDiwM/hqdefault.jpg" alt="Bit Blast Zero Preview" class="lazy-image video-thumbnail">
+                             <div class="play-button"></div>
+                          </div>
+                          <h4 class="text-lg font-bold text-white"><span data-lang-ru>Blast Bit Zero</span><span data-lang-en>Blast Bit Zero</span></h4>
+                          <p class="text-gray-400 text-sm"><span data-lang-ru>Разработал бесконечный shoot 'em up. Ключевой особенностью проекта является кастомная система на базе Scriptable Objects, которая значительно упрощает и ускоряет создание новых волн противников и боссов.</span><span data-lang-en>Developed an endless shoot 'em up. The project's core feature is a custom system based on Scriptable Objects, designed to significantly simplify and accelerate the creation of new enemy waves and bosses.</span></p>
+                      </div>
+                      <!-- Temple of Patience -->
+                      <div class="cv-card">
+                          <div class="video-container mb-4 video-placeholder" data-video-ids="19y2TDY3Myw">
+                             <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/19y2TDY3Myw/hqdefault.jpg" alt="Temple of Patience Preview" class="lazy-image video-thumbnail">
+                             <div class="play-button"></div>
+                          </div>
+                          <h4 class="text-lg font-bold text-white"><span data-lang-ru>Temple of Patience</span><span data-lang-en>Temple of Patience</span></h4>
+                          <p class="text-gray-400 text-sm"><span data-lang-ru>Создал сингл-скрин платформер. Основной задачей была разработка архитектуры на основе тайловых карт и префабов, позволяющей собирать новые уровни прямо в редакторе Unity за считанные минуты.</span><span data-lang-en>Created a single-screen platformer. The main goal was to develop an architecture using tilemaps and nested prefabs, enabling the assembly of new levels directly in the Unity editor in minutes.</span></p>
+                      </div>
+                      <!-- Argon Flight -->
+                      <div class="cv-card">
+                          <div class="video-container mb-4 video-placeholder" data-video-ids="PdigEk_1eV8">
+                             <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/PdigEk_1eV8/hqdefault.jpg" alt="Argon Flight Preview" class="lazy-image video-thumbnail">
+                             <div class="play-button"></div>
+                          </div>
+                          <h4 class="text-lg font-bold text-white"><span data-lang-ru>Argon Flight</span><span data-lang-en>Argon Flight</span></h4>
+                          <p class="text-gray-400 text-sm"><span data-lang-ru>Разработал короткий рельсовый шутер, стилистически вдохновлённый техно-демо 90-х. В основе проекта лежит система событий, привязанных к таймлайну, которая управляет всеми игровыми моментами.</span><span data-lang-en>Developed a short on-rails shooter, stylistically inspired by 90s tech demos. The project is built upon a timeline-based event system that drives all in-game moments.</span></p>
+                      </div>
+                      <!-- Don't press X -->
+                      <div class="cv-card">
+                          <div class="video-container mb-4 video-placeholder" data-video-ids="AjCEn4VBokU">
+                             <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/AjCEn4VBokU/hqdefault.jpg" alt="Don't press X Preview" class="lazy-image video-thumbnail">
+                             <div class="play-button"></div>
+                          </div>
+                          <h4 class="text-lg font-bold text-white"><span data-lang-ru>Don't press X to free the pirate</span><span data-lang-en>Don't press X to free the pirate</span></h4>
+                          <p class="text-gray-400 text-sm"><span data-lang-ru>Создал сатирическую мета-игру, построенную вокруг простой концепции: не нажимать кнопку Х. Основной технической задачей стала разработка гибкой системы ветвящихся диалогов на Scriptable Objects, включающей озвучку каждого печатаемого символа.</span><span data-lang-en>Created a satirical meta-game built around a simple concept: don't press X. The main technical challenge was developing a flexible, branching dialogue system using Scriptable Objects, which included per-character audio feedback as text is typed.</span></p>
+                      </div>
+                      <!-- Dissolve Feature -->
+                      <div class="cv-card">
+                          <div class="video-container mb-4 video-placeholder" data-video-ids="Yq5r_JC4H2Q,ildYX8BSKlQ,sm_MsfI60jE">
+                             <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/Yq5r_JC4H2Q/hqdefault.jpg" alt="Dissolve Feature Preview" class="lazy-image video-thumbnail">
+                             <div class="play-button"></div>
+                          </div>
+                          <h4 class="text-lg font-bold text-white"><span data-lang-ru>Рендер-фича: Dissolve Effect</span><span data-lang-en>Render Feature: Dissolve Effect</span></h4>
+                          <p class="text-gray-400 text-sm"><span data-lang-ru>Разработал кастомную рендер-фичу (URP Render Feature) для создания эффекта, имитирующего датамошинг, который "распыляет" пиксели предыдущего кадра на текущий. Дополнительно реализовал ряд других шейдерных эффектов.</span><span data-lang-en>Developed a custom URP Render Feature to create a datamoshing-inspired effect that "atomizes" pixels from the previous frame onto the current one. Additionally implemented several other shader effects.</span></p>
+                      </div>
+                      <!-- Mobile Game Effects -->
+                      <div class="cv-card">
+                          <div class="video-container mb-4 video-placeholder" data-video-ids="vInap1vfovQ,HjkhupE7mMw,EWbRH-CbFwI,JtkUp9m-JUg">
+                             <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/vInap1vfovQ/hqdefault.jpg" alt="Mobile Game Effects Preview" class="lazy-image video-thumbnail">
+                             <div class="play-button"></div>
+                          </div>
+                          <h4 class="text-lg font-bold text-white"><span data-lang-ru>Эффекты для мобильной игры</span><span data-lang-en>Effects for a Mobile Game</span></h4>
+                          <p class="text-gray-400 text-sm"><span data-lang-ru>Разработал серию эффектов частиц, оптимизированных для работы без VFX Graph. Управление параметрами Shuriken реализовано через передачу данных в кастомных UV-каналах для высокой производительности.</span><span data-lang-en>Developed a series of particle effects optimized to run without VFX Graph. Instead, Shuriken parameters are controlled by passing data through custom UV channels, ensuring high performance.</span></p>
+                      </div>
+                      <!-- VR Features -->
+                      <div class="cv-card">
+                          <div class="video-container mb-4 video-placeholder" data-video-ids="HsWOmk55LDw">
+                             <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/HsWOmk55LDw/hqdefault.jpg" alt="VR Features Preview" class="lazy-image video-thumbnail">
+                             <div class="play-button"></div>
+                          </div>
+                          <h4 class="text-lg font-bold text-white"><span data-lang-ru>Разработка фичей для VR</span><span data-lang-en>VR Feature Development</span></h4>
+                          <p class="text-gray-400 text-sm"><span data-lang-ru>Реализовал комплекс фичей для VR-проекта: высокооптимизированные шейдеры, кастомную физическую систему для интерактивных объектов (двери, ящики) и ивентовую систему SFX на Scriptable Objects.</span><span data-lang-en>Implemented a suite of features for a VR project: highly-optimized shaders, a custom physics-based interaction system for objects like doors and drawers, and an event-driven SFX management system using Scriptable Objects.</span></p>
+                      </div>
+                      <!-- VFX Graph Explosion -->
+                      <div class="cv-card">
+                          <div class="video-container mb-4 video-placeholder" data-video-ids="snpor-cynDA,ECA9xlg1N1o">
+                             <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-src="https://img.youtube.com/vi/c_3WGAYfRww/hqdefault.jpg" alt="VFX Graph Explosion Preview" class="lazy-image video-thumbnail">
+                             <div class="play-button"></div>
+                          </div>
+                          <h4 class="text-lg font-bold text-white"><span data-lang-ru>Настраиваемый взрыв (VFX Graph)</span><span data-lang-en>Configurable Explosion (VFX Graph)</span></h4>
+                          <p class="text-gray-400 text-sm"><span data-lang-ru>Создал конфигурируемый эффект взрыва при помощи VFX Graph как гибкий ассет с множеством вынесенных параметров (цвет, размер, интенсивность) для легкой кастомизации.</span><span data-lang-en>Created a configurable explosion effect using VFX Graph, designed as a flexible asset with numerous exposed parameters (e.g., color, size, intensity) for easy customization.</span></p>
+                      </div>
+                </div>
             </section>
 
             <hr class="divider">
@@ -1127,76 +1123,95 @@
                         <span data-lang-en>Score: </span>
                         <span id="score-value">0</span>
                     </div>
-                     <div id="game-message"></div>
+                    <div id="game-message"></div>
                 </div>
-                <p class="text-center mt-4 text-gray-500">
-                    <span data-lang-ru>Нажмите Пробел или тапните, чтобы прыгнуть</span>
-                    <span data-lang-en>Press Space or tap to jump</span>
-                </p>
+                 <p class="text-center mt-4 text-gray-500">
+                     <span data-lang-ru>Нажмите Пробел или тапните, чтобы прыгнуть</span>
+                     <span data-lang-en>Press Space or tap to jump</span>
+                 </p>
             </section>
         </main>
     </div>
 
-    <!-- Lightbox HTML -->
+    <!-- Lightbox HTML (for image popups) -->
     <div id="lightbox" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-4 z-50 opacity-0 pointer-events-none">
         <img id="lightbox-image" src="" alt="Full size view" class="max-w-full max-h-full object-contain transform scale-95">
         <button id="lightbox-close" class="absolute top-4 right-4 text-white text-4xl">&times;</button>
     </div>
 
 
+    <!-- JAVASCRIPT SECTION -->
     <script>
+        // 'DOMContentLoaded' is an event that fires when the initial HTML document has been completely loaded and parsed,
+        // without waiting for stylesheets, images, and subframes to finish loading.
+        // It's the standard and safest place to start running your JavaScript code.
         document.addEventListener('DOMContentLoaded', function () {
-            // --- LANGUAGE SWITCHER ---
+            
+            // --- LANGUAGE SWITCHER LOGIC ---
+            // Get references to all the necessary DOM elements for language switching.
             const langRuBtn = document.getElementById('lang-ru');
             const langEnBtn = document.getElementById('lang-en');
+            // querySelectorAll returns a NodeList (similar to an array) of all elements matching the selector.
             const ruElements = document.querySelectorAll('[data-lang-ru]');
             const enElements = document.querySelectorAll('[data-lang-en]');
             const pdfLink = document.getElementById('pdf-download-link');
-            let game; // Declare game variable here
+            let game; // Declare game variable here, it will be initialized later.
 
+            // This function handles the logic of switching the displayed language.
             function setLanguage(lang) {
                 if (lang === 'ru') {
-                    document.documentElement.lang = 'ru';
-                    langRuBtn.classList.add('active');
-                    langEnBtn.classList.remove('active');
+                    document.documentElement.lang = 'ru'; // Set the lang attribute on the <html> tag.
+                    langRuBtn.classList.add('active'); // Add 'active' class for styling.
+                    langEnBtn.classList.remove('active'); // Remove from the other button.
+                    // Loop through all Russian elements and set their display style to 'inline'.
                     ruElements.forEach(el => el.style.display = 'inline');
+                    // Loop through all English elements and hide them.
                     enElements.forEach(el => el.style.display = 'none');
-                    pdfLink.href = "https://drive.google.com/file/d/1ujl4cVXbIkmneiG2MkETweDqvVGsTAzF/view?usp=sharing"; // Set Russian PDF path
-                } else {
+                    pdfLink.href = "https://drive.google.com/file/d/1ujl4cVXbIkmneiG2MkETweDqvVGsTAzF/view?usp=sharing"; // Update PDF link.
+                } else { // 'en' or any other default
                     document.documentElement.lang = 'en';
                     langEnBtn.classList.add('active');
                     langRuBtn.classList.remove('active');
                     enElements.forEach(el => el.style.display = 'inline');
                     ruElements.forEach(el => el.style.display = 'none');
-                    pdfLink.href = "https://drive.google.com/file/d/1zvjyhmnlUGAVbTp30eHBmQENS-uUoqLV/view?usp=sharing"; // Set English PDF path
+                    pdfLink.href = "https://drive.google.com/file/d/1zvjyhmnlUGAVbTp30eHBmQENS-uUoqLV/view?usp=sharing";
                 }
+                // If the game has been initialized, tell it to update its language too.
                 if(game) game.setLanguage(lang);
             }
 
+            // Attach the function to the 'click' event of the buttons.
             langRuBtn.addEventListener('click', () => setLanguage('ru'));
             langEnBtn.addEventListener('click', () => setLanguage('en'));
             
-            // --- LIGHTBOX LOGIC ---
+            // --- LIGHTBOX (IMAGE POPUP) LOGIC ---
             const lightbox = document.getElementById('lightbox');
             const lightboxImage = document.getElementById('lightbox-image');
             const lightboxClose = document.getElementById('lightbox-close');
             
-            function openLightbox(src) {
-                const highResSrc = src.dataset && src.dataset.src ? src.dataset.src : src.src;
+            // Function to open the lightbox with a specific image source.
+            function openLightbox(srcElement) {
+                // Use the high-resolution 'data-src' if available, otherwise fall back to the element's 'src'.
+                const highResSrc = srcElement.dataset && srcElement.dataset.src ? srcElement.dataset.src : srcElement.src;
                 lightboxImage.src = highResSrc;
+                // Make the lightbox visible and interactive.
                 lightbox.classList.remove('opacity-0', 'pointer-events-none');
+                // A tiny delay allows the CSS transition to play correctly for the scale effect.
                 setTimeout(() => {
                     lightboxImage.classList.remove('scale-95');
                 }, 10);
             }
 
+            // Function to close the lightbox.
             function closeLightbox() {
-                lightboxImage.classList.add('scale-95');
-                lightbox.classList.add('opacity-0', 'pointer-events-none');
+                lightboxImage.classList.add('scale-95'); // Scale down first.
+                lightbox.classList.add('opacity-0', 'pointer-events-none'); // Then fade out.
             }
 
+            // Add click listeners to all gallery items.
             document.querySelectorAll('.gallery-item').forEach(item => {
                 item.addEventListener('click', (e) => {
+                    // If the click was on a small texture map, don't open the main image in the lightbox.
                     if (e.target.closest('.texture-map')) {
                         return;
                     }
@@ -1205,46 +1220,54 @@
                 });
             });
 
+            // Add click listeners to the small texture map previews.
             document.querySelectorAll('.texture-map').forEach(map => {
                 map.addEventListener('click', (e) => {
-                    e.stopPropagation();
+                    e.stopPropagation(); // Prevents the gallery-item's click listener from also firing.
                     const imgSrc = map.dataset.src;
-                    openLightbox({ src: imgSrc });
+                    // We create a dummy object here because openLightbox expects an element with a .src or .dataset.src property.
+                    openLightbox({ dataset: { src: imgSrc } });
                 });
             });
 
-
+            // Event listeners for closing the lightbox.
             lightboxClose.addEventListener('click', closeLightbox);
             lightbox.addEventListener('click', (e) => {
+                // If the click is on the dark background (the lightbox itself) and not the image, close it.
                 if (e.target === lightbox) {
                     closeLightbox();
                 }
             });
 
             // --- VIDEO LAZY LOADING LOGIC ---
+            // This function replaces a placeholder div with a YouTube iframe.
             function loadVideo(placeholder) {
-                if (placeholder.classList.contains('video-loaded')) return;
+                if (placeholder.classList.contains('video-loaded')) return; // Don't load if already loaded.
 
                 const videoIds = placeholder.dataset.videoIds;
                 if (!videoIds) return;
 
                 const firstVideoId = videoIds.split(',')[0];
-                const playlist = videoIds;
+                const playlist = videoIds; // The full list for playlist functionality.
 
                 const iframe = document.createElement('iframe');
+                // Construct the YouTube embed URL with autoplay, loop, and playlist parameters.
                 iframe.src = `https://www.youtube.com/embed/${firstVideoId}?autoplay=1&loop=1&playlist=${playlist}&mute=1&controls=1&enablejsapi=1`;
                 iframe.title = "YouTube video player";
                 iframe.frameBorder = "0";
                 iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
                 iframe.allowFullscreen = true;
 
+                // Clear the placeholder content (thumbnail and play button).
                 while (placeholder.firstChild) {
                     placeholder.removeChild(placeholder.firstChild);
                 }
+                // Add the iframe and mark the placeholder as loaded.
                 placeholder.appendChild(iframe);
                 placeholder.classList.add('video-loaded');
             }
-
+            
+            // This function reverts a loaded video back to its placeholder state.
             function resetVideo(placeholder) {
                 if (!placeholder.classList.contains('video-loaded')) return;
 
@@ -1253,12 +1276,14 @@
 
                 const firstVideoId = videoIds.split(',')[0];
                 
+                // Clear the iframe.
                 while (placeholder.firstChild) {
                     placeholder.removeChild(placeholder.firstChild);
                 }
 
+                // Re-create the thumbnail and play button.
                 const thumbnail = document.createElement('img');
-                thumbnail.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+                thumbnail.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"; // Placeholder src
                 thumbnail.dataset.src = `https://img.youtube.com/vi/${firstVideoId}/hqdefault.jpg`;
                 thumbnail.alt = "Video Preview";
                 thumbnail.className = 'lazy-image video-thumbnail';
@@ -1269,26 +1294,30 @@
                 placeholder.appendChild(thumbnail);
                 placeholder.appendChild(playButton);
                 
+                // We need to make the new thumbnail observable by the image lazy loader.
                 imageObserver.observe(thumbnail);
 
                 placeholder.classList.remove('video-loaded');
             }
 
+            // Intersection Observer for videos: It watches elements and triggers a function when they enter or leave the viewport.
+            // This is much more performant than listening to scroll events.
             const videoObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        loadVideo(entry.target);
-                    } else {
-                        resetVideo(entry.target);
+                    if (entry.isIntersecting) { // If the video placeholder is on screen...
+                        loadVideo(entry.target); // ...load the video.
+                    } else { // If it scrolls off screen...
+                        resetVideo(entry.target); // ...revert it to a placeholder to save resources.
                     }
                 });
-            }, { root: null, rootMargin: '0px', threshold: 0.5 });
+            }, { root: null, rootMargin: '0px', threshold: 0.5 }); // threshold: 0.5 means it triggers when 50% of the element is visible.
 
+            // Tell the observer to watch all video placeholders.
             document.querySelectorAll('.video-placeholder').forEach(placeholder => {
                 videoObserver.observe(placeholder);
             });
 
-            // --- LAZY LOADING FOR ALL IMAGES ---
+            // --- LAZY LOADING FOR ALL OTHER IMAGES ---
             const lazyImages = document.querySelectorAll('.lazy-image');
 
             const imageObserver = new IntersectionObserver((entries, observer) => {
@@ -1299,31 +1328,36 @@
 
                         if (!highResSrc) return;
 
+                        // To prevent showing a broken image if the high-res one takes time to load,
+                        // we load it into a temporary Image object in the background.
                         const tempImage = new Image();
                         tempImage.src = highResSrc;
                         
+                        // Once the temporary image has fully loaded...
                         tempImage.onload = () => {
-                            img.src = highResSrc;
-                            img.classList.add('loaded');
+                            img.src = highResSrc; // ...set the real image's src.
+                            img.classList.add('loaded'); // ...add the 'loaded' class to trigger the CSS transition.
                         };
                         
                         tempImage.onerror = () => {
                             console.error(`Failed to load image: ${highResSrc}`);
-                            img.classList.add('loaded');
+                            img.classList.add('loaded'); // Still remove blur on error.
                         }
 
+                        // Stop observing this image once it has been triggered.
                         observer.unobserve(img);
                     }
                 });
             }, {
-                rootMargin: '0px 0px 250px 0px' 
+                rootMargin: '0px 0px 250px 0px' // Start loading images when they are 250px away from the bottom of the viewport.
             });
 
             lazyImages.forEach(img => {
                 imageObserver.observe(img);
             });
             
-            // --- MUSIC PLAYER LOGIC ---
+            // --- MUSIC PLAYER LOGIC (UPDATED PLAYLIST) ---
+            // Get all DOM elements for the player.
             const musicContainer = document.getElementById("music-container");
             const playButton = document.getElementById("play");
             const prevButton = document.getElementById("prev");
@@ -1334,6 +1368,7 @@
             const title = document.getElementById("title");
             const cover = document.getElementById("cover");
             
+            // Array of song objects. This makes it easy to add or remove songs.
             const songs = [
                 {
                     name: 'The Industrial Pulse',
@@ -1341,18 +1376,64 @@
                     coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/pulse.png'
                 },
                 {
+                    name: 'Village Twilight',
+                    audioSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/Village%20Twilight.mp3',
+                    coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/village.png'
+                },
+                {
+                    name: 'Arcade Fury',
+                    audioSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Arcade%20Fury.mp3',
+                    coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/arcade.png'
+                },
+                {
+                    name: 'Crimson Repose',
+                    audioSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Crimson%20Repose.mp3',
+                    coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/crimson.png'
+                },
+                {
+                    name: 'Data Stream Center',
+                    audioSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Data%20Stream%20Center.mp3',
+                    coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/data.png'
+                },
+                {
+                    name: 'The Lich\'s Workshop',
+                    audioSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/The%20Lich\'s%20Workshop.mp3',
+                    coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/lich.png'
+                },
+                {
+                    name: 'Mountain Monastery',
+                    audioSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Mountain%20Monastery.mp3',
+                    coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/monastery.png'
+                },
+                {
+                    name: 'Castle Workshop',
+                    audioSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/Castle%20Workshop.mp3',
+                    coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/castle.png'
+                },
+                {
+                    name: 'Bullet Ballet',
+                    audioSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/Bullet%20Ballet.mp3',
+                    coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/bullet.png'
+                },
+                {
+                    name: 'Dance dance Magic',
+                    audioSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/Dance%20dance%20magic.mp3',
+                    coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/dance.png'
+                },
+                {
+                    name: 'We\'ve Always Been Here',
+                    audioSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/We\'ve%20Always%20Been%20Here.mp3',
+                    coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/always.png'
+                },
+                {
                     name: 'The System Collapse',
                     audioSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/The%20System%20Collapse.mp3',
                     coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/collapse.png'
-                },
-                {
-                    name: 'Village Twilight',
-                    audioSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/Village%20Twilight.ogg',
-                    coverSrc: 'https://raw.githubusercontent.com/Okamisen2/portfolio/main/Music/village.png'
                 }
             ];
-            let songIndex = 0;
+            let songIndex = 0; // Keep track of the current song.
 
+            // Function to load a song's data into the player UI.
             function loadSong(songData) {
                 title.innerText = songData.name;
                 audio.src = songData.audioSrc;
@@ -1360,134 +1441,89 @@
                 cover.alt = `${songData.name} Album Art`;
             }
 
+            // Function to play the song.
             function playSong() {
-                musicContainer.classList.add("play");
-                playButton.querySelector("i.fas").classList.remove("fa-play");
+                musicContainer.classList.add("play"); // Add 'play' class for CSS animations/styles.
+                playButton.querySelector("i.fas").classList.remove("fa-play"); // Change icon to 'pause'.
                 playButton.querySelector("i.fas").classList.add("fa-pause");
                 audio.play();
             }
 
+            // Function to pause the song.
             function pauseSong() {
                 musicContainer.classList.remove("play");
-                playButton.querySelector("i.fas").classList.remove("fa-pause");
+                playButton.querySelector("i.fas").classList.remove("fa-pause"); // Change icon back to 'play'.
                 playButton.querySelector("i.fas").classList.add("fa-play");
                 audio.pause();
             }
 
+            // Function to play the previous song.
             function prevSong() {
                 songIndex--;
-                if (songIndex < 0) songIndex = songs.length - 1;
+                if (songIndex < 0) {
+                    songIndex = songs.length - 1; // Loop back to the end.
+                }
                 loadSong(songs[songIndex]);
                 playSong();
             }
 
+            // Function to play the next song.
             function nextSong() {
                 songIndex++;
-                if (songIndex > songs.length - 1) songIndex = 0;
+                if (songIndex > songs.length - 1) {
+                    songIndex = 0; // Loop back to the start.
+                }
                 loadSong(songs[songIndex]);
                 playSong();
             }
 
+            // Function to update the progress bar based on the audio's current time.
             function updateProgress(e) {
+                // 'e.srcElement' is the element that fired the event (the audio tag).
+                // Destructuring to get duration and currentTime properties.
                 const { duration, currentTime } = e.srcElement;
-                const progressPercent = (currentTime / duration) * 100;
-                progress.style.width = `${progressPercent}%`;
+                if (duration) {
+                    const progressPercent = (currentTime / duration) * 100;
+                    progress.style.width = `${progressPercent}%`;
+                }
             }
 
+            // Function to seek to a specific time in the song when the progress bar is clicked.
             function setProgress(e) {
-                const width = this.clientWidth;
-                const clickX = e.offsetX;
+                const width = this.clientWidth; // The total width of the progress bar container.
+                const clickX = e.offsetX; // The x-coordinate of the click within the container.
                 const duration = audio.duration;
-                audio.currentTime = (clickX / width) * duration;
+                if (duration) { // Avoid NaN error if duration is not yet available.
+                    audio.currentTime = (clickX / width) * duration;
+                }
             }
 
-            // --- AUDIO REACTIVE SHEEN EFFECT ---
-            let audioContext, analyser, sourceNode, dataArray;
-            
-            // Variables for smoothing (lerping) the animation
-            let currentSheenSpeed = 4;
-            let currentMaskSize = 100;
-            const smoothingFactor = 0.04; // Reduced for even smoother transitions
-
-
-            function setupAudioAnalysis() {
-                if (audioContext) return; 
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                analyser = audioContext.createAnalyser();
-                sourceNode = audioContext.createMediaElementSource(audio);
-                
-                sourceNode.connect(analyser);
-                analyser.connect(audioContext.destination);
-                
-                analyser.fftSize = 64;
-                const bufferLength = analyser.frequencyBinCount;
-                dataArray = new Uint8Array(bufferLength);
-
-                updateSheen();
-            }
-            
-            function lerp(start, end, amt) {
-                return (1 - amt) * start + amt * end;
-            }
-
-            function updateSheen() {
-                let targetSheenSpeed = 6; // Slower base speed
-                let targetMaskSize = 100;
-
-                if(musicContainer.classList.contains("play")) {
-                    analyser.getByteFrequencyData(dataArray);
-                    
-                    let sum = 0;
-                    for(let i = 0; i < dataArray.length; i++) {
-                        sum += dataArray[i];
-                    }
-                    const average = sum / dataArray.length;
-
-                    // Clamped the speed range to be less extreme
-                    targetSheenSpeed = Math.max(1.5, 6 - (average / 128) * 5);
-                    targetMaskSize = 100 + (average / 128) * 15; // Reduced stretch effect
-
-                } 
-                
-                // Lerp the values for a smooth transition
-                currentSheenSpeed = lerp(currentSheenSpeed, targetSheenSpeed, smoothingFactor);
-                currentMaskSize = lerp(currentMaskSize, targetMaskSize, smoothingFactor);
-
-                musicContainer.style.setProperty('--sheen-speed', `${currentSheenSpeed}s`);
-                musicContainer.style.setProperty('--mask-size', `${currentMaskSize}%`);
-                
-                requestAnimationFrame(updateSheen);
-            }
-
-            // Event Listeners for Music Player
+            // --- Event Listeners for Music Player ---
             playButton.addEventListener("click", () => {
-                if (!audioContext) {
-                    setupAudioAnalysis();
-                }
-                if (audioContext.state === 'suspended') {
-                    audioContext.resume();
-                }
-                
                 const isPlaying = musicContainer.classList.contains("play");
                 isPlaying ? pauseSong() : playSong();
             });
 
             prevButton.addEventListener("click", prevSong);
             nextButton.addEventListener("click", nextSong);
+            // 'timeupdate' fires repeatedly as the audio plays.
             audio.addEventListener("timeupdate", updateProgress);
             progressContainer.addEventListener("click", setProgress);
+            // 'ended' fires when the song finishes.
             audio.addEventListener("ended", nextSong);
             
-            // Init
-            loadSong(songs[songIndex]);
+            // --- Initial Setup ---
+            loadSong(songs[songIndex]); // Load the first song on page load.
 
             // --- GAME LOGIC ---
-            // ... [Your existing game logic remains unchanged] ...
+            // This is a simple "dino runner" style game using the HTML5 Canvas API.
             const canvas = document.getElementById('game-canvas');
-            const ctx = canvas.getContext('2d');
+            const ctx = canvas.getContext('2d'); // The context is the object used to draw on the canvas.
             const scoreEl = document.getElementById('score-value');
             const messageEl = document.getElementById('game-message');
 
+            // Using a class is a great way to encapsulate all the game's logic and state.
+            // This is very similar to how you'd structure a class in C#.
             class DinoGame {
                 constructor() {
                     this.canvas = canvas;
@@ -1496,8 +1532,8 @@
                     this.messageEl = messageEl;
                     this.initialGameSpeed = 4;
                     this.gameSpeedIncrease = 0.001;
-                    this.animationFrameId = null;
-                    this.lang = 'ru';
+                    this.animationFrameId = null; // To keep track of the animation loop.
+                    this.lang = 'en'; // Default language.
                     this.phrases = {
                         ru: ["Молодец!", "Так держать!", "Отлично!", "Невероятно!", "Супер!", "Продолжай!"],
                         en: ["Great!", "Keep it up!", "Excellent!", "Incredible!", "Super!", "Go on!"]
@@ -1530,10 +1566,13 @@
                         this.messageEl.style.opacity = 0;
                     }, 2000);
                 }
-
+                
+                // The main game update logic.
                 update() {
                     if (this.gameOver) return;
                     this.gameSpeed += this.gameSpeedIncrease;
+
+                    // Simple physics for the dino.
                     this.dino.dy += this.dino.gravity;
                     this.dino.y += this.dino.dy;
                     this.dino.onGround = false;
@@ -1542,21 +1581,29 @@
                         this.dino.dy = 0;
                         this.dino.onGround = true;
                     }
+
+                    // Obstacle generation.
                     this.obstacleTimer++;
                     if (this.obstacleTimer > this.currentObstacleInterval) {
                         this.obstacles.push({ x: this.canvas.width, width: 20, height: 40 });
                         this.obstacleTimer = 0;
                         this.currentObstacleInterval = this.getRandomInterval();
                     }
+
+                    // Obstacle movement and collision detection.
                     for (let i = this.obstacles.length - 1; i >= 0; i--) {
                         const obs = this.obstacles[i];
                         obs.x -= this.gameSpeed;
+                        
+                        // AABB (Axis-Aligned Bounding Box) collision check.
                         if (this.dino.x < obs.x + obs.width &&
                             this.dino.x + this.dino.width > obs.x &&
-                            this.dino.y < this.canvas.height - 40 + obs.height &&
-                            this.dino.y + this.dino.height > this.canvas.height - 40) {
+                            this.dino.y < this.canvas.height - obs.height &&
+                            this.dino.y + this.dino.height > this.canvas.height - obs.height - 10) {
                             this.endGame();
                         }
+
+                        // Score increment.
                         if (obs.x + obs.width < this.dino.x && !obs.scored) {
                             obs.scored = true;
                             this.score++;
@@ -1569,22 +1616,30 @@
                                 this.showMessage(randomPhrase);
                             }
                         }
+
+                        // Remove off-screen obstacles.
                         if (obs.x + obs.width < 0) {
                             this.obstacles.splice(i, 1);
                         }
                     }
                 }
-
+                
+                // The main drawing logic.
                 draw() {
                     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                    // Draw ground
                     this.ctx.fillStyle = '#374151';
                     this.ctx.fillRect(0, this.canvas.height - 10, this.canvas.width, 10);
+                    // Draw dino
                     this.ctx.fillStyle = '#d1d5db';
                     this.ctx.fillRect(this.dino.x, this.dino.y, this.dino.width, this.dino.height);
+                    // Draw obstacles
                     this.ctx.fillStyle = '#f87171';
                     this.obstacles.forEach(obs => {
                         this.ctx.fillRect(obs.x, this.canvas.height - obs.height - 10, obs.width, obs.height);
                     });
+                    
+                    // Draw game over screen.
                     if(this.gameOver) {
                         this.ctx.fillStyle = 'rgba(0,0,0,0.5)';
                         this.ctx.fillRect(0,0, this.canvas.width, this.canvas.height);
@@ -1596,17 +1651,20 @@
                     }
                 }
 
+                // The game loop.
                 loop() {
                     this.update();
                     this.draw();
                     this.animationFrameId = requestAnimationFrame(() => this.loop());
                 }
                 
+                // Initializes or resets the game state.
                 start() {
                     if (this.animationFrameId) {
                         cancelAnimationFrame(this.animationFrameId);
                         this.animationFrameId = null;
                     }
+                    // Reset all game variables.
                     this.dino = { x: 50, y: this.canvas.height - 40, width: 30, height: 30, dy: 0, gravity: 0.6, jumpPower: -12, onGround: true };
                     this.obstacles = [];
                     this.score = 0;
@@ -1618,7 +1676,7 @@
                     this.minObstacleInterval = 50;
                     this.maxObstacleInterval = 120;
                     this.currentObstacleInterval = this.getRandomInterval();
-                    this.loop();
+                    this.loop(); // Start the game loop.
                 }
 
                 endGame() {
@@ -1627,14 +1685,16 @@
                         cancelAnimationFrame(this.animationFrameId);
                         this.animationFrameId = null;
                     }
-                    this.draw();
+                    this.draw(); // Draw the final frame with the game over message.
                 }
             }
 
+            // Create an instance of the game and start it.
             game = new DinoGame();
             game.start();
-            setLanguage('en');
+            setLanguage('en'); // Set the initial language for the whole page.
 
+            // Add event listeners for game controls.
             document.addEventListener('keydown', (e) => {
                 if (e.code === 'Space') {
                     if (game.gameOver) game.start();
@@ -1646,10 +1706,10 @@
                 else game.jump();
             });
              canvas.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                if (game.gameOver) game.start();
-                else game.jump();
-            }, { passive: false });
+                 e.preventDefault(); // Prevents the browser from also interpreting the touch as a click.
+                 if (game.gameOver) game.start();
+                 else game.jump();
+             }, { passive: false });
 
         });
     </script>
